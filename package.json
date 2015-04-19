@@ -5,10 +5,12 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
+    "express": "^4.12.3",
     "fs": "",
     "mime": "",
     "minimist": "",
-    "request": ""
+    "request": "",
+    "swig": "^1.4.2"
   },
   "devDependencies": {},
   "author": "Dmitry",

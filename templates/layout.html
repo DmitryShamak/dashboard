@@ -5,10 +5,11 @@
   <title>{% block title %}My Site{% endblock %}</title>
 
   {% block head %}
-  <link rel="stylesheet" href="main.css">
   {% endblock %}
 </head>
 <body>
-  {% block content %}{% endblock %}
+  {% block content %}
+    <a href="/">Go to Index</a> 
+  {% endblock %}
 </body>
 </html>

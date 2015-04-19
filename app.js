@@ -23,9 +23,21 @@ swig.setDefaults({ cache: false });
 // NOTE: You should always cache templates in a production environment.
 // Don't leave both of these to `false` in production!
 
+var renderTemplate = function (temp, res) {
+    console.log(temp);
+    temp = (temp) ? temp : "index";
+    res.render(temp, { /* template locals context */ });
+};
+
 app.get('/', function (req, res) {
-  res.render('index', { /* template locals context */ });
+    renderTemplate(null, res);
 });
+
+app.get('/:view', function (req, res) {
+    renderTemplate(req.params.view, res);
+});
+
+
 
 var getTemplate = function(template, data) {
 	swig.renderFile('./templates/' + template + '.html', data);
