@@ -5,7 +5,10 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.12.3",
     "express": "^4.12.3",
+    "fs": "0.0.2",
+    "less-middleware": "^2.0.1",
     "swig": "^1.4.2"
   },
   "devDependencies": {},
