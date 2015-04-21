@@ -3,23 +3,23 @@ var swig = require("swig");
 
 swig.setDefaults({ cache: false });
 
-var renderTemplate = function (temp, res, data) {
+var renderTemplate = function (temp, data, callback) {
     var tempFile = temp + ".html";
 
     data = (data) ? data : {};
 
     fs.exists("./private/templates/" + tempFile, function(exists) {
     	if(!exists) {
-    		return res.send(swig.compileFile('./private/templates/error.html')());
+    	    return callback("404", null);
     	}
 
     	var template = swig.compileFile('./private/templates/index.html');
 
-        data.content = tempFile;
+        data.template = tempFile;
 
     	template = template(data);
 
-    	res.send(template);
+    	callback(null, template);
     });
 };
 

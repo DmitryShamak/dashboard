@@ -1,0 +1,51 @@
+﻿<div class="template-block-cover project-board">
+	<div class="content-cover">
+        <div class="clearfix">
+            <h3 class="project-name pull-left">Project Name</h3>
+            <button class="pull-left">Create Ticket</button>
+            <button class="pull-right">Edit Project</button>
+        </div>
+        <table>
+            <tr class="header">
+                <th>To Do</th>
+                <th>In Progress</th>
+                <th>Done</th>
+            </tr>
+            <tr>
+                <td>
+                    {% for item in data.tickets %}
+                        {% if item.status == "todo" %}
+                        <div class="ticket">
+                            <a href="#">{{item.name}}</a>
+                            <p>{{item.description}}</p>
+                            <a href="#">{{item.assignee}}</a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for item in data.tickets %}
+                        {% if item.status == "inprogress" %}
+                        <div class="ticket">
+                            <a href="#">{{item.name}}</a>
+                            <p>{{item.description}}</p>
+                            <a href="#">{{item.assignee}}</a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for item in data.tickets %}
+                        {% if item.status == "done" %}
+                        <div class="ticket">
+                            <a href="#">{{item.name}}</a>
+                            <p>{{item.description}}</p>
+                            <a href="#">{{item.assignee}}</a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+	</div>
+</div>

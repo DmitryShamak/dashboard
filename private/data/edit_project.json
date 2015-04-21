@@ -1,0 +1,18 @@
+﻿{
+    "statuses": [
+        {
+            "name": "Status 1"
+        },
+        {
+            "name": "status 2"
+        }
+    ],
+	"priorities": [
+        {
+            "name": "Major"
+        },
+        {
+            "name": "Critical"
+        }
+    ]
+}

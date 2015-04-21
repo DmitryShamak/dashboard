@@ -1,0 +1,11 @@
+﻿<div class="template-block-cover dashboard">
+	<div class="content-cover">
+		<h2>Projects list</h2>
+		<ul class="project-list bordered">
+            {% for item in data.items %}
+                <li>{{ item.name }}</li>
+            {% endfor %}
+		</ul>
+		<p><button id="create-project-btn" class="btn default-btn">Create project</button></p>
+	</div>
+</div>

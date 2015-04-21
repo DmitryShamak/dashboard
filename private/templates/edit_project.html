@@ -1,0 +1,30 @@
+﻿<div class="template-block-cover edit-project">
+	<div class="content-cover">
+		<p class="search-project">
+			<input type="text" id="project-search" placeholder="Project Name" />
+		</p>
+
+		<div class="project-options-cover clearfix"> 
+			<div class="project-option statuses pull-left">
+				<h4 class="option-title">Statuses</h4>
+				<ul class="bordered">
+					{% for item in data.statuses %}
+                        <li>{{ item.name }}</li>
+                    {% endfor %}
+				</ul>
+				<p><button class="add-status btn default-btn">Add Status</button></p>
+			</div>
+			<div class="project-option priorities pull-right">
+				<h4 class="option-title">Pririties</h4>
+				<ul class="bordered">
+					{% for item in data.priorities %}
+                        <li>{{ item.name }}</li>
+                    {% endfor %}
+				</ul>
+				<p><button class="add-priority btn default-btn">Add Priority</button></p>
+			</div>
+		</div>
+
+		<p><button class="save-changes btn default-btn">Save Project</button></p>
+	</div>
+</div>
