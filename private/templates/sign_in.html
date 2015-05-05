@@ -1,16 +1,21 @@
 ﻿<div class="template-block-cover sign-in">
 	<div class="content-cover">
-		<form id="sign-in">
-			<p><input type="text" id="email" placeholder="Email" /></p>
+		<p class="text-right">
+			<a href="/auth/google">Sign On with Google</a> |
+			<a href="/auth/vk">Sign On with VK</a> |
+			<a href="/auth/twitter">Sign On with Twitter</a>
+		</p>
+		<form id="sign-in" action="/login" method="post">
+			<p><input type="text" id="email" name="email" placeholder="Email" /></p>
 
-			<p><input type="text" id="password" placeholder="Password" /></p>
+			<p><input type="password" id="password" name="password" placeholder="Password" /></p>
 
 			<p>
                 <input type="checkbox" id="remember" />
                 <span>Remember Me</span>
 			</p>
 
-			<p><button>Sign In</button></p>
+			<p><button type="submit">Sign In</button></p>
 		</form>
 	</div>
 </div>
