@@ -10,16 +10,16 @@
 	<nav>
 		<p><a href="/">Home</a></p>
     {% if user %}
-      <p><a href="/account">Account</a></p>
+      <p><a href="/user_account">Account</a></p>
       <p><a href="/logout">Log Out</a></p>
       {% else %}
       <p><a href="/sign_in">Sign In</a></p>
       <p><a href="/sign_out">Sign Out</a></p>
     {% endif %}
-    <p><a href="/dashboard">Dashboard</a></p>
+    <p><a href="/user_dashboard">Dashboard</a></p>
     <p><a href="/user_edit_project">Edit Project</a></p> 
-    <p><a href="/project_board">Board</a></p>
-    <p><a href="/ticket">Ticket</a></p>
+    <p><a href="/user_project_board">Board</a></p>
+    <p><a href="/user_ticket">Ticket</a></p>
 	</nav>
 
 	<div id="content">
