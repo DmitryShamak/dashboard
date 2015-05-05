@@ -1,32 +1,21 @@
 var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 
 var user = "DShamak";
 var password = "mongolabpa33";
-var id = "";
 var table = "dashboard";
-
-mongoose.connect('mongodb://'+user+':'+password+'@ds037087.mongolab.com:37087/'+table);
-var mongo;
+mongoose.connect('mongodb://'+user+':'+password+'@ds031872.mongolab.com:31872/'+table);
 
 function validator (val) {
     return val;
 }
 
 var schema = new Schema({
-    title:  String,
-    author: String,
-    body:   String,
-    comments: [{ body: String, date: Date }],
-    date: { type: Date, default: Date.now },
-    hidden: Boolean,
-    meta: {
-        votes: Number,
-        favs:  Number
-    },
-
-    validate: validator
+    name: String,
+    description: String,
+    date: { type: Date, default: Date.now }
 });
 
 var Dashboard = mongoose.model('Dashboard', schema);
 
-module.exports.Dashboard = Dashboard;
+module.exports = Dashboard;
