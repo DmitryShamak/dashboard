@@ -19,8 +19,16 @@ app.use(myPassport.initialize());
 app.use(myPassport.session());
 
 app.post('/login', myPassport.authenticate('local', {failureRedirect: '/sign_in'}), function (req, res) {
-	console.log("/login");
     res.redirect('/');
+});
+app.post('/signup', function(req, res) {
+	if(!req.body && req.body.email && req.body.password) {
+		res.setHeader("Content-Type", "text/html");
+		return res.end("<h1 style='text-align: center; color: #D33;>Sign Up was failed.</h1><script>setTimeout(function() { window.location.href = '/sign_up'; }, 3000);</script>");
+	}
+	db.add("User", req.body);
+	res.setHeader("Content-Type", "text/html");
+	res.end("<h1 style='text-align: center;'>Sign Up was successful.</h1> <script>setTimeout(function() { window.location.href = '/'; }, 5000);</script>");
 });
 
 app.get('/user_*', user.can('user'), function (req, res, next) {
