@@ -24,44 +24,6 @@ router.get("*", function (req, res, next) {
     });
 });
 
-var getStyle = function () {
-    var responder = promise.pending();
-
-    fs.readFile('./public/styles/style.css', function (err, data) {
-        if(err) {
-            fs.readFile('./public/styles/style.less', function (err, data) {
-                if (err) {
-                    return responder.resolve({ style: "" });
-                }
-
-                less.render(data.toString(), function (err, output) {
-                     fs.open('./public/styles/style.css', "w", function (err, fd) {
-                        if (err) {
-                            return responder.resolve({ style: "" });
-                        }
-
-                        //FOR LINUX
-                        var buffer = new Buffer(output.css, 'utf8');
-                        var offset = 0;
-                        var length = buffer.length;
-                        // ---------------------------
-                        fs.write(fd, buffer, offset, length, 0, function (err, written, string) {
-                            fs.close(fd, function () {
-                                responder.resolve({ style: output.css });
-                            });
-                        });
-
-                    });
-                });
-            });
-        } else {
-            responder.resolve({ style: data.toString('utf8') });
-        }
-    });
-
-    return responder.promise;
-};
-
 var getTemplateData = function (template) {
     var responder = promise.pending();
     var url = "./private/data/" + template + ".json";
@@ -100,7 +62,6 @@ router.get('/logout', function(req, res) {
 
 router.get('/:view', function (req, res, next) {
     promise.all([
-           getStyle(),
            getTemplateData(req.params.view)
     ]).then(function (results) {
         res.data = makeParse(results);

@@ -7,10 +7,10 @@
   overflow: hidden;
   clear: both;
 }
-[class*='pull-left'] {
+[class*='pull'][class*='-left'] {
   float: left;
 }
-[class*="pull-right"] {
+[class*='pull'][class*="-right"] {
   float: right;
 }
 .text-left {

@@ -10,11 +10,13 @@
 	clear: both;
 }
 
-[class*='pull-left'] {
-    float: left;
-}
-[class*="pull-right"] {
-    float: right;
+[class*='pull'] {
+    &[class*='-left'] {
+	    float: left;
+	}
+	&[class*="-right"] {
+	    float: right;
+	}
 }
 
 .text-left {
@@ -41,7 +43,7 @@ p {
 }
 
 @nav-ver-width: 150px;
-@nav-hor-height: 25px;
+@nav-hor-height: 28px;
 
 nav {
 	position: fixed;
@@ -64,6 +66,23 @@ nav {
 		padding: 0 15px;
 
 		background-color: #EEE;
+
+		.btn-home {
+			display: block;
+			height: 50px;
+			margin: 10px 0 15px;
+
+			background-image: url(/public/imgs/dashboard.png);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+
+			opacity: 0.6;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
 	}
 
 	box-sizing: border-box;
@@ -77,21 +96,45 @@ nav {
 
 .dropdown {
 	position: relative;
+	display: inline-block;
+	height: @nav-hor-height - 6;
 
-	padding-right: 40px;
+	padding: 3px 30px 3px 5px;
+
+	background-color: #DDD;
+
+	box-sizing: border-box;
+
+	cursor: pointer;
+
+	&:hover {
+		background-color: #EEE;
+	}
 
 	&:not(.active) {
 		.hidden {
-			display: none;
+			height: 0;
+			padding: 0;
+			overflow: hidden;
 		}
+	}
+
+	.hidden {
+		position: absolute;
+		top: 22px; left: 0; right: 0;
+
+		padding: 3px 5px;
+
+		background-color: #EEE;
+
+		box-sizing: border-box;
 	}
 
 	.arrow {
 		position: absolute;
-		top: 0; bottom: 0; right: 0;
-		width: 40px;
-
-		background-color: rgba(0, 0, 0, 0.1);
+		top: 0; right: 0;
+		height: @nav-hor-height;
+		width: @nav-hor-height;
 
 		&:after {
 			content: "";
@@ -101,7 +144,7 @@ nav {
 			display: block;
 			width: 1px;
 			height: 5px;
-			margin: -3px -1px;
+			margin: -3px -5px;
 			border-color: #808080 transparent transparent transparent;
 			border-style: solid;
 			border-width: 5px 5px 0 5px;
