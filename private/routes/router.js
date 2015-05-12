@@ -16,6 +16,9 @@ router.get("*", function (req, res, next) {
         if (err) {
             return next();
         }
+        if(url.indexOf("style.css")) {
+            res.setHeader('content-type', 'text/css');
+        }
 
         res.status(200).end(data);
     });
@@ -37,9 +40,13 @@ var getStyle = function () {
                             return responder.resolve({ style: "" });
                         }
 
-                        fs.write(fd, output.css, function (err, written, string) {
+                        //FOR LINUX
+                        var buffer = new Buffer(output.css, 'utf8');
+                        var offset = 0;
+                        var length = buffer.length;
+                        // ---------------------------
+                        fs.write(fd, buffer, offset, length, 0, function (err, written, string) {
                             fs.close(fd, function () {
-                                console.log(string);
                                 responder.resolve({ style: output.css });
                             });
                         });

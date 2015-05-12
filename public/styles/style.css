@@ -7,10 +7,10 @@
   overflow: hidden;
   clear: both;
 }
-[class*='pull'][class*='-left'] {
+[class*='pull-left'] {
   float: left;
 }
-[class*='pull'][class*='-right'] {
+[class*="pull-right"] {
   float: right;
 }
 .text-left {
@@ -34,23 +34,60 @@ p {
 nav {
   position: fixed;
   top: 0;
+  box-sizing: border-box;
+}
+nav.horizontal {
+  left: 150px;
+  right: 0;
+  height: 25px;
+  padding: 3px 10px;
+  background-color: #CCC;
+}
+nav.vertical {
   bottom: 0;
   left: 0;
   width: 150px;
   padding: 0 15px;
   background-color: #EEE;
-  box-sizing: border-box;
 }
 nav a {
   color: #000;
   text-decoration: none;
+}
+.dropdown {
+  position: relative;
+  padding-right: 40px;
+}
+.dropdown:not(.active) .hidden {
+  display: none;
+}
+.dropdown .arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.dropdown .arrow:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  display: block;
+  width: 1px;
+  height: 5px;
+  margin: -3px -1px;
+  border-color: #808080 transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
 }
 #content {
   margin-left: 150px;
 }
 .home-cover {
   position: fixed;
-  top: 0;
+  top: 25px;
   bottom: 0;
   left: 150px;
   right: 0;

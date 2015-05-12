@@ -7,20 +7,29 @@
   <style type="text/css">{{style}}</style>
 </head>
 <body>
-	<nav>
-		<p><a href="/">Home</a></p>
+  <nav class="horizontal clearfix">
     {% if user %}
-      <p><a href="/user_account">Account</a></p>
-      <p><a href="/logout">Log Out</a></p>
+      <div class="dropdown pull-right">
+        <a href="/user_account">{{user.firstname}}</a>
+        <div class="hidden">
+          <a href="/logout">Log Out</a>
+        </div>
+        <div class="arrow"></div>
+      </div>
+      {% else %}
+      <a href="/sign_in">Sign In</a>
+      <a href="/sign_up">Sign up</a>
+    {% endif %}
+  </nav>
+  <nav class="vertical">
+    <a class="btn-home" href="/"></a>
+    {% if user %}
       <p><a href="/user_dashboard">Dashboard</a></p>
       <p><a href="/user_edit_project">Edit Project</a></p> 
       <p><a href="/user_project_board">Board</a></p>
       <p><a href="/user_ticket">Ticket</a></p>
-      {% else %}
-      <p><a href="/sign_in">Sign In</a></p>
-      <p><a href="/sign_up">Sign up</a></p>
     {% endif %}
-	</nav>
+  </nav>
 
 	<div id="content">
         {% block %}
