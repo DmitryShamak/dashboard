@@ -11,16 +11,14 @@
   <nav class="horizontal">
     {% if user %}
       <div class="pull-right">
-        <div class="dropdown">
+        <div class="nav-item">
+          {% if project %}
           <a href="#project">Project</a>
-          <div class="hidden">
-            <div><a href="#project2">Project2</a></div>
-            <div><a href="#project3">Project3</a></div>
-            <div><a href="#project4">Project4</a></div>
-          </div>
-          <div class="arrow"></div>
+          {% else %}
+          <span class="disabled">No Project</span>
+          {% endif %}
         </div>
-        <div class="dropdown">
+        <div class="nav-item dropdown">
           <a href="/user_account">{{user.firstname}}</a>
           <div class="hidden">
             <div><a href="/logout">Log Out</a></div>
