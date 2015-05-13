@@ -3,6 +3,9 @@
 	padding: 0;
 
 	font-size: 16px;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .clearfix {
@@ -21,6 +24,10 @@
 	&[class*="-right"] {
 	    float: right;
 	}
+}
+
+[class*="btn"] {
+	cursor: pointer;
 }
 
 .text-left {
@@ -266,3 +273,48 @@ textarea {
         min-width: 150px;
     }
 }
+
+//Dashboard
+.project-list {
+	display: inline-block;
+
+	li {
+		position: relative;
+		display: block;
+		padding: 5px 70px 5px 10px;
+
+		&:not(:last-child) {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+		}
+
+		&:not(:hover) {
+			.control {
+				display: none;
+			}
+		}
+
+		.control {
+			position: absolute;
+			top: 50%; right: 0;
+			padding: 2px;
+
+			width: 30px; height: 18px;
+
+			margin-top: -9px; 
+
+			.control-btn {
+				display: inline-block;
+				width: 14px; height: 14px;
+
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center; 
+
+				&.edit {
+					background-image: url(/public/imgs/edit.png);
+				}
+			}
+		}
+	}
+}
+//--------------------------------

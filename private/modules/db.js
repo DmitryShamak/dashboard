@@ -74,5 +74,13 @@ db_control.findOne = function(collection, selector, promise) {
 	  promise.resolve(res);
 	});
 };
+db_control.find = function(collection, selector, promise) {
+    if(!Collections[collection]) return promise.resolve(false);
+    Collections[collection].find(selector, function(err, res) {
+      if (err) return promise.resolve(false);
+
+      promise.resolve(res);
+    });
+};
 
 module.exports = db_control;
