@@ -43,6 +43,44 @@
 </div>
 
 <script>
+    var getStatus = function(status_id) {
+        var status = "To Do";
+        switch(status_id) {
+            case 0:
+                status = "To Do";
+                break;
+            case 1:
+                status = "In Progress";
+                break;
+            case 2:
+                status = "Done";
+                break;
+        };
+
+        return status;
+    };
+    var filterTickets = function(arr) {
+        var res = [];
+        var filter = {};
+
+        for(var i=0; i<arr.length; i++) {
+            var status = arr[i].status;
+            if(!filter[status]) {
+                filter[status] = {
+                    status: getStatus(status),
+                    tickets: []
+                };
+            }
+
+            filter[status].tickets.push(arr[i]);
+        }
+
+        for(var key in filter) {
+            res.push(filter[key]);
+        }
+
+        return res;
+    };
     function AppViewModel() {
         var self = this;
      
@@ -51,7 +89,7 @@
         self.init = function() {
             $.get('/gettickets/{{data.name}}', function(res) {
                 console.log(res);
-                self.ticketsGroup([{status: "To Do", tickets: res}]); //NEXT filter by status 
+                self.ticketsGroup(filterTickets(res)); //NEXT filter by status 
             });
         };
 

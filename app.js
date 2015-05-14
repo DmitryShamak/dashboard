@@ -53,7 +53,7 @@ app.get('/getprojectslist', function(req, res) {
 });
 app.post('/addticket/:project', function(req, res) {
 	if(!req.body && req.body.name && req.params.project) { //NEXT check for unique
-		return showRedirectMessage(true, "Ticket was NOT added.", "/user_board", res);
+		return showRedirectMessage(true, "Ticket was NOT added.", "/user_board/"+req.params.project, res);
 	}
 	//ADDING default values to project
 	var ticketAttrs = req.body;
@@ -62,7 +62,7 @@ app.post('/addticket/:project', function(req, res) {
 	ticketAttrs.project = req.params.project;
 	ticketAttrs.assignee = "false";
 	db.add("Ticket", req.body);//NEXT check for successful adding
-	showRedirectMessage(false, "Ticket was added successfuly.", "/user_board", res);
+	showRedirectMessage(false, "Ticket was added successfuly.", "/user_board/"+req.params.project, res);
 });
 app.get(['/gettickets', "/gettickets/:id"], function(req, res) {
 	var getTickets = function() {
