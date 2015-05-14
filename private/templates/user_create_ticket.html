@@ -1,0 +1,15 @@
+﻿<div class="template-block-cover create-ticket">
+	<div class="content-cover">
+		<form action="/addticket/{{data.id}}" method="post">
+			<p>
+				<input type="text" id="ticket-name" name="name" placeholder="ticket Name" />
+			</p>
+			<p>
+				<textarea style="resize: none;" id="ticket-description" name="description">Description</textarea>
+			</p>
+			<p>
+				<button class="save-changes btn default-btn">Add Ticket</button>
+			</p>
+		</form>
+	</div>
+</div>

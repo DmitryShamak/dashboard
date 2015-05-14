@@ -14,13 +14,19 @@
 </head>
 <body>
   <nav class="horizontal">
+    <div class="pull-left">
+      <a href="/" class="nav-item btn-home"></a>
+      {% if user %}
+        <div class="nav-item"><a href="/user_dashboard">Dashboard</a></div>
+      {% endif %}
+    </div>
     {% if user %}
       <div class="pull-right">
         <div class="nav-item">
           {% if project %}
-          <a href="#project">Project</a>
+          <a href="#chat">1 message</a>
           {% else %}
-          <span class="disabled">No Active Project</span>
+          <span class="disabled">No Messages</span>
           {% endif %}
         </div>
         <div class="nav-item dropdown">
@@ -36,14 +42,6 @@
         <a href="/sign_in">Sign In</a>
         <a href="/sign_up">Sign up</a>
       </div>
-    {% endif %}
-  </nav>
-  <nav class="vertical">
-    <a class="btn-home" href="/"></a>
-    {% if user %}
-      <p><a href="/user_dashboard">Dashboard</a></p>
-      <p><a href="/user_board">Board</a></p>
-      <p><a href="/user_ticket">Ticket</a></p>
     {% endif %}
   </nav>
 

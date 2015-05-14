@@ -1,9 +1,10 @@
 var express = require("express");
 var router = express.Router();
-var promise = require("bluebird");
+var Promise = require("bluebird");
 var fs = require("fs");
 var less = require("less");
 var renderer = require("../modules/renderer.js");
+var db = require("../modules/db.js");
 
 router.get("*", function (req, res, next) {
     var url = req.url = (req.url == "/") ? "/home" : req.url;
@@ -24,21 +25,32 @@ router.get("*", function (req, res, next) {
     });
 });
 
-var getTemplateData = function (template) {
-    var responder = promise.pending();
-    var url = "./private/data/" + template + ".json";
+var getCollectionName = function(template) {
+    var collection = "Default";
 
-    fs.readFile(url, function (err, data) {
-        if (err) {
-            return responder.resolve({ data: {} });
-        }
-        data = data.toString();
-        data = data.slice(1);
+    switch(template) {
+        case "user_board":
+            collection = "Project";
+            break;
+        case "user_dashboard":
+            collection = "Project";
+            break;
+        case "user_ticket":
+            collection = "Ticket";
+            break;
+    }
 
-        var json = JSON.parse(data);
+    return collection;
+};
 
-        responder.resolve({ data:  json });
-    });
+var getTemplateData = function (template, id) {
+    var responder = Promise.pending();
+    var collection = getCollectionName(template);
+    var selector = id ? { name: id } : {};
+
+    //get db data 
+    if(id) db.findOne(collection, selector, responder);
+    else db.find(collection, selector, responder);
 
     return responder.promise;
 };
@@ -52,7 +64,7 @@ var makeParse = function (arr) {
         }
     });
 
-    return result;
+    return {data: result};
 };
 
 router.get('/logout', function(req, res) {
@@ -60,18 +72,19 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-router.get('/:view', function (req, res, next) {
-    promise.all([
-           getTemplateData(req.params.view)
+router.get(['/:view', '/:view/:id'], function (req, res, next) {
+    Promise.all([
+           getTemplateData(req.params.view, req.params.id)
     ]).then(function (results) {
-        res.data = makeParse(results);
+        req.data = makeParse(results);
         next();
     });
 }, function (req, res, next) {
-    res.data.user = req.user;
+    req.data.user = req.user;
+    if(req.params.id) req.data.data.id = req.params.id;
     renderer.renderTemplate(
         req.params.view, 
-        res.data, 
+        req.data, 
         function (err, template) {
             if (err) {
                 return next();

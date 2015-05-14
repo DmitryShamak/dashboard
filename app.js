@@ -30,7 +30,7 @@ app.post('/signup', function(req, res) {
 	db.add("User", req.body);//NEXT check for successful adding
 });
 app.post('/addproject', function(req, res) {
-	if(!req.body && req.body.project_name) { //NEXT check for unique
+	if(!req.body && req.body.name) { //NEXT check for unique
 		return showRedirectMessage(true, "Project was NOT added.", "/user_create_project", res);
 	}
 	//ADDING default values to project
@@ -48,6 +48,31 @@ app.get('/getprojectslist', function(req, res) {
 	};
 	getProjectsList().then(function(results) {
 		console.log("RESULTS", results);
+		res.send(results);
+	});
+});
+app.post('/addticket/:project', function(req, res) {
+	if(!req.body && req.body.name && req.params.project) { //NEXT check for unique
+		return showRedirectMessage(true, "Ticket was NOT added.", "/user_board", res);
+	}
+	//ADDING default values to project
+	var ticketAttrs = req.body;
+	ticketAttrs.priority = 0;
+	ticketAttrs.status = 0;
+	ticketAttrs.project = req.params.project;
+	ticketAttrs.assignee = "false";
+	db.add("Ticket", req.body);//NEXT check for successful adding
+	showRedirectMessage(false, "Ticket was added successfuly.", "/user_board", res);
+});
+app.get(['/gettickets', "/gettickets/:id"], function(req, res) {
+	var getTickets = function() {
+		var responder = Promise.pending();
+		if(req.params.id) db.find("Ticket", {project: req.params.id}, responder);
+		else db.find("Ticket", {}, responder);
+
+		return responder.promise;
+	};
+	getTickets().then(function(results) {
 		res.send(results);
 	});
 });

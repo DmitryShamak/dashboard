@@ -1,51 +1,67 @@
 ﻿<div class="template-block-cover project-board">
 	<div class="content-cover">
         <div class="clearfix">
-            <h3 class="project-name pull-left">Project Name</h3>
-            <button class="pull-left">Create Ticket</button>
-            <button class="pull-right">Edit Project</button>
+            <h3 class="project-name pull-left">{{data.name}}</h3>
+            <a href="/user_create_ticket/{{data.name}}"><button class="pull-left">Create Ticket</button></a>
+            <a href="/user_edit_project/{{data.name}}"><button class="pull-right">Edit Project</button></a>
         </div>
-        <table>
-            <tr class="header">
-                <th>To Do</th>
-                <th>In Progress</th>
-                <th>Done</th>
-            </tr>
-            <tr>
-                <td>
-                    {% for item in data.tickets %}
-                        {% if item.status == "todo" %}
-                        <div class="ticket">
-                            <a href="#">{{item.name}}</a>
-                            <p>{{item.description}}</p>
-                            <a href="#">{{item.assignee}}</a>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for item in data.tickets %}
-                        {% if item.status == "inprogress" %}
-                        <div class="ticket">
-                            <a href="#">{{item.name}}</a>
-                            <p>{{item.description}}</p>
-                            <a href="#">{{item.assignee}}</a>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for item in data.tickets %}
-                        {% if item.status == "done" %}
-                        <div class="ticket">
-                            <a href="#">{{item.name}}</a>
-                            <p>{{item.description}}</p>
-                            <a href="#">{{item.assignee}}</a>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-        </table>
+        <div class="tickets-wrapper clearfix" data-bind="foreach: ticketsGroup">
+            <ul class="pull-left board-list">
+                <li class="head">
+                    <h4 data-bind="text: status"></h4>
+                </li>
+                <li class="" data-bind="foreach: $data.tickets">
+                    <div class="ticket text-left">
+                        <p><a href="/user_ticket/{{name}}" data-bind="text: name"></a></p>
+                        <p>
+                            <h5>Priority:
+                                <span data-bind="text: priority"></span>
+                            </h5>
+                        </p>
+                        <p>
+                            <h5>Status:
+                                <span data-bind="text: status"></span>
+                            </h5>
+                        </p>
+                        <p>
+                            <h5>Description:
+                                <span data-bind="text: description"></span>
+                            </h5>
+                        </p>
+                        <p>
+                            <h5>Assignee:</h5>
+                            <p data-bind="if: assignee != 'false'">
+                                <a href="/account/{{assignee}}" data-bind="text: assignee"></a>
+                            </p>
+                        </p>
+                        <p data-bind="if: assignee == 'false'">No Assignee</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
 	</div>
 </div>
+
+<script>
+    function AppViewModel() {
+        var self = this;
+     
+        self.ticketsGroup = ko.observable([]);
+
+        self.init = function() {
+            $.get('/gettickets/{{data.name}}', function(res) {
+                console.log(res);
+                self.ticketsGroup([{status: "To Do", tickets: res}]); //NEXT filter by status 
+            });
+        };
+
+        self.init();
+    }
+     
+    ko.applyBindings(new AppViewModel());
+    /*[
+        { status: "To Do", tickets: [{ name: 'Ticket', description: "description", assignee: "Dmitry" }]},
+        { status: "In Progress", tickets: [{ name: 'Ticket2', description: "description", assignee: "Dmitry" }, { name: 'Ticket3', description: "description", assignee: "Me" }]},
+        { status: "Done", tickets: [{ name: 'Ticket4', description: "description", assignee: "Dmitry" }]}
+    ]*/
+</script>

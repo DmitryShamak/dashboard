@@ -53,7 +53,7 @@ p {
   margin: 10px 0;
 }
 
-@nav-ver-width: 150px;
+@nav-ver-width: 0;
 @nav-hor-height: 28px;
 
 nav {
@@ -68,6 +68,25 @@ nav {
 		padding: 3px 10px;
 
 		background-color: #CCC;
+
+		.btn-home {
+			width: 30px;
+			height: 22px;
+
+			background-image: url(/public/imgs/dashboard.png);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-color: transparent;
+
+			opacity: 0.6;
+
+			&:hover {
+				opacity: 1;
+
+				background-color: transparent;
+			}
+		}
 	}	
 	&.vertical {
 		bottom: 0;
@@ -77,30 +96,16 @@ nav {
 		padding: 0 15px;
 
 		background-color: #EEE;
-
-		.btn-home {
-			display: block;
-			height: 50px;
-			margin: 10px 0 15px;
-
-			background-image: url(/public/imgs/dashboard.png);
-			background-size: contain;
-			background-repeat: no-repeat;
-			background-position: center;
-
-			opacity: 0.6;
-
-			&:hover {
-				opacity: 1;
-			}
-		}
 	}
 
 	.nav-item {
 		display: inline-block;
 		height: @nav-hor-height - 6;
 
+		float: left;
+
 		padding: 3px 10px;
+		margin: 0 5px;
 
 		background-color: #DDD;
 
@@ -219,33 +224,22 @@ ul.bordered {
 	font-size: 20px;
 }
 
-table {
-    width: 100%;
-    margin: 20px 0 0;
+.tickets-wrapper {
+  display: inline-block;
+  padding: 20px 15px;
 
-    border-collapse: collapse;
-
-    td {
-        vertical-align: top;
-    }
-
-    tr.header {
-        border-bottom: 1px solid #999;
-    }
-
-    th,
-    td {
-        padding: 10px 5px;
-    }
-
-    .ticket {
+  .board-list {
+  	min-width: 180px;
+  	padding: 5px;
+  	.ticket {
 	    margin: 10px 0;
-	    padding: 2px;
+	    padding: 5px 10px;
 
 	    border: 1px solid #999;
 
 	    background-color: #FFF;
     }
+  }
 }
 
 .project-board {

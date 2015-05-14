@@ -32,11 +32,11 @@ var ticketSchema = new Schema({
     name: String,
     status: Number,
     priority: Number,
-    assignee: Number,
+    assignee: String,
     description: String,
     startdate: { type: Date, default: Date.now },
     updatedate: { type: Date, default: Date.now },
-    project: Number
+    project: String
 });
 var projectSchema = new Schema({
     name: String,
