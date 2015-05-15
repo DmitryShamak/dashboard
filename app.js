@@ -52,7 +52,7 @@ app.get('/getprojectslist', function(req, res) {
 	});
 });
 app.post('/addticket/:project', function(req, res) {
-	if(!req.body && req.body.name && req.params.project) { //NEXT check for unique
+	if(!req.body || !req.body.name || !req.params.project) { //NEXT check for unique
 		return showRedirectMessage(true, "Ticket was NOT added.", "/user_board/"+req.params.project, res);
 	}
 	//ADDING default values to project
@@ -63,6 +63,15 @@ app.post('/addticket/:project', function(req, res) {
 	ticketAttrs.assignee = "false";
 	db.add("Ticket", req.body);//NEXT check for successful adding
 	showRedirectMessage(false, "Ticket was added successfuly.", "/user_board/"+req.params.project, res);
+});
+app.post('/updateticket/:ticketname', function(req, res) {
+	if(!req.body || !req.body.name || !req.params.ticketname) {
+		return showRedirectMessage(true, "Ticket was NOT update.", "/user_ticket/"+req.params.ticketname, res);
+	}
+	//ADDING default values to project
+	var ticketAttrs = req.body;
+	db.update("Ticket", {name: req.params.ticketname}, ticketAttrs);//NEXT check for successful update
+	showRedirectMessage(false, "Ticket was updated successfuly.", "/user_ticket/"+req.params.ticketname, res);
 });
 app.get(['/gettickets', "/gettickets/:id"], function(req, res) {
 	var getTickets = function() {

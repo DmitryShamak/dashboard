@@ -67,6 +67,14 @@ db_control.add = function(collection, data) {
 		else console.log('Saved : ', res );
 	});
 };
+db_control.update = function(collection, query, data) { //NEXT add callback
+    if(!Collections[collection]) return false;
+
+    Collections[collection].update(query, data, function (err, res) {
+        if (err) console.log(err);
+        else console.log('Updated : ', res );
+    });
+};
 db_control.findOne = function(collection, selector, promise) {
 	if(!Collections[collection]) return promise.resolve(false);
 	Collections[collection].findOne(selector, function(err, res) {

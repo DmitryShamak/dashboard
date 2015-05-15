@@ -6,7 +6,7 @@
         <form action="/updateticket/{{data.name}}" method="post">
             <div class="text-left">
                 <div> 
-                    <h3 data-bind="ifnot: editable">Name: <span>{{data.name}}</span></h3>
+                    <h3>Name: <span>{{data.name}}</span></h3>
                     <p data-bind="if: editable"><input type="text" placeholder="Ticket name" name="name" value="{{data.name}}" /></p>
                 </div>
                 <div>
@@ -18,8 +18,8 @@
                     <h3>Status: 
                         <span>{{data.status}}</span>
                         <span data-bind="if: editable">
-                            <span class="btn">Increase</span>
-                            <span class="btn">Lower</span>
+                            <span class="btn arrow-up">Increase</span>
+                            <span class="btn arrow-down">Lower</span>
                         </span>
                     </h3>
                 </div>
@@ -27,14 +27,14 @@
                     <h3>Priority: 
                         <span>Priority: {{data.priority}}</span>
                         <span data-bind="if: editable">
-                            <span class="btn">Increase</span>
-                            <span class="btn">Lower</span>
+                            <span class="btn arrow-up">Increase</span>
+                            <span class="btn arrow-down">Lower</span>
                         </span>
                     </h3>
                 </div>
                 <div>
-                    <h3 data-bind="ifnot: editable">Assignee: <span>{{data.assignee}}</span></h3>
-                    <p data-bind="if: editable"><input type="text" value="{{data.asignee}}" name="assignee" /></p>
+                    <h3>Assignee: <span data-bind="ifnot: editable">{{data.assignee}}</span></h3>
+                    <p data-bind="if: editable"><input type="text" value="{{data.asignee}}" name="assignee" placeholder="Assignee" /></p>
                 </div>
             </div>
             <p data-bind="if: editable" class="text-left"><button>Save</button></p>
