@@ -73,7 +73,45 @@ app.get(['/gettickets', "/gettickets/:id"], function(req, res) {
 		return responder.promise;
 	};
 	getTickets().then(function(results) {
-		res.send(results);
+		var getStatus = function(status_id) { //NEXT change to get status title from db
+	        var status = "To Do";
+	        switch(status_id) {
+	            case 0:
+	                status = "To Do";
+	                break;
+	            case 1:
+	                status = "In Progress";
+	                break;
+	            case 2:
+	                status = "Done";
+	                break;
+	        };
+
+	        return status;
+	    };
+	    var filterTickets = function(arr) {
+	        var res = [];
+	        var filter = {};
+
+	        for(var i=0; i<arr.length; i++) {
+	            var status = arr[i].status;
+	            if(!filter[status]) {
+	                filter[status] = {
+	                    status: getStatus(status),
+	                    tickets: []
+	                };
+	            }
+
+	            filter[status].tickets.push(arr[i]);
+	        }
+
+	        for(var key in filter) {
+	            res.push(filter[key]);
+	        }
+
+	        return res;
+	    };
+		res.send(filterTickets(results));
 	});
 });
 

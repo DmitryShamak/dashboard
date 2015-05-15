@@ -36,7 +36,8 @@ var ticketSchema = new Schema({
     description: String,
     startdate: { type: Date, default: Date.now },
     updatedate: { type: Date, default: Date.now },
-    project: String
+    project: String,
+    comments: Object
 });
 var projectSchema = new Schema({
     name: String,

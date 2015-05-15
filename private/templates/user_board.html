@@ -1,5 +1,5 @@
 ﻿<div class="template-block-cover project-board">
-	<div class="content-cover">
+	<div class="content-cover text-center">
         <div class="clearfix">
             <h3 class="project-name pull-left">{{data.name}}</h3>
             <a href="/user_create_ticket/{{data.name}}"><button class="pull-left">Create Ticket</button></a>
@@ -12,7 +12,7 @@
                 </li>
                 <li class="" data-bind="foreach: $data.tickets">
                     <div class="ticket text-left">
-                        <p><a href="/user_ticket/{{name}}" data-bind="text: name"></a></p>
+                        <p><a data-bind="text: name, attr: {href: '/user_ticket/'+name}"></a></p>
                         <p>
                             <h5>Priority:
                                 <span data-bind="text: priority"></span>
@@ -43,44 +43,6 @@
 </div>
 
 <script>
-    var getStatus = function(status_id) {
-        var status = "To Do";
-        switch(status_id) {
-            case 0:
-                status = "To Do";
-                break;
-            case 1:
-                status = "In Progress";
-                break;
-            case 2:
-                status = "Done";
-                break;
-        };
-
-        return status;
-    };
-    var filterTickets = function(arr) {
-        var res = [];
-        var filter = {};
-
-        for(var i=0; i<arr.length; i++) {
-            var status = arr[i].status;
-            if(!filter[status]) {
-                filter[status] = {
-                    status: getStatus(status),
-                    tickets: []
-                };
-            }
-
-            filter[status].tickets.push(arr[i]);
-        }
-
-        for(var key in filter) {
-            res.push(filter[key]);
-        }
-
-        return res;
-    };
     function AppViewModel() {
         var self = this;
      
@@ -88,8 +50,7 @@
 
         self.init = function() {
             $.get('/gettickets/{{data.name}}', function(res) {
-                console.log(res);
-                self.ticketsGroup(filterTickets(res)); //NEXT filter by status 
+                self.ticketsGroup(res); //NEXT filter by status 
             });
         };
 
@@ -97,9 +58,4 @@
     }
      
     ko.applyBindings(new AppViewModel());
-    /*[
-        { status: "To Do", tickets: [{ name: 'Ticket', description: "description", assignee: "Dmitry" }]},
-        { status: "In Progress", tickets: [{ name: 'Ticket2', description: "description", assignee: "Dmitry" }, { name: 'Ticket3', description: "description", assignee: "Me" }]},
-        { status: "Done", tickets: [{ name: 'Ticket4', description: "description", assignee: "Dmitry" }]}
-    ]*/
 </script>

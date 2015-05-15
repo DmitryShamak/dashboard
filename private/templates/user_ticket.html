@@ -1,39 +1,45 @@
-﻿<div class="template-block-cover ticket-cover">
+﻿<div class="template-block-cover ticket-wrapper">
 	<div class="content-cover">
-        <table>
-            <tr>
-                <td colspan="3">
-                    <p>
-                        <input type="text" placeholder="Ticket name" />
-                    </p>
-                    <p>
-                        <textarea rows="4">Description</textarea>
-                    </p>
-                </td>
-                <td>
-                    <p>
-                        <select>
-                            <option disabled>Status</option>
-                            <option>To Do</option>
-                        </select>
-                    </p>
-                    <p>
-                        <select>
-                            <option disabled>Priority</option>
-                            <option>Major</option>
-                        </select>
-                    </p>
-                    <p>
-                        <select>
-                            <option disabled>Assignee</option>
-                            <option>User 1</option>
-                        </select>
-                    </p>
-                </td>
-            </tr>
-        </table>
-        <p class="text-left"><button>Save</button></p>
-        <div class="comments">
+        <div class="clearfix">
+            <div class="pull-right edit-btn" data-bind="click: toggleEdit">Edit<span class="edit-icon"></span></div>
+        </div>
+        <form action="/updateticket/{{data.name}}" method="post">
+            <div class="text-left">
+                <div> 
+                    <h3 data-bind="ifnot: editable">Name: <span>{{data.name}}</span></h3>
+                    <p data-bind="if: editable"><input type="text" placeholder="Ticket name" name="name" value="{{data.name}}" /></p>
+                </div>
+                <div>
+                    <h3>Description: </h3>
+                    <p data-bind="ifnot: editable"><span>{{data.description}}</span></p>
+                    <p data-bind="if: editable"><textarea name="description" rows="4">{{data.description}}</textarea></p>
+                </div>
+                <div>
+                    <h3>Status: 
+                        <span>{{data.status}}</span>
+                        <span data-bind="if: editable">
+                            <span class="btn">Increase</span>
+                            <span class="btn">Lower</span>
+                        </span>
+                    </h3>
+                </div>
+                <div>
+                    <h3>Priority: 
+                        <span>Priority: {{data.priority}}</span>
+                        <span data-bind="if: editable">
+                            <span class="btn">Increase</span>
+                            <span class="btn">Lower</span>
+                        </span>
+                    </h3>
+                </div>
+                <div>
+                    <h3 data-bind="ifnot: editable">Assignee: <span>{{data.assignee}}</span></h3>
+                    <p data-bind="if: editable"><input type="text" value="{{data.asignee}}" name="assignee" /></p>
+                </div>
+            </div>
+            <p data-bind="if: editable" class="text-left"><button>Save</button></p>
+        </form>
+        <div class="comments" data-bind="ifnot: editable">
             <h3>Comments</h3>
             <div class="wrapper text-left">
                 <p>Dmitry: Best ticket ever.</p>
@@ -41,3 +47,17 @@
         </div>
 	</div>
 </div>
+<script>
+    function AppViewModel() {
+        var self = this;
+     
+        self.editable = ko.observable(false);
+
+        self.toggleEdit = function() {
+            self.editable(!self.editable())
+        }
+
+    }
+     
+    ko.applyBindings(new AppViewModel());
+</script>

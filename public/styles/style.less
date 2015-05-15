@@ -174,7 +174,7 @@ nav {
 }
 
 #content {
-	margin-left: 150px;
+	margin-left: @nav-ver-width;
 }
 
 .home-cover {
@@ -193,10 +193,8 @@ textarea {
 }
 
 .content-cover {
-	max-width: 600px;
 	margin: 10px auto;
 	padding: 10px 20px;
-	text-align: center;
 }
 
 ul.bordered {
@@ -309,6 +307,21 @@ textarea {
 				}
 			}
 		}
+	}
+}
+
+//--------------------------------
+//TICKET
+.ticket-wrapper {
+	.edit-icon {
+		display: inline-block;
+		width: 13px; height: 13px;
+		margin-left: 5px;
+
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center; 
+		background-image: url(/public/imgs/edit.png);
 	}
 }
 //--------------------------------
