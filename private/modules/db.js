@@ -53,7 +53,7 @@ db_control.add = function(collection, data, promise) {
 };
 db_control.update = function(collection, query, data, promise) { //NEXT add callback
     if(!Collections[collection]) return promise.resolve({});
-
+            console.log(data);
     Collections[collection].update(query, data, { upsert: true }, function (err, res) {
         if (err) return promise.resolve({});
 

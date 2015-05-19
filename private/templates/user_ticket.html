@@ -34,8 +34,13 @@
                     </h3>
                 </div>
                 <div>
-                    <h3>Assignee: <span data-bind="ifnot: editable">{{data.assignee}}</span></h3>
-                    <p data-bind="if: editable"><input type="text" value="{{data.assignee}}" name="assignee" placeholder="Assignee" /></p><!-- Next change to dropdown -->
+                    <h3>Assignee: <span data-bind="ifnot: editable">
+                        <span data-bind="text: $root.assignee().name"></span>
+                    </span></h3>
+                    <p data-bind="if: editable">
+                        <input data-bind="value: $root.assignee().id" type="text" style="display: none;" name="assignee" placeholder="Assignee" />
+                        <select data-bind="options: $root._filterUserList(userlist), optionsText: 'name', optionsValue: 'id', event: {change: $root.onChange}"></select>
+                    </p><!-- Next change to dropdown -->
                 </div>
             </div>
             <p data-bind="if: editable" class="text-left">
@@ -56,9 +61,9 @@
         var self = this;
      
         self.editable = ko.observable(false);
-
+        self.assignee = ko.observable({id: "{{data.assignee}}", name: "No Assignee"});
         self.currProject = "{{data.project}}";
-
+        self.userlist = ko.observable([]);
         self.activeStatus = ko.observable({{data.status}});
 
         self.notActive = function(index) {
@@ -69,6 +74,63 @@
             }
 
             return res;
+        };
+
+        self.onChange = function(obj, e) {
+            var assignee = self.assignee();
+            assignee.id = e.target.value;
+            self.assignee(assignee);
+        };
+
+        var getAssigneeIndex = function(id) {
+            var index = -1,
+                i = 0;
+            for(var key in self.userlist()) {
+                if(self.userlist()[key].email == self.assignee().id) {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+
+            return index;
+        }
+
+        var getAssigneeName = function(obj) {
+            return (obj ? (obj.firstname + " " + obj.lastname) : "No Assignee");
+        } 
+
+        self.setCurrAssigneeName = function() {
+            var index = getAssigneeIndex(self.assignee().id);
+            var assignee = self.assignee();
+            assignee.name = getAssigneeName(self.userlist()[index]);
+            self.assignee(assignee);            
+        };
+
+        self._filterUserList = function(arr) {
+            var list = arr();
+            var result = [],
+                assignee;
+
+            for(var key in list) {
+                result.push({
+                    name: getAssigneeName(list[key]),
+                    id: list[key].email
+                });
+            }
+
+            var index = getAssigneeIndex(self.assignee().id);
+            
+            if(index+1) {
+                assignee =  {name: result[index].name, id: result[index].id};
+                result.splice(index, 1);
+            } else {
+               assignee =  self.assignee();
+            }
+
+            result = [].concat(assignee, result);
+
+            return result;
         };
 
         self.getStatusTitle = function(ind) {
@@ -93,9 +155,19 @@
             return false;
         };
 
+        self.getUserList = function() {
+            var url = "/getuserlist";
+            $.get(url, function(res) {
+                self.userlist(res);
+
+                self.setCurrAssigneeName();
+            });
+        };
+
         self.statuslist = ko.observable([]);
 
         self.getStatusList();
+        self.getUserList();
 
         self.toggleEdit = function() {
             self.editable(!self.editable())

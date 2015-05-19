@@ -5,20 +5,110 @@
 				<input type="text" id="ticket-name" name="name" placeholder="ticket Name" />
 			</p>
 			<p>
-				<input type="text" id="ticket-name" name="status" placeholder="ticket status" />
-			</p>
-			<p>
 				<input type="text" id="ticket-priority" name="priority" placeholder="ticket priority" />
 			</p>
 			<p>
-				<input type="text" id="ticket-assignee" name="assignee" placeholder="ticket assignee" />
+				<h3>Assignee:</h3>
+                <p>
+                    <input data-bind="value: $root.assignee().id" type="text" style="display: none;" name="assignee" placeholder="Assignee" />
+                    <select data-bind="options: $root._filterUserList(userlist), optionsText: 'name', optionsValue: 'id', event: {change: $root.onChange}"></select>
+                </p>
 			</p>
 			<p>
 				<textarea style="resize: none;" id="ticket-description" name="description">No Description</textarea>
 			</p>
 			<p>
 				<button class="save-changes btn default-btn">Add Ticket</button>
+				<button data-bind="click: cancelEdit" class="btn default-btn">Cancel</button>
 			</p>
 		</form>
 	</div>
 </div>
+<script>
+	function AppViewModel() {
+        var self = this;
+     	
+     	self.currProject = "{{data.id}}";
+        self.assignee = ko.observable({id: "", name: "No Assignee"});
+        self.userlist = ko.observable([]);
+
+        self.cancelEdit = function() {
+        	var url = "/user_board/" + self.currProject;
+        	console.log(url);
+
+        	document.location.href = url;
+        	return false;
+        };
+
+        self.onChange = function(obj, e) {
+            var assignee = self.assignee();
+            assignee.id = e.target.value;
+            self.assignee(assignee);
+        };
+
+        var getAssigneeIndex = function(id) {
+            var index = -1,
+                i = 0;
+            for(var key in self.userlist()) {
+                if(self.userlist()[key].email == self.assignee().id) {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+
+            return index;
+        }
+
+        var getAssigneeName = function(obj) {
+            return (obj ? (obj.firstname + " " + obj.lastname) : "No Assignee");
+        } 
+
+        self.setCurrAssigneeName = function() {
+            var index = getAssigneeIndex(self.assignee().id);
+            var assignee = self.assignee();
+            assignee.name = getAssigneeName(self.userlist()[index]);
+            self.assignee(assignee);            
+        };
+
+        self._filterUserList = function(arr) {
+            var list = arr();
+            var result = [],
+                assignee;
+
+            for(var key in list) {
+                result.push({
+                    name: getAssigneeName(list[key]),
+                    id: list[key].email
+                });
+            }
+
+            var index = getAssigneeIndex(self.assignee().id);
+            
+            if(index+1) {
+                assignee =  {name: result[index].name, id: result[index].id};
+                result.splice(index, 1);
+            } else {
+               assignee =  self.assignee();
+            }
+
+            result = [].concat(assignee, result);
+
+            return result;
+        };
+
+        self.getUserList = function() {
+            var url = "/getuserlist";
+            $.get(url, function(res) {
+                self.userlist(res);
+
+                self.setCurrAssigneeName();
+            });
+        };
+
+        self.getUserList();
+
+    }
+     
+    ko.applyBindings(new AppViewModel());
+</script>

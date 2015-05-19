@@ -3,6 +3,17 @@ var router = express.Router();
 var db = require("../modules/db.js");
 var Promise = require("bluebird");
 
+router.get('/getuserlist', function(req, res) {
+	var f = function() {
+		var responder = Promise.pending();
+		db.find("User", {}, responder);
+		return responder.promise;
+	};
+	f().then(function(results) {
+		res.send(results);
+	});
+});
+
 router.post('/addproject', function(req, res) {
 	if(!req.body && req.body.name) { //NEXT check for unique
 		return showRedirectMessage(true, "Project was NOT added.", "/user_create_project", res);
@@ -57,7 +68,6 @@ router.get('/getprojectslist', function(req, res) {
 		return responder.promise;
 	};
 	getProjectsList().then(function(results) {
-		console.log("RESULTS", results);
 		res.send(results);
 	});
 });
@@ -92,6 +102,7 @@ router.post('/updateticket/:ticketname', function(req, res) {
 		
 		var ticketAttrs = req.body;
 		ticketAttrs.status = parseInt(ticketAttrs.status);
+		ticketAttrs.status = (ticketAttrs.status) ? ticketAttrs.status : 0;
 		db.update("Ticket", {name: req.params.ticketname}, ticketAttrs, responder);//NEXT check for successful update
 
 		return responder.promise;

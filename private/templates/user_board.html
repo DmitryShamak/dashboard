@@ -58,10 +58,11 @@
         self.activeColumnNum = ko.observable(0);
         self.currFilter = ko.observable("All");
 
-        self.setFilter = function(filter) {
+        self.setFilter = function(filter, e) {
             var filter = (filter.title) ? filter.title : "All";
-            console.log(filter);
             self.currFilter(filter);
+            $(".control-btn.active").removeClass("active");
+            $(e.target).addClass("active");
         };
 
         var getStatusTitle = function(ind) {
