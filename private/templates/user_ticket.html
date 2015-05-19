@@ -1,13 +1,19 @@
 ﻿<div class="template-block-cover ticket-wrapper">
 	<div class="content-cover">
-        <div class="clearfix">
+        <div class="clearfix control-wrapper">
+            <div class="status-control pull-left" data-bind="foreach: statuslist">
+                <div class="control-btn pull-left text-center" data-bind="text: title, click: $root.setStatus, visible: $root.notActive($index)"></div>
+            </div>
             <div class="pull-right edit-btn" data-bind="click: toggleEdit">Edit<span class="edit-icon"></span></div>
         </div>
-        <form action="/updateticket/{{data.name}}" method="post">
+        <form method="post">
             <div class="text-left">
                 <div> 
                     <h3>Name: <span>{{data.name}}</span></h3>
                     <p data-bind="if: editable"><input type="text" placeholder="Ticket name" name="name" value="{{data.name}}" /></p>
+                </div>
+                <div>
+                    <h3>Project: <a href="/user_board/{{data.project}}">{{data.project}}</a></h3>
                 </div>
                 <div>
                     <h3>Description: </h3>
@@ -16,28 +22,26 @@
                 </div>
                 <div>
                     <h3>Status: 
-                        <span>{{data.status}}</span>
-                        <span data-bind="if: editable">
-                            <span class="btn arrow-up">Increase</span>
-                            <span class="btn arrow-down">Lower</span>
-                        </span>
+                        <span id="status" data-bind="text: $root.getStatusTitle($root.activeStatus)"></span>
                     </h3>
                 </div>
                 <div>
                     <h3>Priority: 
-                        <span>Priority: {{data.priority}}</span>
+                        <span data-bind="ifnot: editable" id="priority">{{data.priority}}</span>
                         <span data-bind="if: editable">
-                            <span class="btn arrow-up">Increase</span>
-                            <span class="btn arrow-down">Lower</span>
+                            <input style="width: 20px;" class="text-center" name="priority" value="{{data.priority}}"/>
                         </span>
                     </h3>
                 </div>
                 <div>
                     <h3>Assignee: <span data-bind="ifnot: editable">{{data.assignee}}</span></h3>
-                    <p data-bind="if: editable"><input type="text" value="{{data.asignee}}" name="assignee" placeholder="Assignee" /></p>
+                    <p data-bind="if: editable"><input type="text" value="{{data.assignee}}" name="assignee" placeholder="Assignee" /></p><!-- Next change to dropdown -->
                 </div>
             </div>
-            <p data-bind="if: editable" class="text-left"><button>Save</button></p>
+            <p data-bind="if: editable" class="text-left">
+                <button formaction="/updateticket/{{data.name}}">Save</button>
+                <button formaction="/removeticket/{{data.name}}">Delete</button>
+            </p>
         </form>
         <div class="comments" data-bind="ifnot: editable">
             <h3>Comments</h3>
@@ -52,6 +56,46 @@
         var self = this;
      
         self.editable = ko.observable(false);
+
+        self.currProject = "{{data.project}}";
+
+        self.activeStatus = ko.observable({{data.status}});
+
+        self.notActive = function(index) {
+            var res = index() != self.activeStatus();
+
+            if(index() == 4 && self.activeStatus() != 3) {
+                res = false;
+            }
+
+            return res;
+        };
+
+        self.getStatusTitle = function(ind) {
+            var title = (self.statuslist()[ind()]) ? self.statuslist()[ind()].title : "pending...";
+            return title;
+        };
+
+        self.setStatus = function(status) {
+            var statusIndex = status.index;
+
+            $.post("/updateticket/{{data.name}}", {status: statusIndex}, function(res) {
+                self.activeStatus(statusIndex);
+            });
+        };
+
+        self.getStatusList = function() {
+            var url = "/getstatuslist/" + self.currProject;
+            $.get(url, function(res) {
+                self.statuslist(JSON.parse(res).list);
+            });
+
+            return false;
+        };
+
+        self.statuslist = ko.observable([]);
+
+        self.getStatusList();
 
         self.toggleEdit = function() {
             self.editable(!self.editable())

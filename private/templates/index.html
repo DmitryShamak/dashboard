@@ -17,14 +17,14 @@
     <div class="pull-left">
       <a href="/" class="nav-item btn-home"></a>
       {% if user %}
-        <div class="nav-item"><a href="/user_dashboard">Dashboard</a></div>
-        <div class="nav-item dropdown">
+        <div class="nav-item"><a href="/user_dashboard">Projects</a></div>
+        <!-- <div class="nav-item dropdown">
           <a href="/user_project">Project</a>
           <div class="hidden">
             <div><a href="/user_project">Project 2</a></div>
           </div>
           <div class="arrow"></div>
-        </div>
+        </div> -->
       {% endif %}
     </div>
     {% if user %}
@@ -36,18 +36,13 @@
           <span class="disabled">No Messages</span>
           {% endif %}
         </div>
-        <div class="nav-item dropdown">
-          <a href="/user_account">{{user.firstname}}</a>
-          <div class="hidden">
-            <div><a href="/logout">Log Out</a></div>
-          </div>
-          <div class="arrow"></div>
-        </div>
+        <a class="nav-item" href="/user_account">Profile: {{user.firstname}}</a>
+        <a class="nav-item" href="/logout">Log Out</a>
       </div>
       {% else %}
       <div class="pull-right">
-        <a href="/sign_in">Sign In</a>
-        <a href="/sign_up">Sign up</a>
+        <a class="nav-item" href="/sign_in">Sign In</a>
+        <a class="nav-item" href="/sign_up">Sign up</a>
       </div>
     {% endif %}
   </nav>
@@ -58,4 +53,9 @@
 	    {% endblock %}
 	</div>
 </body>
+<script>
+  $('#account .arrow, #account .hidden').click(function() {
+    $('#account').toggleClass("active");
+  });
+</script>
 </html>

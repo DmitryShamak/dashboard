@@ -1,14 +1,27 @@
 ﻿<div class="template-block-cover project-board">
 	<div class="content-cover text-center">
         <div class="clearfix">
-            <h3 class="project-name pull-left">{{data.name}}</h3>
-            <a href="/user_create_ticket/{{data.name}}"><button class="pull-left">Create Ticket</button></a>
-            <a href="/user_edit_project/{{data.name}}"><button class="pull-right">Edit Project</button></a>
+            <h3 class="project-name">{{data.name}}</h3>
+            <h3 class="project-name"><i>{{data.description}}</i></h3>
+            <p class="text-center">
+                <a href="/user_create_ticket/{{data.name}}"><button>Create Ticket</button></a>
+                <a href="/user_edit_project/{{data.name}}"><button>Edit Project</button></a>
+            </p>
         </div>
-        <div class="tickets-wrapper clearfix" data-bind="foreach: ticketsGroup">
-            <ul class="pull-left board-list">
+
+        <div class="filter-wrapper text-center">
+            <div class="status-control clearfix">
+                <div class="pull-left" data-bind="foreach: statuslist">
+                    <div class="control-btn pull-left text-center" data-bind="text: title, click: $root.setFilter"></div>
+                </div>
+                <div class="control-btn pull-left text-center active" data-bind="click: $root.setFilter">All</div>
+            </div>
+        </div>
+
+        <div class="tickets-wrapper clearfix" data-bind="foreach: _filter(ticketsGroup)">
+            <ul class="pull-left board-list" data-bind="attr: {style: $root.getTicketStyle()}">
                 <li class="head">
-                    <h4 data-bind="text: status"></h4>
+                    <h4 data-bind="text: statusTitle"></h4>
                 </li>
                 <li class="" data-bind="foreach: $data.tickets">
                     <div class="ticket text-left">
@@ -19,22 +32,16 @@
                             </h5>
                         </p>
                         <p>
-                            <h5>Status:
-                                <span data-bind="text: status"></span>
-                            </h5>
-                        </p>
-                        <p>
                             <h5>Description:
                                 <span data-bind="text: description"></span>
                             </h5>
                         </p>
                         <p>
-                            <h5>Assignee:</h5>
-                            <p data-bind="if: assignee != 'false'">
-                                <a href="/account/{{assignee}}" data-bind="text: assignee"></a>
-                            </p>
+                            <h5>Assignee:
+                                <span data-bind="ifnot: assignee == 'No Assignee'"><span data-bind="text: assignee"></span></span>
+                                <span data-bind="if: assignee == 'No Assignee'">No Assignee</span>
+                            </h5>
                         </p>
-                        <p data-bind="if: assignee == 'false'">No Assignee</p>
                     </div>
                 </li>
             </ul>
@@ -45,13 +52,90 @@
 <script>
     function AppViewModel() {
         var self = this;
-     
+
+        self.currProject = "{{data.name}}";
         self.ticketsGroup = ko.observable([]);
+        self.activeColumnNum = ko.observable(0);
+        self.currFilter = ko.observable("All");
+
+        self.setFilter = function(filter) {
+            var filter = (filter.title) ? filter.title : "All";
+            console.log(filter);
+            self.currFilter(filter);
+        };
+
+        var getStatusTitle = function(ind) {
+            var statusTitle = self.statuslist()[ind].title;
+            return statusTitle;
+        };
+
+        self._filter = function(arr) {
+            var list = arr();
+            var result;
+            if(list.length && self.currFilter() != "All") {
+                for(var key in list) {
+                    if(list[key].statusTitle == self.currFilter()) {
+                        result = [list[key]];
+                    }
+                }
+            } else {
+                result = list;
+            }
+
+            self.activeColumnNum((result) ? result.length : 0);
+            return result;
+        };
+
+        var filterTickets = function(arr) {
+            var res = [];
+            var filter = {};
+
+            for(var i=0; i<arr.length; i++) {
+                var statusInd = arr[i].status;
+                if(!filter[statusInd]) {
+                    filter[statusInd] = {
+                        statusTitle: getStatusTitle(statusInd),
+                        tickets: []
+                    };
+                }
+
+                filter[statusInd].tickets.push(arr[i]);
+            }
+
+            for(var key in filter) {
+                res.push(filter[key]);
+            }
+
+            return res;
+        };
+
+        self.canShow = function(obj, e) {
+            console.log(obj);
+            return true;
+        };
+
+        self.getTicketStyle = function() {
+            var width = "width: " + 100 / self.activeColumnNum() + "%;";
+            return width; 
+        };
+
+        self.statuslist = ko.observable([]);
+
+        self.getStatusList = function() {
+            var url = "/getstatuslist/" + self.currProject;
+            $.get(url, function(statuslist) {
+                self.statuslist(JSON.parse(statuslist).list);
+
+                 $.get('/gettickets/{{data.name}}', function(tikets) {
+                    self.ticketsGroup(filterTickets(tikets)); //NEXT filter by status 
+                });
+            });
+
+            return false;
+        };
 
         self.init = function() {
-            $.get('/gettickets/{{data.name}}', function(res) {
-                self.ticketsGroup(res); //NEXT filter by status 
-            });
+            self.getStatusList();
         };
 
         self.init();

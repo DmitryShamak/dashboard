@@ -35,6 +35,9 @@ var getCollectionName = function(template) {
         case "user_dashboard":
             collection = "Project";
             break;
+        case "user_edit_project":
+            collection = "Project";
+            break;
         case "user_ticket":
             collection = "Ticket";
             break;

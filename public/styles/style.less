@@ -26,6 +26,19 @@
 	}
 }
 
+.btn[class*='arrow'] {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	&[class*='up'] {
+  		background-image: url(/public/imgs/up-green.png);
+	}
+	&[class*='down'] {
+  		background-image: url(/public/imgs/down-red.png);
+	}
+}
+
 [class*="btn"] {
 	cursor: pointer;
 }
@@ -140,15 +153,40 @@ nav {
 		}
 	}
 
+	&.active {
+		background-color: #EEE;
+
+		.arrow {
+			&:after {
+				margin: -8px -5px;
+				border-color: transparent transparent #808080 transparent;
+				border-width: 0 5px 5px 5px;
+			}
+		}
+	}
+
 	.hidden {
 		position: absolute;
 		top: 22px; left: 0; right: 0;
 
-		padding: 3px 5px;
-
 		background-color: #EEE;
 
 		box-sizing: border-box;
+
+		z-index: 3;
+
+		.item {
+			padding: 3px 5px;
+			border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+			&:first-child {
+				margin-top: 8px;
+			}
+
+			&:hover {
+				background-color: rgba(0, 0, 0, 0.1);
+			}
+		}
 	}
 
 	.arrow {
@@ -180,11 +218,13 @@ nav {
 .home-cover {
 	position: fixed;
 	top: @nav-hor-height; bottom: 0;
-	left: 150px; right: 0;
+	left: @nav-ver-width; right: 0;
 	
 	background-image: url(/public/imgs/background.jpg);
 	background-repeat: no-repeat;
 	background-position: center; 
+
+	z-index: 1;
 }
 
 input[type="text"],
@@ -227,8 +267,10 @@ ul.bordered {
   padding: 20px 15px;
 
   .board-list {
-  	min-width: 180px;
   	padding: 5px;
+
+  	box-sizing: border-box;
+
   	.ticket {
 	    margin: 10px 0;
 	    padding: 5px 10px;
@@ -247,9 +289,29 @@ ul.bordered {
             border-right: 1px solid #999;
         }
     }
+
+    .filter-wrapper {
+    	.status-control {
+			display: inline-block;
+			border-radius: 8px;
+			overflow: hidden;
+
+			.control-btn {
+				display: inline-block;
+				padding: 5px 10px;
+				background: rgba(0, 0, 0, 0.1);
+
+				border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+				&.active {
+					background: rgba(0, 0, 0, 0.2);
+				}
+			}
+		}
+    }
 }
 
-textarea {
+textarea.no-resize {
 	resize: none;
 }
 
@@ -310,18 +372,85 @@ textarea {
 	}
 }
 
+.edit-icon {
+	display: inline-block;
+	width: 13px; height: 13px;
+	margin-left: 5px;
+
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center; 
+	background-image: url(/public/imgs/edit.png);
+}
+
 //--------------------------------
 //TICKET
 .ticket-wrapper {
-	.edit-icon {
+	.control-wrapper {
+  		margin-bottom: 15px;
+		line-height: 24px;
+
+		.status-control {
+			border-radius: 5px;
+
+			overflow: hidden;
+
+			.control-btn {
+			  display: inline-block;
+			  padding: 3px 10px;
+			  background: rgba(0, 0, 0, 0.1);
+
+			  &:not(:last-child) {
+			  	border-right: 1px solid rgba(0, 0, 0, 0.1);
+			  }
+			}
+		}
+	}
+
+	.status-btn,
+	.priority-btn {
 		display: inline-block;
-		width: 13px; height: 13px;
-		margin-left: 5px;
+		width: 15px;
+		height: 15px;
+		margin: -2px 0;
+	}
+}
+//--------------------------------
+
+//Edit Project
+.statuslist-wrapper {
+
+	.status-wrapper {
+		position: relative;
+		display: inline-block;
+		padding-right: 30px;
+	}
+
+	input {
+		padding: 5px 10px;
+		border: 0;
+		outline: 0;
+
+		background: none;
+
+		cursor: pointer;
+
+		&:focus {
+			border: 1px solid rgba(0, 0, 0, 0.2);
+		}
+	}
+
+	.remove-btn {
+		position: absolute;
+		top: 50%;
+		right: 5px;
+		width: 16px; height: 16px;
+		margin-top: -8px;
 
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-position: center; 
-		background-image: url(/public/imgs/edit.png);
+		background-image: url(/public/imgs/delete-red.png);
 	}
 }
 //--------------------------------

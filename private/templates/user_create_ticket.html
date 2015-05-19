@@ -1,11 +1,20 @@
 ﻿<div class="template-block-cover create-ticket">
-	<div class="content-cover">
+	<div class="content-cover text-center">
 		<form action="/addticket/{{data.id}}" method="post">
 			<p>
 				<input type="text" id="ticket-name" name="name" placeholder="ticket Name" />
 			</p>
 			<p>
-				<textarea style="resize: none;" id="ticket-description" name="description">Description</textarea>
+				<input type="text" id="ticket-name" name="status" placeholder="ticket status" />
+			</p>
+			<p>
+				<input type="text" id="ticket-priority" name="priority" placeholder="ticket priority" />
+			</p>
+			<p>
+				<input type="text" id="ticket-assignee" name="assignee" placeholder="ticket assignee" />
+			</p>
+			<p>
+				<textarea style="resize: none;" id="ticket-description" name="description">No Description</textarea>
 			</p>
 			<p>
 				<button class="save-changes btn default-btn">Add Ticket</button>

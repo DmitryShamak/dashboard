@@ -1,30 +1,118 @@
 ﻿<div class="template-block-cover edit-project">
 	<div class="content-cover">
 		<p class="search-project">
-			<input type="text" id="project-search" placeholder="Project Name" />
+			<!-- <input type="text" id="project-search" placeholder="Project Name" /> -->
+			<h3>{{data.name}}</h3>
 		</p>
 
 		<div class="project-options-cover clearfix"> 
-			<div class="project-option statuses pull-left">
-				<h4 class="option-title">Statuses</h4>
-				<ul class="bordered">
-					{% for item in data.statuses %}
-                        <li>{{ item.name }}</li>
-                    {% endfor %}
-				</ul>
-				<p><button class="add-status btn default-btn">Add Status</button></p>
-			</div>
-			<div class="project-option priorities pull-right">
-				<h4 class="option-title">Pririties</h4>
-				<ul class="bordered">
-					{% for item in data.priorities %}
-                        <li>{{ item.name }}</li>
-                    {% endfor %}
-				</ul>
-				<p><button class="add-priority btn default-btn">Add Priority</button></p>
-			</div>
+			<form method="post">
+				<div>
+					<b>Description:</b>
+					<p><textarea name="description">{{data.description}}</textarea></p>
+				</div>
+				<div class="project-option statuses">
+					<h4 class="option-title">Status list</h4>
+					<ul class="statuslist-wrapper" data-bind="foreach: statuslist">
+	                    <li>
+	                    	<div class="status-wrapper">
+	                    		<input data-bind="value: title" />
+	                    		<div class="btn remove-btn" data-index="{{$data.index}}" data-bind="click: $root.removeStatus"></div>
+	                    	</div>
+	                    </li>
+					</ul>
+					<p>
+						<button data-bind="click: addStatus" class="add-status btn default-btn">Add Status</button>
+						<button data-bind="click: getStatusList" class="btn default-btn">Cancel</button>
+						<button data-bind="click: saveStatus" class="btn danger-btn">Save Status</button>
+					</p>
+				</div>
+				<!-- <div class="project-option priorities pull-right">
+					<h4 class="option-title">Pririties</h4>
+					<ul class="bordered">
+						{% for item in data.priorities %}
+	                        <li>{{ item.name }}</li>
+	                    {% endfor %}
+					</ul>
+					<p><button class="add-priority btn default-btn">Add Priority</button></p>
+				</div> -->
+
+				<p>
+					<button formaction="/updateproject/{{data.name}}" class="btn default-btn">Save</button>
+					<button data-bind="click: cancelEdit" class="btn default-btn">Close (no save)</button>
+					<button formaction="/removeproject/{{data.name}}" class="btn warning-btn">Delete</button>
+				</p>
+			</form>
 		</div>
 
-		<p><button class="save-changes btn default-btn">Save Project</button></p>
 	</div>
 </div>
+<script>
+	var Status = function(attrs) {
+		var self = this;
+
+		(function() {
+			for(var key in attrs) {
+				self[key] = attrs[key];
+			}
+		})();
+	}
+
+    function AppViewModel() {
+        var self = this;
+        self.currProject = "{{data.name}}";
+
+        self.saveStatus = function(status) {
+        	var url = "/updatestatus/" + self.currProject;
+        	var statusIndex = status.index;
+            $.post(url, {list: JSON.stringify(self.statuslist()), project: self.currProject}, function(res) {
+                console.log(res);
+
+                self.getStatusList();
+            });
+
+            return false;
+        };
+
+        self.cancelEdit = function() {
+        	var url = "/user_board/" + self.currProject;
+        	console.log(url);
+
+        	document.location.href = url;
+        	return false;
+        };
+
+		self.removeStatus = function(obj, e) {
+            var ind = obj.index;
+            var list = self.statuslist();
+            list.splice(ind, 1);
+            self.statuslist(list);
+        };
+
+        self.getStatusList = function() {
+        	var url = "/getstatuslist/" + self.currProject;
+            $.get(url, function(res) {
+                self.statuslist(JSON.parse(res).list);
+            });
+
+            return false;
+        };
+
+        self.addStatus = function() {
+        	var list = self.statuslist();
+        	var status = new Status({
+        		index: list.length,
+        		title: "New Status"
+        	});
+        	list.push(status);
+        	self.statuslist(list);
+        	return false;
+        };
+
+        self.statuslist = ko.observable([]);
+
+        self.getStatusList();
+    }
+     
+    ko.applyBindings(new AppViewModel());
+</script>
