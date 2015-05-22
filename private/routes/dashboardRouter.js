@@ -126,6 +126,24 @@ router.post('/updateticket/:ticketname', function(req, res) {
 	
 	f().then(function() { showRedirectMessage(false, "Ticket was updated successfuly.", "/user_ticket/"+req.params.ticketname, res); });
 });
+router.post('/addticketcomment/:ticketname', function(req, res) {
+	if(!req.body || !req.params.ticketname || req.body.comment == "") {
+		return res.end("no comment");
+	}
+
+	var f = function() {
+		var responder = Promise.pending();
+		
+		var comment = req.body;
+		comment.user = req.user.firstname + " " + req.user.lastname;
+		comment.data = new Date();
+		db.push("Ticket", {name: req.params.ticketname}, comment, responder);
+
+		return responder.promise;
+	};
+	
+	f().then(function() { res.end("done.") });
+});
 router.get('/getstatuslist/:projectname', function(req, res) {
 	if(!req.body || !req.params.projectname) {
 		return res.end("wrong query");

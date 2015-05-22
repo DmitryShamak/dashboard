@@ -101,6 +101,13 @@ db_control.update = function(collection, query, data, promise) {
         promise.resolve(res);
     });
 };
+db_control.push = function(collection, query, item, promise) {
+    if(!Collections[collection]) return promise.resolve({});
+    Collections[collection].update(query, {$push: {comments: item}}, { upsert: true }, function (err, res) {
+        if (err) return promise.resolve({});
+        promise.resolve(res);
+    });
+};
 db_control.remove = function(collection, query, promise) {
     if(!Collections[collection]) return promise.resolve({});
 

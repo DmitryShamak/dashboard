@@ -56,8 +56,16 @@
         </form>
         <div class="comments" data-bind="ifnot: editable">
             <h3>Comments</h3>
+            <div>
+                <textarea data-bind="value: comment" style="width: 100%; height: 50px; resize: none;" name="comment"></textarea>
+                <p class="text-center"><button data-bind="click: submitComment">Submit Comment</button></p>
+            </div>
             <div class="wrapper text-left">
-                <p>Dmitry: Best ticket ever.</p>
+                {% for comment in data.comments %}
+                <p>
+                    <span>{{comment.data}}:{{comment.user}}</span> <span>{{comment.comment}}</span>
+                </p>
+                {% endfor %}
             </div>
         </div>
 	</div>
@@ -71,6 +79,13 @@
         self.currProject = "{{data.project}}";
         self.userlist = ko.observable([]);
         self.activeStatus = ko.observable({{data.status}});
+        self.comment = ko.observable("");
+
+        self.submitComment = function() {
+            $.post("/addticketcomment/{{data.name}}", {comment: self.comment()}, function(res) {
+                console.log(res);
+            });
+        };
 
         self.notActive = function(index) {
             var res = index() != self.activeStatus();
