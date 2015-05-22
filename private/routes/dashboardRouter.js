@@ -136,7 +136,7 @@ router.post('/addticketcomment/:ticketname', function(req, res) {
 		
 		var comment = req.body;
 		comment.user = req.user.firstname + " " + req.user.lastname;
-		comment.data = new Date();
+		comment.data = new Date().toString();
 		db.push("Ticket", {name: req.params.ticketname}, comment, responder);
 
 		return responder.promise;

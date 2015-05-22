@@ -60,7 +60,7 @@
                 <textarea data-bind="value: comment" style="width: 100%; height: 50px; resize: none;" name="comment"></textarea>
                 <p class="text-center"><button data-bind="click: submitComment">Submit Comment</button></p>
             </div>
-            <div class="wrapper text-left">
+            <div class="comments-wrapper text-left">
                 {% for comment in data.comments %}
                 <p>
                     <span>{{comment.data}}:{{comment.user}}</span> <span>{{comment.comment}}</span>
@@ -83,7 +83,8 @@
 
         self.submitComment = function() {
             $.post("/addticketcomment/{{data.name}}", {comment: self.comment()}, function(res) {
-                console.log(res);
+                $('.comments-wrapper').append("<p><span>Now:You</span> <span>"+self.comment()+"</span></p>");
+                self.comment("");
             });
         };
 
