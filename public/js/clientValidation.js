@@ -10,7 +10,7 @@ var isValid = function(key, value) {
 	var res = { error: false };
 	switch(key) {
 		case "name":
-			if(!(/^[a-z0-9]*[a-z0-9]$/.test(value))) {
+			if(!(/^[a-zA-Z0-9]*\s*\S*$/.test(value))) {
 				res = {
 					error: {
 						target: key,
@@ -77,39 +77,6 @@ var addValidation = function() {
 			showErrors(errorList);
 		}
 	});
-};
-
-var getCollection = function() {
-	var collection = "Default";
-	var template = window.location.pathname.replace(/[a-z]\/[a-z]*/, "");
-	template = template.replace(/^\//, "");
-	  
-	switch(template) {
-		case "user_board":
-			collection = "Project";
-			break;
-		case "user_dashboard":
-			collection = "Project";
-			break;
-		case "user_edit_project":
-			collection = "Project";
-			break;
-		case "user_ticket":
-			collection = "Ticket";
-			break;
-	}
-};
-
-var setHistoryLog = function() { //collection, project, user, action
-	var data = {
-		collection: "",
-		project: "",
-		user: "",
-		action: ""
-	};
-	/*$.post("/sethistory", data, function(res) {
-		console.log(res);
-	})*/
 };
 
 $(document).ready(addValidation);

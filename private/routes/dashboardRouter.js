@@ -3,14 +3,19 @@ var router = express.Router();
 var db = require("../modules/db.js");
 var Promise = require("bluebird");
 
-router.post('/sethistory', function(req, res) {
+router.post('/update*', function(req, res, next) {
+	var data = {
+		user: req.user.firstname + " " + req.user.lastname,
+		action: "update",
+		target: req.body.name
+	};
 	var f = function() {
 		var responder = Promise.pending();
-		db.addhistory(req.body, responder);//{collection, project, user, action}, promise
+		db.addhistory(data, responder);
 		return responder.promise;
 	};
-	f().then(function(results) {
-		res.send(results ? "Done" : "Fail");
+	f().then( function() { 
+		next();
 	});
 });
 router.get('/getuserlist', function(req, res) {
@@ -91,6 +96,7 @@ router.post('/addticket/:project', function(req, res) {
 		
 		//ADDING default values to project
 		var ticketAttrs = req.body;
+		ticketAttrs.reporter = req.user.firstname + " " + req.user.lastname;
 		ticketAttrs.priority = (ticketAttrs.priority) ? ticketAttrs.priority : 0;
 		ticketAttrs.status = (ticketAttrs.status) ? ticketAttrs.status : 0;
 		ticketAttrs.project = req.params.project;

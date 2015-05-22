@@ -10,6 +10,7 @@ var db = require("./private/modules/db.js");
 var Promise = require("bluebird");
 
 var app = express();
+var port = 1505;
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -57,5 +58,6 @@ var showRedirectMessage = function(err, message, redirectUrl, res) {
 
 app.use("", routes);
 
-
-module.exports = app;
+app.listen(port, function() {
+	console.log("Application available on %s port", port);
+});

@@ -36,6 +36,9 @@
                                 <span data-bind="text: description"></span>
                             </h5>
                         </p>
+                        <div>
+                            <h3>Reporter: <span data-bind="text: $root.getReporter($data)"></span></h3>
+                        </div>
                         <p>
                             <h5>Assignee:
                                 <span data-bind="text: assignee"></span>
@@ -63,6 +66,11 @@
             $(".control-btn.active").removeClass("active");
             $(e.target).addClass("active");
         };
+
+        self.getReporter = function(data) {
+            var res = data.reporter ? data.reporter : "No Reporter";
+            return res;
+        }
 
         var getStatusTitle = function(ind) {
             var statusTitle = self.statuslist()[ind].title;
