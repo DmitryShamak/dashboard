@@ -3,6 +3,16 @@ var router = express.Router();
 var db = require("../modules/db.js");
 var Promise = require("bluebird");
 
+router.post('/sethistory', function(req, res) {
+	var f = function() {
+		var responder = Promise.pending();
+		db.addhistory(req.body, responder);//{collection, project, user, action}, promise
+		return responder.promise;
+	};
+	f().then(function(results) {
+		res.send(results ? "Done" : "Fail");
+	});
+});
 router.get('/getuserlist', function(req, res) {
 	var f = function() {
 		var responder = Promise.pending();

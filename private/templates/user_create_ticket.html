@@ -10,8 +10,8 @@
 			<p>
 				<h3>Assignee:</h3>
                 <p>
-                    <input data-bind="value: $root.assignee().id" type="text" style="display: none;" name="assignee" placeholder="Assignee" />
-                    <select data-bind="options: $root._filterUserList(userlist), optionsText: 'name', optionsValue: 'id', event: {change: $root.onChange}"></select>
+                    <input data-bind="value: $root.assignee().name" type="text" style="display: none;" name="assignee" placeholder="Assignee" />
+                    <select data-bind="options: $root._filterUserList(userlist), optionsText: 'name', optionsValue: 'name', event: {change: $root.onChange}"></select>
                 </p>
 			</p>
 			<p>
@@ -42,54 +42,24 @@
 
         self.onChange = function(obj, e) {
             var assignee = self.assignee();
-            assignee.id = e.target.value;
+            assignee.name = e.target.value;
             self.assignee(assignee);
         };
-
-        var getAssigneeIndex = function(id) {
-            var index = -1,
-                i = 0;
-            for(var key in self.userlist()) {
-                if(self.userlist()[key].email == self.assignee().id) {
-                    index = i;
-                    break;
-                }
-                i++;
-            }
-
-            return index;
-        }
 
         var getAssigneeName = function(obj) {
             return (obj ? (obj.firstname + " " + obj.lastname) : "No Assignee");
         } 
 
-        self.setCurrAssigneeName = function() {
-            var index = getAssigneeIndex(self.assignee().id);
-            var assignee = self.assignee();
-            assignee.name = getAssigneeName(self.userlist()[index]);
-            self.assignee(assignee);            
-        };
-
         self._filterUserList = function(arr) {
             var list = arr();
             var result = [],
-                assignee;
+                assignee = {email: "", name: "No Assignee"};
 
             for(var key in list) {
                 result.push({
                     name: getAssigneeName(list[key]),
                     id: list[key].email
                 });
-            }
-
-            var index = getAssigneeIndex(self.assignee().id);
-            
-            if(index+1) {
-                assignee =  {name: result[index].name, id: result[index].id};
-                result.splice(index, 1);
-            } else {
-               assignee =  self.assignee();
             }
 
             result = [].concat(assignee, result);
@@ -101,8 +71,6 @@
             var url = "/getuserlist";
             $.get(url, function(res) {
                 self.userlist(res);
-
-                self.setCurrAssigneeName();
             });
         };
 

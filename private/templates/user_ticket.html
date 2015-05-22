@@ -23,6 +23,9 @@
                 <div>
                     <h3>Status: 
                         <span id="status" data-bind="text: $root.getStatusTitle($root.activeStatus)"></span>
+                        <span data-bind="visible: false">
+                            <input name="status" value="{{data.status}}"/>
+                        </span>
                     </h3>
                 </div>
                 <div>
@@ -35,12 +38,12 @@
                 </div>
                 <div>
                     <h3>Assignee: <span data-bind="ifnot: editable">
-                        <span data-bind="text: $root.assignee().name"></span>
+                        <span data-bind="text: $root.assignee()"></span>
                     </span></h3>
                     <p data-bind="if: editable">
-                        <input data-bind="value: $root.assignee().id" type="text" style="display: none;" name="assignee" placeholder="Assignee" />
-                        <select data-bind="options: $root._filterUserList(userlist), optionsText: 'name', optionsValue: 'id', event: {change: $root.onChange}"></select>
-                    </p><!-- Next change to dropdown -->
+                        <input data-bind="value: $root.assignee()" type="text" style="display: none;" name="assignee" placeholder="Assignee" />
+                        <select data-bind="options: $root._filterUserList(userlist), event: {change: $root.onChange}"></select>
+                    </p>
                 </div>
             </div>
             <p data-bind="if: editable" class="text-left">
@@ -61,7 +64,7 @@
         var self = this;
      
         self.editable = ko.observable(false);
-        self.assignee = ko.observable({id: "{{data.assignee}}", name: "No Assignee"});
+        self.assignee = ko.observable("{{data.assignee}}");
         self.currProject = "{{data.project}}";
         self.userlist = ko.observable([]);
         self.activeStatus = ko.observable({{data.status}});
@@ -77,16 +80,14 @@
         };
 
         self.onChange = function(obj, e) {
-            var assignee = self.assignee();
-            assignee.id = e.target.value;
-            self.assignee(assignee);
+            self.assignee(e.target.value);
         };
 
         var getAssigneeIndex = function(id) {
             var index = -1,
                 i = 0;
             for(var key in self.userlist()) {
-                if(self.userlist()[key].email == self.assignee().id) {
+                if(getAssigneeName(self.userlist()[key]) == self.assignee()) {
                     index = i;
                     break;
                 }
@@ -94,41 +95,37 @@
             }
 
             return index;
-        }
+        };
 
         var getAssigneeName = function(obj) {
             return (obj ? (obj.firstname + " " + obj.lastname) : "No Assignee");
         } 
 
         self.setCurrAssigneeName = function() {
-            var index = getAssigneeIndex(self.assignee().id);
-            var assignee = self.assignee();
-            assignee.name = getAssigneeName(self.userlist()[index]);
+            var index = getAssigneeIndex(self.assignee());
+            var assignee = getAssigneeName(self.userlist()[index]);
             self.assignee(assignee);            
         };
 
         self._filterUserList = function(arr) {
             var list = arr();
             var result = [],
-                assignee;
+                assignee = "No Assignee";
 
             for(var key in list) {
-                result.push({
-                    name: getAssigneeName(list[key]),
-                    id: list[key].email
-                });
+                result.push(getAssigneeName(list[key]));
             }
 
-            var index = getAssigneeIndex(self.assignee().id);
+            var index = getAssigneeIndex(self.assignee());
             
             if(index+1) {
-                assignee =  {name: result[index].name, id: result[index].id};
+                assignee = result[index];
                 result.splice(index, 1);
             } else {
-               assignee =  self.assignee();
+               assignee = self.assignee();
             }
 
-            result = [].concat(assignee, result);
+            result = [].concat([assignee], result);
 
             return result;
         };

@@ -38,8 +38,7 @@
                         </p>
                         <p>
                             <h5>Assignee:
-                                <span data-bind="ifnot: assignee == 'No Assignee'"><span data-bind="text: assignee"></span></span>
-                                <span data-bind="if: assignee == 'No Assignee'">No Assignee</span>
+                                <span data-bind="text: assignee"></span>
                             </h5>
                         </p>
                     </div>
@@ -125,9 +124,9 @@
         self.getStatusList = function() {
             var url = "/getstatuslist/" + self.currProject;
             $.get(url, function(statuslist) {
-                self.statuslist(JSON.parse(statuslist).list);
+                self.statuslist((statuslist != "null") ? JSON.parse(statuslist).list : []);
 
-                 $.get('/gettickets/{{data.name}}', function(tikets) {
+                $.get('/gettickets/{{data.name}}', function(tikets) {
                     self.ticketsGroup(filterTickets(tikets)); //NEXT filter by status 
                 });
             });

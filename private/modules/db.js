@@ -15,15 +15,45 @@ db.once("open", function() {
 	console.log("DB was CONECTED");
 });
 
+var removeSpaces = function(str) {
+    str = str.replace(/ /g, "_");
+    console.log("validate", str);
+    return str;
+};
+
+var isRequired = function(key) {
+    var res = false;
+    switch(key) {
+        case "name":
+            res = true;
+            break;
+        case "email":
+            res = true;
+            break;
+    };
+
+    return res;
+};
+
+var validateData = function(data) {
+    for(var key in data) {
+        if(isRequired(key)) { //NEXT change to chect symbols and email
+            data[key] = removeSpaces(data[key]);
+        }
+    }
+
+    return data;
+}
+
 var userSchema = new Schema({
     firstname: String, lastname: String, email: String, password: String, role: String, description: String, 
     authdate: { type: Date, default: Date.now }
 });
-var ticketSchema = new Schema({ name: String, status: Number, priority: Number, assignee: String, description: String, project: String,
+var ticketSchema = new Schema({ name: {type: String, validate: [removeSpaces, "New_Ticket_"+Date.now]}, status: Number, priority: Number, assignee: String, description: String, project: String,
     comments: Object, startdate: { type: Date, default: Date.now }, updatedate: { type: Date, default: Date.now }
 });
 var projectSchema = new Schema({
-    name: String, priority: Number, status: Number, description: String, key: String, 
+    name: {type: String, validate: [removeSpaces, "New_Project_"+Date.now]}, priority: Number, status: Number, description: String, key: String, 
     startdate: { type: Date, default: Date.now }, endDate: { type: Date, default: Date.now }
 });
 var boardSchema = new Schema({
@@ -32,6 +62,9 @@ var boardSchema = new Schema({
 var statusSchema = new Schema({
     project: String, list: Object
 });
+var historySchema = new Schema({
+    project: String, action: String, user: String, data: { type: Date, default: Date.now }
+});
 
 var Collections = {};
 Collections.User = mongoose.model('User', userSchema);
@@ -39,10 +72,13 @@ Collections.Project = mongoose.model('Project', projectSchema);
 Collections.Board = mongoose.model('Board', boardSchema);
 Collections.Ticket = mongoose.model('Ticket', ticketSchema);
 Collections.Status = mongoose.model('Status', statusSchema);
+Collections.History = mongoose.model('History', historySchema);
 
 var db_control = {};
 db_control.add = function(collection, data, promise) {
 	if(!Collections[collection]) return promise.resolve({});
+
+    data = validateData(data);
 
 	var val = new Collections[collection](data);
 	val.save(function (err, res) {
@@ -51,9 +87,14 @@ db_control.add = function(collection, data, promise) {
         promise.resolve(res);
 	});
 };
+db_control.addhistory = function(attrs, promise) {
+    var val = new Collections.History(attrs);
+    val.save(function() {
+        promise.resolve(true);
+    });
+};
 db_control.update = function(collection, query, data, promise) { //NEXT add callback
     if(!Collections[collection]) return promise.resolve({});
-            console.log(data);
     Collections[collection].update(query, data, { upsert: true }, function (err, res) {
         if (err) return promise.resolve({});
 
