@@ -26,14 +26,14 @@ app.post('/login', myPassport.authenticate('local', {failureRedirect: '/sign_in'
 });
 //NEXT ADD VALIDATION
 app.post('/signup', function(req, res) {
-	if(!req.body && req.body.email && req.body.password) { //NEXT check for unique
+	if(!req.body && req.body.email && req.body.password && req.body.password == req.body.confirmpassword) {
 		return showRedirectMessage(true, "Sign Up failed.", "/sign_up", res);
 	}
 
 	var f = function() {
 		var responder = Promise.pending();
-		
-		db.add("User", req.body, responder);//NEXT check for successful adding
+		req.body.role = "user";
+		db.add("User", req.body, responder);
 
 		return responder.promise;
 	};
@@ -42,7 +42,8 @@ app.post('/signup', function(req, res) {
 
 app.use("", dashboardRoutes);
 
-app.get('/user_*', user.can('user'), function (req, res, next) {
+var privateTemplates = ['/account/*', "/board*", "/create_project*", "/create_ticket*", "/dashboard*", "/edit_project*", "/ticket*"];
+app.get(privateTemplates, user.can('user'), function (req, res, next) {
     next();
 });
 

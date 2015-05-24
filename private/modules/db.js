@@ -16,8 +16,7 @@ db.once("open", function() {
 });
 
 var removeSpaces = function(str) {
-    str = str.replace(/ /g, "_");
-    console.log("validate", str);
+    str = str.replace(/^ | $/g, "");
     return str;
 };
 
@@ -91,7 +90,6 @@ db_control.addhistory = function(data, promise) {
     var val = new Collections.History(data);
     val.save(function(err, res) {
         promise.resolve(true);
-        console.log("ADD", err, res);
     });
 };
 db_control.update = function(collection, query, data, promise) {

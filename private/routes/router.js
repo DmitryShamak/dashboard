@@ -29,16 +29,16 @@ var getCollectionName = function(template) {
     var collection = "Default";
 
     switch(template) {
-        case "user_board":
+        case "board":
             collection = "Project";
             break;
-        case "user_dashboard":
+        case "dashboard":
             collection = "Project";
             break;
-        case "user_edit_project":
+        case "edit_project":
             collection = "Project";
             break;
-        case "user_ticket":
+        case "ticket":
             collection = "Ticket";
             break;
     }

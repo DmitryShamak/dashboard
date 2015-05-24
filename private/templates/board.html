@@ -1,11 +1,11 @@
 ﻿<div class="template-block-cover project-board">
 	<div class="content-cover text-center">
         <div class="clearfix">
-            <h3 class="project-name">{{data.name}}</h3>
+            <h2>{{data.name}}</h2>
             <h3 class="project-name"><i>{{data.description}}</i></h3>
             <p class="text-center">
-                <a href="/user_create_ticket/{{data.name}}"><button>Create Ticket</button></a>
-                <a href="/user_edit_project/{{data.name}}"><button>Edit Project</button></a>
+                <a href="/create_ticket/{{data.name}}"><button>Create Ticket</button></a>
+                <a href="/edit_project/{{data.name}}"><button>Edit Project</button></a>
             </p>
         </div>
 
@@ -25,7 +25,7 @@
                 </li>
                 <li class="" data-bind="foreach: $data.tickets">
                     <div class="ticket text-left">
-                        <p><a data-bind="text: name, attr: {href: '/user_ticket/'+name}"></a></p>
+                        <p><a data-bind="text: name, attr: {href: '/ticket/'+name}"></a></p>
                         <p>
                             <h5>Priority:
                                 <span data-bind="text: priority"></span>
@@ -37,7 +37,7 @@
                             </h5>
                         </p>
                         <div>
-                            <h3>Reporter: <span data-bind="text: $root.getReporter($data)"></span></h3>
+                            <h5>Reporter: <span data-bind="text: $root.getReporter($data)"></span></h5>
                         </div>
                         <p>
                             <h5>Assignee:
@@ -73,7 +73,7 @@
         }
 
         var getStatusTitle = function(ind) {
-            var statusTitle = self.statuslist()[ind].title;
+            var statusTitle = self.statuslist()[ind] ? self.statuslist()[ind].title : "";
             return statusTitle;
         };
 

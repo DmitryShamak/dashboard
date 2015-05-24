@@ -27,20 +27,14 @@
 						<button data-bind="click: saveStatus" class="btn danger-btn">Save Status</button>
 					</p>
 				</div>
-				<!-- <div class="project-option priorities pull-right">
-					<h4 class="option-title">Pririties</h4>
-					<ul class="bordered">
-						{% for item in data.priorities %}
-	                        <li>{{ item.name }}</li>
-	                    {% endfor %}
-					</ul>
-					<p><button class="add-priority btn default-btn">Add Priority</button></p>
-				</div> -->
+				<div class="project-option">
+					<input type="checkbox" data-bind="value: removeTickets" /> <span>Remove Project Tickets</span>
+				</div>
 
 				<p>
 					<button formaction="/updateproject/{{data.name}}" class="btn default-btn">Save</button>
-					<button data-bind="click: cancelEdit" class="btn default-btn">Close (no save)</button>
-					<button formaction="/removeproject/{{data.name}}" class="btn warning-btn">Delete</button>
+					<button data-bind="click: cancelEdit" class="btn default-btn">Close</button>
+					<button data-bind="attr: {'formaction': $root.getRemoveUrl()}" class="btn btn-warning">Delete Project</button>
 				</p>
 			</form>
 		</div>
@@ -74,8 +68,16 @@
             return false;
         };
 
+        self.removeTickets = ko.observable(false);
+
+        self.getRemoveUrl = function() {
+        	var url = "/removeproject/{{data.name}}";
+        	self.removeTickets() ? url+="/true" : "";
+        	return url;
+        };
+
         self.cancelEdit = function() {
-        	var url = "/user_board/" + self.currProject;
+        	var url = "/board/" + self.currProject;
         	console.log(url);
 
         	document.location.href = url;

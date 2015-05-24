@@ -1,3 +1,18 @@
 <div class="home-cover">
-
+	<div class="logo"></div>
+	<div class="news-wrapper">
+		<h2 class="text-center">News</h2>
+		<div class="news"></div>
+	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$.get('/getnews', function(res) {
+			var res = $(res);
+			res.find("a").each(function() {
+				$(this).attr('target', "_blank");
+			});
+			$('.news').append(res);
+		}) ;
+	});
+</script>

@@ -4,13 +4,13 @@
 		<ul class="project-list pending">
 			{% for project in data %}
             <li class="text-left">
-            	<a href="/user_board/{{project.name}}">{{project.name}}</a>
+            	<a href="/board/{{project.name}}">{{project.name}}</a>
             	<div class="control">
-            		<a href="#editproject" class="control-btn edit"></a>
+            		<a href="/edit_project/{{project.name}}" class="control-btn edit"></a>
             	</div>
             </li>
             {% endfor %}
 		</ul>
-		<p><a href="/user_create_project"><button id="create-project-btn" class="btn default-btn">Create project</button></a></p>
+		<p><a href="/create_project"><button id="create-project-btn" class="btn default-btn">Create project</button></a></p>
 	</div>
 </div>

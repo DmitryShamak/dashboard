@@ -7,6 +7,8 @@
   <link rel="stylesheet/less" type="text/css" href="/public/styles/style.less" />
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js"></script>
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
   <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
@@ -17,14 +19,7 @@
     <div class="pull-left">
       <a href="/" class="nav-item btn-home"></a>
       {% if user %}
-        <div class="nav-item"><a href="/user_dashboard">Projects</a></div>
-        <!-- <div class="nav-item dropdown">
-          <a href="/user_project">Project</a>
-          <div class="hidden">
-            <div><a href="/user_project">Project 2</a></div>
-          </div>
-          <div class="arrow"></div>
-        </div> -->
+        <div class="nav-item"><a href="/dashboard">Projects</a></div>
       {% endif %}
     </div>
     {% if user %}
@@ -36,7 +31,7 @@
           <span class="disabled">No Messages</span>
           {% endif %}
         </div>
-        <a class="nav-item" href="/user_account">Profile: {{user.firstname}}</a>
+        <a class="nav-item" href="/account">Profile: {{user.firstname}}</a>
         <a class="nav-item" href="/logout">Log Out</a>
       </div>
       {% else %}
@@ -54,5 +49,5 @@
 	</div>
 </body>
 <script src="/public/js/clientValidation.js"></script>
-
+<script src="/public/js/notifications.js"></script>
 </html>

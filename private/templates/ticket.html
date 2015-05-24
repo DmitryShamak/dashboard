@@ -10,10 +10,9 @@
             <div class="text-left">
                 <div> 
                     <h3>Name: <span>{{data.name}}</span></h3>
-                    <p data-bind="if: editable"><input type="text" placeholder="Ticket name" name="name" value="{{data.name}}" /></p>
                 </div>
                 <div>
-                    <h3>Project: <a href="/user_board/{{data.project}}">{{data.project}}</a></h3>
+                    <h3>Project: <a href="/board/{{data.project}}">{{data.project}}</a></h3>
                 </div>
                 <div>
                     <h3>Description: </h3>
@@ -55,15 +54,15 @@
             </p>
         </form>
         <div class="comments" data-bind="ifnot: editable">
-            <h3>Comments</h3>
+            <h3>Comments:</h3>
             <div>
-                <textarea data-bind="value: comment" style="width: 100%; height: 50px; resize: none;" name="comment"></textarea>
+                <textarea data-bind="value: comment" style="width: 100%; height: 50px; resize: none;" name="comment">Your comment...</textarea>
                 <p class="text-center"><button data-bind="click: submitComment">Submit Comment</button></p>
             </div>
             <div class="comments-wrapper text-left">
                 {% for comment in data.comments %}
                 <p>
-                    <span>{{comment.data}}:{{comment.user}}</span> <span>{{comment.comment}}</span>
+                    <span data-bind="text: getDate('{{comment.date}}')"></span> <span>{{comment.user}}</span>: <span>{{comment.comment}}</span>
                 </p>
                 {% endfor %}
             </div>
@@ -79,13 +78,22 @@
         self.currProject = "{{data.project}}";
         self.userlist = ko.observable([]);
         self.activeStatus = ko.observable({{data.status}});
-        self.comment = ko.observable("");
+        self.comment = ko.observable("Your comment...");
 
         self.submitComment = function() {
             $.post("/addticketcomment/{{data.name}}", {comment: self.comment()}, function(res) {
-                $('.comments-wrapper').append("<p><span>Now:You</span> <span>"+self.comment()+"</span></p>");
-                self.comment("");
+                res = JSON.parse(res);
+                if(!res.error)
+                    $('.comments-wrapper').append("<p><span>"+self.getDate(res.date)+" "+res.user+"</span>: <span>"+res.comment+"</span></p>");
+                self.comment("Your comment...");
             });
+        };
+
+        self.getDate = function(time) {
+            var date = new Date();
+            time != "" ? date.setTime(time.toString()) : date;
+            console.log(date);
+            return (date.getFullYear() + "." + (date.getMonth()+1) + "." + date.getDate());
         };
 
         self.notActive = function(index) {

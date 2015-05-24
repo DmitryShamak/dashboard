@@ -33,7 +33,7 @@
         self.userlist = ko.observable([]);
 
         self.cancelEdit = function() {
-        	var url = "/user_board/" + self.currProject;
+        	var url = "/board/" + self.currProject;
         	console.log(url);
 
         	document.location.href = url;

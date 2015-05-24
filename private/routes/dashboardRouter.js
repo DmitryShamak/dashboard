@@ -2,11 +2,27 @@ var express = require("express");
 var router = express.Router();
 var db = require("../modules/db.js");
 var Promise = require("bluebird");
+var request = require("request");
+var $ = require("cheerio");
 
-router.post('/update*', function(req, res, next) {
+var getAction = function(url) {
+	var action = "unknown",
+		i = 0,
+		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
+	while(i < actions.length) {
+		if(url.indexOf(actions[i])) {
+			action = actions[i];
+			break;
+		}
+		i++;
+	}
+	return action;
+}
+
+router.post('/*', function(req, res, next) {
 	var data = {
 		user: req.user.firstname + " " + req.user.lastname,
-		action: "update",
+		action: getAction(req.url),
 		target: req.body.name
 	};
 	var f = function() {
@@ -16,6 +32,12 @@ router.post('/update*', function(req, res, next) {
 	};
 	f().then( function() { 
 		next();
+	});
+});
+router.get('/getnews', function(req, res) {
+	request.get('http://tech.onliner.by/', function(error, response, body) {
+		res.setHeader("Content-Type", "text/html");
+		res.end($(body).find('.b-content-grid-1__col-1').html());
 	});
 });
 router.get('/getuserlist', function(req, res) {
@@ -31,7 +53,7 @@ router.get('/getuserlist', function(req, res) {
 
 router.post('/addproject', function(req, res) {
 	if(!req.body && req.body.name) { //NEXT check for unique
-		return showRedirectMessage(true, "Project was NOT added.", "/user_create_project", res);
+		return showRedirectMessage(true, "Project was NOT added.", "/create_project", res);
 	}
 	var f = function() {
 		var responder = Promise.pending();
@@ -45,11 +67,11 @@ router.post('/addproject', function(req, res) {
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Project was added successfuly.", "/user_dashboard", res); });
+	f().then(function() { showRedirectMessage(false, "Project was added successfuly.", "/dashboard", res); });
 });
 router.post('/updateproject/:projectname', function(req, res) {
 	if(!req.body || !req.params.projectname) {
-		return showRedirectMessage(true, "Project was NOT updated.", "/user_board/"+req.params.projectname, res);
+		return showRedirectMessage(true, "Project was NOT updated.", "/board/"+req.params.projectname, res);
 	}
 
 	var f = function() {
@@ -61,20 +83,28 @@ router.post('/updateproject/:projectname', function(req, res) {
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Project was updated successfuly.", "/user_board/"+req.params.projectname, res); });
+	f().then(function() { showRedirectMessage(false, "Project was updated successfuly.", "/board/"+req.params.projectname, res); });
 });
-router.post('/removeproject/:projectname', function(req, res) {
+router.post(['/removeproject/:projectname', '/removeproject/:projectname/:removetickets'], function(req, res) {
 	if(!req.body || !req.params.projectname) {
-		return showRedirectMessage(true, "Project was NOT removed.", "/user_board/"+req.params.ticketname, res);
+		return showRedirectMessage(true, "Project was NOT removed.", "/board/"+req.params.ticketname, res);
 	}
 	var f = function() {
 		var responder = Promise.pending();
 		
-		db.remove("Project", {name: req.params.projectname}, responder);//NEXT check for successful removed
+		db.remove("Project", {name: req.params.projectname}, responder);
 
 		return responder.promise;
 	};
-	f().then(function() { showRedirectMessage(false, "Project was removed successfuly.", "/user_dashboard/", res); });
+	var f2 = function() {
+		var responder = Promise.pending();
+		
+		if(req.params.removetickets)db.remove("Ticket", {project: req.params.projectname}, responder);
+		else responder.resolve(true);
+
+		return responder.promise;
+	};
+	f().then(function() { return f2();}).then(function() { showRedirectMessage(false, "Project was removed successfuly.", "/dashboard/", res); });
 });
 router.get('/getprojectslist', function(req, res) {
 	var getProjectsList = function() {
@@ -88,7 +118,7 @@ router.get('/getprojectslist', function(req, res) {
 });
 router.post('/addticket/:project', function(req, res) {
 	if(!req.body || !req.body.name || !req.params.project) { //NEXT check for unique
-		return showRedirectMessage(true, "Ticket was NOT added.", "/user_board/"+req.params.project, res);
+		return showRedirectMessage(true, "Ticket was NOT added.", "/board/"+req.params.project, res);
 	}
 
 	var f = function() {
@@ -106,11 +136,11 @@ router.post('/addticket/:project', function(req, res) {
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Ticket was added successfuly.", "/user_board/"+req.params.project, res); });
+	f().then(function() { showRedirectMessage(false, "Ticket was added successfuly.", "/board/"+req.params.project, res); });
 });
 router.post('/updateticket/:ticketname', function(req, res) {
 	if(!req.body || !req.params.ticketname) {
-		return showRedirectMessage(true, "Ticket was NOT updated.", "/user_ticket/"+req.params.ticketname, res);
+		return showRedirectMessage(true, "Ticket was NOT updated.", "/ticket/"+req.params.ticketname, res);
 	}
 
 	var f = function() {
@@ -124,25 +154,27 @@ router.post('/updateticket/:ticketname', function(req, res) {
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Ticket was updated successfuly.", "/user_ticket/"+req.params.ticketname, res); });
+	f().then(function() { showRedirectMessage(false, "Ticket was updated successfuly.", "/ticket/"+req.params.ticketname, res); });
 });
 router.post('/addticketcomment/:ticketname', function(req, res) {
 	if(!req.body || !req.params.ticketname || req.body.comment == "") {
-		return res.end("no comment");
+		return res.end("{'error': 'true'}");
 	}
+
+	var comment;
 
 	var f = function() {
 		var responder = Promise.pending();
 		
-		var comment = req.body;
+		comment = req.body;
 		comment.user = req.user.firstname + " " + req.user.lastname;
-		comment.data = new Date().toString();
+		comment.date = (new Date().getTime()).toString();
 		db.push("Ticket", {name: req.params.ticketname}, comment, responder);
 
 		return responder.promise;
 	};
 	
-	f().then(function() { res.end("done.") });
+	f().then(function() { res.end(JSON.stringify(comment)) });
 });
 router.get('/getstatuslist/:projectname', function(req, res) {
 	if(!req.body || !req.params.projectname) {
@@ -174,7 +206,7 @@ router.get(['/gettickets', "/gettickets/:id"], function(req, res) {
 });
 router.post('/updatestatus/:projectname', function(req, res) {
 	if(!req.body || !req.params.projectname) {
-		return showRedirectMessage(true, "Status was NOT updated.", "/user_ticket/"+req.params.projectname, res);
+		return showRedirectMessage(true, "Status was NOT updated.", "/ticket/"+req.params.projectname, res);
 	}
 
 	var f = function() {
@@ -187,11 +219,11 @@ router.post('/updatestatus/:projectname', function(req, res) {
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Status was updated successfuly.", "/user_ticket/"+req.params.projectname, res); });
+	f().then(function() { showRedirectMessage(false, "Status was updated successfuly.", "/ticket/"+req.params.projectname, res); });
 });
 router.post('/removeticket/:ticketname', function(req, res) {
 	if(!req.body || !req.body.name || !req.params.ticketname) {
-		return showRedirectMessage(true, "Ticket was NOT removed.", "/user_ticket/"+req.params.ticketname, res);
+		return showRedirectMessage(true, "Ticket was NOT removed.", "/ticket/"+req.params.ticketname, res);
 	}
 
 	var f = function() {
@@ -201,7 +233,7 @@ router.post('/removeticket/:ticketname', function(req, res) {
 
 		return responder.promise;
 	};
-	f().then(function() { showRedirectMessage(false, "Ticket was removed successfuly.", "/user_dashboard/", res); });
+	f().then(function() { showRedirectMessage(false, "Ticket was removed successfuly.", "/dashboard/", res); });
 });
 
 var showRedirectMessage = function(err, message, redirectUrl, res) {
