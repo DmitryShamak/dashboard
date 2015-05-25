@@ -5,6 +5,7 @@ var fs = require("fs");
 var less = require("less");
 var renderer = require("../modules/renderer.js");
 var db = require("../modules/db.js");
+var mime = require("mime");
 
 router.get("*", function (req, res, next) {
     var url = req.url = (req.url == "/") ? "/home" : req.url;
@@ -17,27 +18,15 @@ router.get("*", function (req, res, next) {
         if (err) {
             return next();
         }
-        if(url.indexOf("style.css")) {
-            res.setHeader('content-type', 'text/css');
-        }
 
-        res.status(200).end(data);
+        res.end(data);
     });
 });
 
 var getCollectionName = function(template) {
-    var collection = "Default";
+    var collection = "Project";
 
     switch(template) {
-        case "board":
-            collection = "Project";
-            break;
-        case "dashboard":
-            collection = "Project";
-            break;
-        case "edit_project":
-            collection = "Project";
-            break;
         case "ticket":
             collection = "Ticket";
             break;

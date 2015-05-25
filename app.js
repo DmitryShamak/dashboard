@@ -10,34 +10,79 @@ var db = require("./private/modules/db.js");
 var Promise = require("bluebird");
 
 var app = express();
+var server;
+var io = require("socket.io")(server);
+var globalSocket;
+io.on('connection', function(socket) {
+	globalSocket = socket; 
+	console.log("Socket connected");
+});
 var port = 1505;
+var getAction = function(url) {
+	var action = "unknown",
+		i = 0,
+		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
+	while(i < actions.length) {
+		if(url.indexOf(actions[i])) {
+			action = actions[i];
+			break;
+		}
+		i++;
+	}
+	return action;
+};
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(bodyParser.urlencoded({extended: false}));
-
 app.use(session({secret: 'dashboard'}));
-
 app.use(myPassport.initialize());
 app.use(myPassport.session());
+app.use(express.static("/socket.io"));
 
 app.post('/login', myPassport.authenticate('local', {failureRedirect: '/sign_in'}), function (req, res) {
-    res.redirect('/');
+    showRedirectMessage(false, "Login succeeded.", "/", res)
 });
 //NEXT ADD VALIDATION
 app.post('/signup', function(req, res) {
 	if(!req.body && req.body.email && req.body.password && req.body.password == req.body.confirmpassword) {
-		return showRedirectMessage(true, "Sign Up failed.", "/sign_up", res);
+		return res.end("Sign Up failed.");
 	}
 
+	var testUnique = function() {
+		var responder = Promise.pending();
+		db.checkUnique("User", {email: req.body.email}, responder);
+		return responder.promise;
+	};
 	var f = function() {
 		var responder = Promise.pending();
 		req.body.role = "user";
 		db.add("User", req.body, responder);
-
 		return responder.promise;
 	};
-	f().then(function(results) { res.redirect("/");});
+	testUnique().then(function() { return f(); })
+	.then(function(results) { 
+		showRedirectMessage(false, "Sign Up Done.", "/", res);
+	}).catch(function(err) { 
+		res.end("Email " + err);
+	});
+});
+
+app.post('/*', function(req, res, next) {
+	var data = {
+		user: (req.user) ? req.user.firstname + " " + req.user.lastname : "Guest",
+		action: getAction(req.url),
+		target: req.body.name
+	};
+	var f = function() {
+		var responder = Promise.pending();
+		db.addhistory(data, responder);
+		return responder.promise;
+	};
+	f().then( function() { 
+		if(globalSocket) globalSocket.emit("showNotification", data);
+		next();
+	});
 });
 
 app.use("", dashboardRoutes);
@@ -48,17 +93,12 @@ app.get(privateTemplates, user.can('user'), function (req, res, next) {
 });
 
 var showRedirectMessage = function(err, message, redirectUrl, res) {
-	if(err) {
-		res.setHeader("Content-Type", "text/html");
-		return res.end("<h1 style='margin-top: 100px; text-align: center; color: #D33;'>"+message+"</h1><script>setTimeout(function() { window.location.href = '"+redirectUrl+"'; }, 1500);</script>");
-	}
-
 	res.setHeader("Content-Type", "text/html");
-	res.end("<h1 style='margin-top: 100px; text-align: center;'>"+message+"</h1> <script>setTimeout(function() { window.location.href = '"+redirectUrl+"'; }, 1500);</script>");
+	res.end("<span " + (redirectUrl ? "action='redirect' target='"+redirectUrl+"'" : "") + "'>" +message+"</span>");
 };
 
 app.use("", routes);
 
-app.listen(port, function() {
+server = app.listen(port, function() {
 	console.log("Application available on %s port", port);
 });

@@ -5,35 +5,6 @@ var Promise = require("bluebird");
 var request = require("request");
 var $ = require("cheerio");
 
-var getAction = function(url) {
-	var action = "unknown",
-		i = 0,
-		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
-	while(i < actions.length) {
-		if(url.indexOf(actions[i])) {
-			action = actions[i];
-			break;
-		}
-		i++;
-	}
-	return action;
-}
-
-router.post('/*', function(req, res, next) {
-	var data = {
-		user: req.user.firstname + " " + req.user.lastname,
-		action: getAction(req.url),
-		target: req.body.name
-	};
-	var f = function() {
-		var responder = Promise.pending();
-		db.addhistory(data, responder);
-		return responder.promise;
-	};
-	f().then( function() { 
-		next();
-	});
-});
 router.get('/getnews', function(req, res) {
 	request.get('http://tech.onliner.by/', function(error, response, body) {
 		res.setHeader("Content-Type", "text/html");
@@ -53,8 +24,14 @@ router.get('/getuserlist', function(req, res) {
 
 router.post('/addproject', function(req, res) {
 	if(!req.body && req.body.name) { //NEXT check for unique
-		return showRedirectMessage(true, "Project was NOT added.", "/create_project", res);
+		return res.end("Project was NOT added.");
 	}
+
+	var testUnique = function() {
+		var responder = Promise.pending();
+		db.checkUnique("Project", {name: req.body.name}, responder);
+		return responder.promise;
+	};
 	var f = function() {
 		var responder = Promise.pending();
 		
@@ -67,11 +44,16 @@ router.post('/addproject', function(req, res) {
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Project was added successfuly.", "/dashboard", res); });
+	testUnique().then(function() { return f(); })
+	.then(function(results) { 
+		showRedirectMessage(false, "Project was added successfuly.", "/dashboard", res);
+	}).catch(function(err) { 
+		res.end("Project " + err);
+	});
 });
 router.post('/updateproject/:projectname', function(req, res) {
 	if(!req.body || !req.params.projectname) {
-		return showRedirectMessage(true, "Project was NOT updated.", "/board/"+req.params.projectname, res);
+		return res.end("Project was NOT updated.");
 	}
 
 	var f = function() {
@@ -87,7 +69,7 @@ router.post('/updateproject/:projectname', function(req, res) {
 });
 router.post(['/removeproject/:projectname', '/removeproject/:projectname/:removetickets'], function(req, res) {
 	if(!req.body || !req.params.projectname) {
-		return showRedirectMessage(true, "Project was NOT removed.", "/board/"+req.params.ticketname, res);
+		return res.end("Project was NOT removed.");
 	}
 	var f = function() {
 		var responder = Promise.pending();
@@ -117,10 +99,15 @@ router.get('/getprojectslist', function(req, res) {
 	});
 });
 router.post('/addticket/:project', function(req, res) {
-	if(!req.body || !req.body.name || !req.params.project) { //NEXT check for unique
-		return showRedirectMessage(true, "Ticket was NOT added.", "/board/"+req.params.project, res);
+	if(!req.body || !req.body.name || !req.params.project) {
+		return res.end("Ticket was NOT added.");
 	}
 
+	var testUnique = function() {
+		var responder = Promise.pending();
+		db.checkUnique("Ticket", {name: req.body.name}, responder);
+		return responder.promise;
+	};
 	var f = function() {
 		var responder = Promise.pending();
 		
@@ -131,16 +118,21 @@ router.post('/addticket/:project', function(req, res) {
 		ticketAttrs.status = (ticketAttrs.status) ? ticketAttrs.status : 0;
 		ticketAttrs.project = req.params.project;
 		ticketAttrs.assignee = (ticketAttrs.assignee) ? ticketAttrs.assignee : "No Assignee";
-		db.add("Ticket", req.body, responder);//NEXT check for successful adding
+		db.add("Ticket", req.body, responder);
 
 		return responder.promise;
 	};
 	
-	f().then(function() { showRedirectMessage(false, "Ticket was added successfuly.", "/board/"+req.params.project, res); });
+	testUnique().then(function() { return f(); })
+	.then(function(results) { 
+		showRedirectMessage(false, "Ticket was added successfuly.", "/board/"+req.params.project, res);
+	}).catch(function(err) { 
+		res.end("Ticket " + err);
+	});
 });
 router.post('/updateticket/:ticketname', function(req, res) {
 	if(!req.body || !req.params.ticketname) {
-		return showRedirectMessage(true, "Ticket was NOT updated.", "/ticket/"+req.params.ticketname, res);
+		return res.end("Ticket was NOT updated.");
 	}
 
 	var f = function() {
@@ -206,7 +198,7 @@ router.get(['/gettickets', "/gettickets/:id"], function(req, res) {
 });
 router.post('/updatestatus/:projectname', function(req, res) {
 	if(!req.body || !req.params.projectname) {
-		return showRedirectMessage(true, "Status was NOT updated.", "/ticket/"+req.params.projectname, res);
+		return res.end("Status was NOT updated.");
 	}
 
 	var f = function() {
@@ -222,8 +214,8 @@ router.post('/updatestatus/:projectname', function(req, res) {
 	f().then(function() { showRedirectMessage(false, "Status was updated successfuly.", "/ticket/"+req.params.projectname, res); });
 });
 router.post('/removeticket/:ticketname', function(req, res) {
-	if(!req.body || !req.body.name || !req.params.ticketname) {
-		return showRedirectMessage(true, "Ticket was NOT removed.", "/ticket/"+req.params.ticketname, res);
+	if(!req.body || !req.params.ticketname) {
+		return res.end("Ticket was NOT removed.");
 	}
 
 	var f = function() {
@@ -237,13 +229,8 @@ router.post('/removeticket/:ticketname', function(req, res) {
 });
 
 var showRedirectMessage = function(err, message, redirectUrl, res) {
-	if(err) {
-		res.setHeader("Content-Type", "text/html");
-		return res.end("<h1 style='margin-top: 100px; text-align: center; color: #D33;'>"+message+"</h1><script>setTimeout(function() { window.location.href = '"+redirectUrl+"'; }, 1500);</script>");
-	}
-
 	res.setHeader("Content-Type", "text/html");
-	res.end("<h1 style='margin-top: 100px; text-align: center;'>"+message+"</h1> <script>setTimeout(function() { window.location.href = '"+redirectUrl+"'; }, 1500);</script>");
+	res.end("<span " + (redirectUrl ? "action='redirect' target='"+redirectUrl+"'" : "") + "'>" +message+"</span>");
 };
 
 module.exports = router;

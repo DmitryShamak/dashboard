@@ -45,14 +45,15 @@ var validateData = function(data) {
 }
 
 var userSchema = new Schema({
-    firstname: String, lastname: String, email: String, password: String, role: String, description: String, 
+    firstname: String, lastname: String, email: String, password: String, role: String, description: { type: String, default: "" }, 
     authdate: { type: Date, default: Date.now }
 });
-var ticketSchema = new Schema({ name: {type: String, validate: [removeSpaces, "New_Ticket_"+Date.now]}, status: Number, priority: Number, reporter: String, assignee: String, description: String, project: String,
+var ticketSchema = new Schema({ name: {type: String, validate: [removeSpaces, "New_Ticket_"+Date.now]}, status: Number, priority: Number, reporter: String, assignee: String, 
+    description: { type: String, default: "" }, project: String,
     comments: Object, startdate: { type: Date, default: Date.now }, updatedate: { type: Date, default: Date.now }
 });
 var projectSchema = new Schema({
-    name: {type: String, validate: [removeSpaces, "New_Project_"+Date.now]}, priority: Number, status: Number, description: String, key: String, 
+    name: {type: String, validate: [removeSpaces, "New_Project_"+Date.now]}, priority: Number, status: Number, description: { type: String, default: "" }, key: String, 
     startdate: { type: Date, default: Date.now }, endDate: { type: Date, default: Date.now }
 });
 var boardSchema = new Schema({
@@ -62,7 +63,7 @@ var statusSchema = new Schema({
     project: String, list: Object
 });
 var historySchema = new Schema({
-    target: String, action: String, user: String, data: { type: Date, default: Date.now }
+    target: String, action: String, user: String, date: { type: Date, default: Date.now }
 });
 
 var Collections = {};
@@ -116,12 +117,21 @@ db_control.remove = function(collection, query, promise) {
     });
 };
 db_control.findOne = function(collection, selector, promise) {
-	if(!Collections[collection]) return promise.resolve({});
+    if(!Collections[collection]) return promise.resolve({});
+
+    Collections[collection].findOne(selector, function(err, res) {
+      if (err) return promise.resolve({});
+
+      promise.resolve(res);
+    });
+};
+db_control.checkUnique = function(collection, selector, promise) {
+	if(!Collections[collection]) return promise.reject("Bad url.");
 
 	Collections[collection].findOne(selector, function(err, res) {
-	  if (err) return promise.resolve({});
-
-	  promise.resolve(res);
+	  if (err) return promise.reject("DB error.");
+      if(res != null) return promise.reject("exists.");
+	  promise.resolve(true);
 	});
 };
 db_control.find = function(collection, selector, promise) {

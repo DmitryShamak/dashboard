@@ -63,6 +63,17 @@ var clearErrors = function() {
 	$("form").find(".error").removeClass("error");
 };
 
+var getFormData = function(context) {
+	var data = {};
+	for(var key in context.elements) {
+		var elem = context[key];
+		if(elem && elem.nodeName == "INPUT") {
+			data[elem.name] = elem.value;
+		}
+	}
+	return data;
+};
+
 var isPassedValidation = function(context) {
 	for(var key in context.elements) {
 		var elem = context[key];
@@ -76,15 +87,27 @@ var isPassedValidation = function(context) {
 	}
 	return !errorList;
 }
-
+var formAction;
 var addValidation = function() {
+	$(document).on('click', 'button', function() {
+		formAction = false;
+		formAction = $(this).attr('formaction');
+	});
 	$("form").on("submit", function(e) {
+		var form = $(this);
+		var url = form[0].action;
+		url = url && url != "" ? url : formAction;
+		var data;
+		e.preventDefault ? e.preventDefault() : e.returnValue=false;
 		errorList = false;
 		clearErrors();
-		if(!isPassedValidation($(this).context)) {
-			e.preventDefault ? e.preventDefault() : e.returnValue=false;
-			showErrors(errorList);
+		if(!isPassedValidation(form.context)) {
+			return showErrors(errorList);
 		}
+		data = getFormData(form.context);
+		$.post(url, data, function(res) {
+			showNotification({text: res});
+		});
 	});
 };
 

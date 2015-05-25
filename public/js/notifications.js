@@ -1,10 +1,33 @@
+var url = "localhost:1506";
+var socket;
+
+$(document).ready(function() {
+	try{
+		socket = io(url);
+	} catch(err) {
+		console.log(err);
+	}
+
+	if(!socket) {
+		return false;
+	}
+	socket = io(url);
+	socket.on('connect', function(){
+		console.log("socket connected");
+	});
+	socket.on('showNotification', function(data){
+		showNotification(data);
+	});
+	socket.on('disconnect', function(){});
+});
+
 var Notification = function(attrs) {
 	var self = this;
 	attrs = attrs ? attrs : {};
 	var d = attrs.date ? new Date(attrs.date) : new Date();
 	attrs = {
-		text: attrs.author ? attrs.author : "No Text",
-		author: attrs.text ? attrs.text : "No Author",
+		author: attrs.author ? attrs.author : "System message",
+		text: attrs.text ? attrs.text : "No Text",
 		
 		date: d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
 	};
@@ -12,9 +35,12 @@ var Notification = function(attrs) {
 	self.setNotification = function() {
 		document.body.appendChild(self.wrapperElem);
 
-		self.timer = setTimeout(self.removeNotification, 15000)
+		self.timer = setTimeout(self.removeNotification, self.delay)
 	};
 	self.removeNotification = function() {
+		if(self.action && self.action == "redirect") {
+			 window.location.href = self.target;
+		}
 		clearTimeout(self.timer);
 		document.body.removeChild(self.wrapperElem);
 	};
@@ -33,7 +59,14 @@ var Notification = function(attrs) {
 
 		self.textElem = document.createElement("div");
 		self.textElem.className = "notification-text";
-		self.textElem.innerHTML = attrs.text;
+		$(self.textElem).append(attrs.text);
+		self.action = $(self.textElem).find('span').attr('action');
+		self.target = $(self.textElem).find('span').attr('target');
+		if(self.action && self.action == "redirect") {
+			self.delay = 1500;
+		} else {
+			self.delay = 10000;
+		}
 
 		self.dateElem = document.createElement("div");
 		self.dateElem.className = "notification-date";
@@ -49,4 +82,7 @@ var Notification = function(attrs) {
 	self.init();
 };
 
-new Notification({date: new Date().getTime()});
+var showNotification = function(data) {
+	data.date = data.date ? new Date(data.date).getTime() : new Date().getTime();
+	var notification = new Notification(data);
+};
