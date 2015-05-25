@@ -40,8 +40,15 @@ app.use(myPassport.initialize());
 app.use(myPassport.session());
 app.use(express.static("/socket.io"));
 
-app.post('/login', myPassport.authenticate('local', {failureRedirect: '/sign_in'}), function (req, res) {
-    showRedirectMessage(false, "Login succeeded.", "/", res)
+app.post('/login', function(req, res, next) {
+	myPassport.authenticate('local', function(err, user, info) {
+		if(err) { return res.end("server error, please reload page."); }
+		if (!user) { res.end("email or password are wrong."); }
+		req.logIn(user, function(err) {
+	      if (err) { return res.end("server error, please reload page."); }
+	      showRedirectMessage(false, "Login succeeded.", "/", res);
+	    });
+	})(req, res, next);
 });
 //NEXT ADD VALIDATION
 app.post('/signup', function(req, res) {
