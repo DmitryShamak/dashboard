@@ -10,14 +10,7 @@ var db = require("./private/modules/db.js");
 var Promise = require("bluebird");
 
 var app = express();
-var server;
-var io = require("socket.io")(server);
-var globalSocket;
-io.on('connection', function(socket) {
-	globalSocket = socket; 
-	console.log("Socket connected");
-});
-var port = 1505;
+var port = 1507;
 var getAction = function(url) {
 	var action = "unknown",
 		i = 0,
@@ -106,6 +99,6 @@ var showRedirectMessage = function(err, message, redirectUrl, res) {
 
 app.use("", routes);
 
-server = app.listen(port, function() {
+app.listen(port, function() {
 	console.log("Application available on %s port", port);
 });
