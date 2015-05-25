@@ -6,6 +6,7 @@ var less = require("less");
 var renderer = require("../modules/renderer.js");
 var db = require("../modules/db.js");
 var mime = require("mime");
+var path = require("path");
 
 router.get("*", function (req, res, next) {
     var url = req.url = (req.url == "/") ? "/home" : req.url;
@@ -18,8 +19,8 @@ router.get("*", function (req, res, next) {
         if (err) {
             return next();
         }
-
-        res.end(data);
+        res.setHeader('content-type', mime.lookup(url));
+        res.send(data);
     });
 });
 
@@ -85,11 +86,6 @@ router.get(['/:view', '/:view/:id'], function (req, res, next) {
             res.status(200).end(template);
         }
     );
-}, function (req, res, next) {
-    renderer.renderTemplate("error", null, function (err, template) {
-        res.status(200).end(template);
-        next();
-    });
 });
 
 module.exports = router;

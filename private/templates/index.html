@@ -11,6 +11,8 @@
 
   <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  
+  <script src="/socket.io/socket.io.js"></script>
 
   <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
 </head>
@@ -42,12 +44,13 @@
     {% endif %}
   </nav>
 
-	<div id="content">
+  <div id="content">
         {% block %}
-		    {% include template %}
-	    {% endblock %}
-	</div>
+        {% include template %}
+      {% endblock %}
+  </div>
 </body>
 <script src="/public/js/clientValidation.js"></script>
+
 <script src="/public/js/notifications.js"></script>
 </html>

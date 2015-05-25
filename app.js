@@ -8,9 +8,12 @@ var myPassport = require("./private/modules/myPassport.js");
 var user = require("./private/modules/roles.js");
 var db = require("./private/modules/db.js");
 var Promise = require("bluebird");
+var io = require("socket.io");
 
 var app = express();
 var port = 1507;
+
+
 var getAction = function(url) {
 	var action = "unknown",
 		i = 0,
@@ -99,6 +102,12 @@ var showRedirectMessage = function(err, message, redirectUrl, res) {
 
 app.use("", routes);
 
-app.listen(port, function() {
+io = app.listen(port, function() {
 	console.log("Application available on %s port", port);
 });
+
+io.sockets.on('connection', function(socket){
+	console.log("Socket connected");
+  socket.emit('test', { some: 'data' });
+});
+

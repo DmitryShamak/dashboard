@@ -1,4 +1,4 @@
-var url = "localhost:1506";
+var url = "/";
 var socket;
 
 $(document).ready(function() {
