@@ -12,7 +12,7 @@
   <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
   
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 
   <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
 </head>
@@ -51,6 +51,11 @@
   </div>
 </body>
 <script src="/public/js/clientValidation.js"></script>
-
+<script>
+  var globals = {
+    name: "{{data.name}}",
+    user: "{{user.firstname}}" + " " + "{{user.lastname}}"
+  };
+</script>
 <script src="/public/js/notifications.js"></script>
 </html>

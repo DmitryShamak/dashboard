@@ -87,6 +87,19 @@ var isPassedValidation = function(context) {
 	}
 	return !errorList;
 }
+var getAction = function(url) {
+	var action = "Spy Action, or just someone login",
+		i = 0,
+		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
+	while(i < actions.length) {
+		if(url.indexOf(actions[i]) != -1) {
+			action = actions[i];
+			break;
+		}
+		i++;
+	}
+	return action;
+};
 var formAction;
 var addValidation = function() {
 	$(document).on('click', 'button', function() {
@@ -105,6 +118,7 @@ var addValidation = function() {
 			return showErrors(errorList);
 		}
 		data = getFormData(form.context);
+		globals.action = getAction(url);
 		$.post(url, data, function(res) {
 			showNotification({text: res});
 		});

@@ -11,15 +11,16 @@ var Promise = require("bluebird");
 var io = require("socket.io");
 
 var app = express();
+var server,
+	Sockets = [];
 var port = 1507;
-
 
 var getAction = function(url) {
 	var action = "unknown",
 		i = 0,
 		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
 	while(i < actions.length) {
-		if(url.indexOf(actions[i])) {
+		if(url.indexOf(actions[i]) != -1) {
 			action = actions[i];
 			break;
 		}
@@ -83,7 +84,6 @@ app.post('/*', function(req, res, next) {
 		return responder.promise;
 	};
 	f().then( function() { 
-		if(globalSocket) globalSocket.emit("showNotification", data);
 		next();
 	});
 });
@@ -102,12 +102,30 @@ var showRedirectMessage = function(err, message, redirectUrl, res) {
 
 app.use("", routes);
 
-io = app.listen(port, function() {
+var server = app.listen(port, function() {
 	console.log("Application available on %s port", port);
 });
 
-io.sockets.on('connection', function(socket){
-	console.log("Socket connected");
-  socket.emit('test', { some: 'data' });
+io = io(server);
+
+var spreadNotifications = function(socket, data) {
+	console.log(Sockets.length);
+	if(Sockets.length) {
+		for(var key in Sockets) {
+			if(key != Sockets.indexOf(socket)) Sockets[key].emit("showNotification", data);
+		}
+	}
+};
+
+io.on('connection', function(socket) {
+ 	if(Sockets.indexOf(socket) == -1) {
+ 		Sockets.push(socket);
+ 	}
+ 	socket.on("spreadNotifications", function(data) {
+ 		spreadNotifications(this, data);
+ 	})
+	socket.on('disconnect', function(socket) {
+	 	//Sockets.splice(Sockets.indexOf(socket), 1);
+	});
 });
 

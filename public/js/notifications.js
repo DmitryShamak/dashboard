@@ -1,7 +1,7 @@
-var url = "/";
-var socket;
-
-$(document).ready(function() {
+var url = "http://localhost:1507";
+var socket,
+	notification;
+var connectSocket = function() {
 	try{
 		socket = io(url);
 	} catch(err) {
@@ -15,10 +15,16 @@ $(document).ready(function() {
 	socket.on('connect', function(){
 		console.log("socket connected");
 	});
+	socket.on('disconnect', function(){
+		connectSocket();
+	});
 	socket.on('showNotification', function(data){
+		console.log("showNotification");
 		showNotification(data);
 	});
-	socket.on('disconnect', function(){});
+};
+$(document).ready(function() {
+	connectSocket();
 });
 
 var Notification = function(attrs) {
@@ -35,7 +41,12 @@ var Notification = function(attrs) {
 	self.setNotification = function() {
 		document.body.appendChild(self.wrapperElem);
 
-		self.timer = setTimeout(self.removeNotification, self.delay)
+		self.timer = setTimeout(self.removeNotification, self.delay);
+		if(socket) {
+			var obj = attrs;
+			obj.text = '<span>' + (globals ? (globals.user + " " + globals.action + " " + globals.name) : "System notification, are you sleeping") + '</span>';
+			socket.emit("spreadNotifications", obj);
+		}
 	};
 	self.removeNotification = function() {
 		if(self.action && self.action == "redirect") {
@@ -59,9 +70,10 @@ var Notification = function(attrs) {
 
 		self.textElem = document.createElement("div");
 		self.textElem.className = "notification-text";
-		$(self.textElem).append(attrs.text);
-		self.action = $(self.textElem).find('span').attr('action');
-		self.target = $(self.textElem).find('span').attr('target');
+		var textElem = $(attrs.text);
+		self.textElem.innerHTML = textElem.text();
+		self.action = textElem.attr('action');
+		self.target = textElem.attr('target');
 		if(self.action && self.action == "redirect") {
 			self.delay = 1500;
 		} else {
@@ -84,5 +96,9 @@ var Notification = function(attrs) {
 
 var showNotification = function(data) {
 	data.date = data.date ? new Date(data.date).getTime() : new Date().getTime();
-	var notification = new Notification(data);
+	if(notification) {
+		notification.removeNotification();
+	}
+
+	notification = new Notification(data);
 };
