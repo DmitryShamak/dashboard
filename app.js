@@ -8,11 +8,10 @@ var myPassport = require("./private/modules/myPassport.js");
 var user = require("./private/modules/roles.js");
 var db = require("./private/modules/db.js");
 var Promise = require("bluebird");
-var io = require("socket.io");
+var io = require("./private/modules/socket.js");
 
 var app = express();
-var server,
-	Sockets = [];
+var server;
 var port = 1507;
 
 var getAction = function(url) {
@@ -43,62 +42,21 @@ app.post('/login', function(req, res, next) {
 		if (!user) { res.end("email or password are wrong."); }
 		req.logIn(user, function(err) {
 	      if (err) { return res.end("server error, please reload page."); }
-	      showRedirectMessage(false, "Login succeeded.", "/", res);
+	      res.end(JSON.stringify({
+	      	text: "Login succeeded.",
+	      	redirect: "/"
+	      }));
 	    });
 	})(req, res, next);
 });
-//NEXT ADD VALIDATION
-app.post('/signup', function(req, res) {
-	if(!req.body && req.body.email && req.body.password && req.body.password == req.body.confirmpassword) {
-		return res.end("Sign Up failed.");
-	}
-
-	var testUnique = function() {
-		var responder = Promise.pending();
-		db.checkUnique("User", {email: req.body.email}, responder);
-		return responder.promise;
-	};
-	var f = function() {
-		var responder = Promise.pending();
-		req.body.role = "user";
-		db.add("User", req.body, responder);
-		return responder.promise;
-	};
-	testUnique().then(function() { return f(); })
-	.then(function(results) { 
-		showRedirectMessage(false, "Sign Up Done.", "/", res);
-	}).catch(function(err) { 
-		res.end("Email " + err);
-	});
-});
-
-app.post('/*', function(req, res, next) {
-	var data = {
-		user: (req.user) ? req.user.firstname + " " + req.user.lastname : "Guest",
-		action: getAction(req.url),
-		target: req.body.name
-	};
-	var f = function() {
-		var responder = Promise.pending();
-		db.addhistory(data, responder);
-		return responder.promise;
-	};
-	f().then( function() { 
-		next();
-	});
-});
-
-app.use("", dashboardRoutes);
 
 var privateTemplates = ['/account/*', "/board*", "/create_project*", "/create_ticket*", "/dashboard*", "/edit_project*", "/ticket*"];
 app.get(privateTemplates, user.can('user'), function (req, res, next) {
     next();
 });
 
-var showRedirectMessage = function(err, message, redirectUrl, res) {
-	res.setHeader("Content-Type", "text/html");
-	res.end("<span " + (redirectUrl ? "action='redirect' target='"+redirectUrl+"'" : "") + "'>" +message+"</span>");
-};
+app.use("", dashboardRoutes);
+
 
 app.use("", routes);
 
@@ -106,26 +64,4 @@ var server = app.listen(port, function() {
 	console.log("Application available on %s port", port);
 });
 
-io = io(server);
-
-var spreadNotifications = function(socket, data) {
-	console.log(Sockets.length);
-	if(Sockets.length) {
-		for(var key in Sockets) {
-			if(key != Sockets.indexOf(socket)) Sockets[key].emit("showNotification", data);
-		}
-	}
-};
-
-io.on('connection', function(socket) {
- 	if(Sockets.indexOf(socket) == -1) {
- 		Sockets.push(socket);
- 	}
- 	socket.on("spreadNotifications", function(data) {
- 		spreadNotifications(this, data);
- 	})
-	socket.on('disconnect', function(socket) {
-	 	//Sockets.splice(Sockets.indexOf(socket), 1);
-	});
-});
-
+io.init(server);

@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var Promise = require("bluebird");
 
 var user = "DShamak";
 var password = "mongolabpa33";
@@ -75,73 +76,89 @@ Collections.Status = mongoose.model('Status', statusSchema);
 Collections.History = mongoose.model('History', historySchema);
 
 var db_control = {};
-db_control.add = function(collection, data, promise) {
-	if(!Collections[collection]) return promise.resolve({});
+db_control.add = function(collection, data) {
+    var responder = Promise.pending();
+	if(!Collections[collection]) return responder.resolve({});
 
     data = validateData(data);
 
 	var val = new Collections[collection](data);
 	val.save(function (err, res) {
-		if (err) return promise.resolve({});
+		if (err) return responder.resolve({});
 
-        promise.resolve(res);
+        responder.resolve(res);
 	});
+    return responder.promise;
 };
-db_control.addhistory = function(data, promise) {
+db_control.addhistory = function(data) {
+    var responder = Promise.pending();
     var val = new Collections.History(data);
     val.save(function(err, res) {
-        promise.resolve(true);
+        responder.resolve(true);
     });
+    return responder.promise;
 };
-db_control.update = function(collection, query, data, promise) {
-    if(!Collections[collection]) return promise.resolve({});
+db_control.update = function(collection, query, data) {
+    var responder = Promise.pending();
+    if(!Collections[collection]) return responder.resolve({});
     Collections[collection].update(query, data, { upsert: true }, function (err, res) {
-        if (err) return promise.resolve({});
-        promise.resolve(res);
+        if (err) return responder.resolve({});
+        responder.resolve(res);
     });
+    return responder.promise;
 };
-db_control.push = function(collection, query, item, promise) {
-    if(!Collections[collection]) return promise.resolve({});
+db_control.push = function(collection, query, item) {
+    var responder = Promise.pending();
+    if(!Collections[collection]) return responder.resolve({});
     Collections[collection].update(query, {$push: {comments: item}}, { upsert: true }, function (err, res) {
-        if (err) return promise.resolve({});
-        promise.resolve(res);
+        if (err) return responder.resolve({});
+        responder.resolve(res);
     });
+    return responder.promise;
 };
-db_control.remove = function(collection, query, promise) {
-    if(!Collections[collection]) return promise.resolve({});
+db_control.remove = function(collection, query) {
+    var responder = Promise.pending();
+    if(!Collections[collection]) return responder.resolve({});
 
     Collections[collection].remove(query, function (err, res) {
-        if (err) return promise.resolve({});
+        if (err) return responder.resolve({});
 
-        promise.resolve(res);
+        responder.resolve(res);
     });
+    return responder.promise;
 };
-db_control.findOne = function(collection, selector, promise) {
-    if(!Collections[collection]) return promise.resolve({});
+db_control.findOne = function(collection, selector) {
+    var responder = Promise.pending();
+    if(!Collections[collection]) return responder.resolve({});
 
     Collections[collection].findOne(selector, function(err, res) {
-      if (err) return promise.resolve({});
+      if (err) return responder.resolve({});
 
-      promise.resolve(res);
+      responder.resolve(res);
     });
+    return responder.promise;
 };
-db_control.checkUnique = function(collection, selector, promise) {
-	if(!Collections[collection]) return promise.reject("Bad url.");
+db_control.checkUnique = function(collection, selector) {
+    var responder = Promise.pending();
+	if(!Collections[collection]) return responder.reject("Bad url.");
 
 	Collections[collection].findOne(selector, function(err, res) {
-	  if (err) return promise.reject("DB error.");
-      if(res != null) return promise.reject("exists.");
-	  promise.resolve(true);
+	  if (err) return responder.reject("DB error.");
+      if(res != null) return responder.reject("exists.");
+	  responder.resolve(true);
 	});
+    return responder.promise;
 };
-db_control.find = function(collection, selector, promise) {
-    if(!Collections[collection]) return promise.resolve({});
+db_control.find = function(collection, selector) {
+    var responder = Promise.pending();
+    if(!Collections[collection]) return responder.resolve({});
 
     Collections[collection].find(selector, function(err, res) {
-      if (err) return promise.resolve({});
+      if (err) return responder.resolve({});
 
-      promise.resolve(res);
+      responder.resolve(res);
     });
+    return responder.promise;
 };
 
 module.exports = db_control;
