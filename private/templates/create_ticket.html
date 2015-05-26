@@ -1,6 +1,6 @@
 ﻿<div class="template-block-cover create-ticket">
 	<div class="content-cover text-center">
-		<form action="/addticket/{{data.id}}" method="post">
+		<form action="/addticket/{{obj.id}}" method="post">
 			<p>
 				<input type="text" id="ticket-name" name="name" placeholder="ticket Name" />
 			</p>
@@ -28,7 +28,7 @@
 	function AppViewModel() {
         var self = this;
      	
-     	self.currProject = "{{data.id}}";
+     	self.currProject = "{{obj.id}}";
         self.assignee = ko.observable({id: "", name: "No Assignee"});
         self.userlist = ko.observable([]);
 

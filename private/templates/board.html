@@ -1,11 +1,11 @@
 ﻿<div class="template-block-cover project-board">
 	<div class="content-cover text-center">
         <div class="clearfix">
-            <h2>{{data.name}}</h2>
-            <h3 class="project-name"><i>{{data.description}}</i></h3>
+            <h2>{{obj.name}}</h2>
+            <h3 class="project-name"><i>{{obj.description}}</i></h3>
             <p class="text-center">
-                <a href="/create_ticket/{{data.name}}"><button>Create Ticket</button></a>
-                <a href="/edit_project/{{data.name}}"><button>Edit Project</button></a>
+                <a href="/create_ticket/{{obj.name}}"><button>Create Ticket</button></a>
+                <a href="/edit_project/{{obj.name}}"><button>Edit Project</button></a>
             </p>
         </div>
 
@@ -55,7 +55,7 @@
     function AppViewModel() {
         var self = this;
 
-        self.currProject = "{{data.name}}";
+        self.currProject = "{{obj.name}}";
         self.ticketsGroup = ko.observable([]);
         self.activeColumnNum = ko.observable(0);
         self.currFilter = ko.observable("All");
@@ -134,7 +134,7 @@
             $.get(url, function(statuslist) {
                 self.statuslist((statuslist != "null") ? JSON.parse(statuslist).list : []);
 
-                $.get('/gettickets/{{data.name}}', function(tikets) {
+                $.get('/gettickets/{{obj.name}}', function(tikets) {
                     self.ticketsGroup(filterTickets(tikets)); //NEXT filter by status 
                 });
             });

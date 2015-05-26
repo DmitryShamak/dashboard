@@ -9,29 +9,29 @@
         <form method="post">
             <div class="text-left">
                 <div> 
-                    <h3>Name: <span>{{data.name}}</span></h3>
+                    <h3>Name: <span>{{obj.name}}</span></h3>
                 </div>
                 <div>
-                    <h3>Project: <a href="/board/{{data.project}}">{{data.project}}</a></h3>
+                    <h3>Project: <a href="/board/{{data.project}}">{{obj.project}}</a></h3>
                 </div>
                 <div>
                     <h3>Description: </h3>
                     <p data-bind="ifnot: editable"><span>{{data.description}}</span></p>
-                    <p data-bind="if: editable"><textarea name="description" rows="4">{{data.description}}</textarea></p>
+                    <p data-bind="if: editable"><textarea name="description" rows="4">{{obj.description}}</textarea></p>
                 </div>
                 <div>
                     <h3>Status: 
                         <span id="status" data-bind="text: $root.getStatusTitle($root.activeStatus)"></span>
                         <span data-bind="visible: false">
-                            <input name="status" value="{{data.status}}"/>
+                            <input name="status" value="{{obj.status}}"/>
                         </span>
                     </h3>
                 </div>
                 <div>
                     <h3>Priority: 
-                        <span data-bind="ifnot: editable" id="priority">{{data.priority}}</span>
+                        <span data-bind="ifnot: editable" id="priority">{{obj.priority}}</span>
                         <span data-bind="if: editable">
-                            <input style="width: 20px;" class="text-center" name="priority" value="{{data.priority}}"/>
+                            <input style="width: 20px;" class="text-center" name="priority" value="{{obj.priority}}"/>
                         </span>
                     </h3>
                 </div>
@@ -49,18 +49,18 @@
                 </div>
             </div>
             <p data-bind="if: editable" class="text-left">
-                <button formaction="/updateticket/{{data.name}}">Save</button>
-                <button formaction="/removeticket/{{data.name}}">Delete</button>
+                <button formaction="/updateticket/{{obj.name}}">Save</button>
+                <button formaction="/removeticket/{{obj.name}}">Delete</button>
             </p>
         </form>
         <div class="comments" data-bind="ifnot: editable">
             <h3>Comments:</h3>
             <div>
-                <textarea data-bind="value: comment" style="width: 100%; height: 50px; resize: none;" name="comment">Your comment...</textarea>
+                <textarea data-bind="value: comment" style="width: 100%; height: 50px; resize: none;" name="comment" placeholder="Comment..."></textarea>
                 <p class="text-center"><button data-bind="click: submitComment">Submit Comment</button></p>
             </div>
             <div class="comments-wrapper text-left">
-                {% for comment in data.comments %}
+                {% for comment in obj.comments %}
                 <p>
                     <span data-bind="text: getDate('{{comment.date}}')"></span> <span>{{comment.user}}</span>: <span>{{comment.comment}}</span>
                 </p>
@@ -74,18 +74,18 @@
         var self = this;
      
         self.editable = ko.observable(false);
-        self.assignee = ko.observable("{{data.assignee}}");
-        self.currProject = "{{data.project}}";
+        self.assignee = ko.observable("{{obj.assignee}}");
+        self.currProject = "{{obj.project}}";
         self.userlist = ko.observable([]);
-        self.activeStatus = ko.observable({{data.status}});
-        self.comment = ko.observable("Your comment...");
+        self.activeStatus = ko.observable({{obj.status}});
+        self.comment = ko.observable("");
 
         self.submitComment = function() {
-            $.post("/addticketcomment/{{data.name}}", {comment: self.comment()}, function(res) {
+            $.post("/addticketcomment/{{obj.name}}", {comment: self.comment()}, function(res) {
                 res = JSON.parse(res);
                 if(!res.error)
                     $('.comments-wrapper').append("<p><span>"+self.getDate(res.date)+" "+res.user+"</span>: <span>"+res.comment+"</span></p>");
-                self.comment("Your comment...");
+                self.comment("");
             });
         };
 
@@ -165,7 +165,7 @@
         self.setStatus = function(status) {
             var statusIndex = status.index;
 
-            $.post("/updateticket/{{data.name}}", {status: statusIndex}, function(res) {
+            $.post("/updateticket/{{obj.name}}", {status: statusIndex}, function(res) {
                 self.activeStatus(statusIndex);
             });
         };

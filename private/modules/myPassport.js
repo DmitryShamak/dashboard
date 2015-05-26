@@ -10,18 +10,12 @@ passport.deserializeUser(function(obj, done) {
 	done(null, obj);
 });
 
-var getUser = function(email, password) {
-	var responder = Promise.pending();
-	db.findOne("User", {email: email, password: password}, responder);
-	return responder.promise;
-};
-
 passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password'
     },
 	function (username, password, done) {
-		getUser(username, password).then(function(res) {
+		db.findOne("User", {email: username, password: password}).then(function(res) {
 		    if(res) {
 		        return done(null, res);
 		    }	        

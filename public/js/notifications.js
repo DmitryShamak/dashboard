@@ -1,6 +1,7 @@
-var url = "http://localhost:1507";
+var url = "http://localhost:1508";
 var socket,
 	notification;
+
 var connectSocket = function() {
 	try{
 		socket = io(url);
@@ -19,10 +20,16 @@ var connectSocket = function() {
 		connectSocket();
 	});
 	socket.on('showNotification', function(data){
-		console.log("showNotification");
 		showNotification(data);
 	});
 };
+var onWindowClose = function() {
+	console.log("disconnect");
+	socket.emit("onuserdissconnect", {id: socket.id});
+};
+
+window.onbeforeunload = onWindowClose;
+
 $(document).ready(function() {
 	connectSocket();
 });
@@ -31,29 +38,28 @@ var Notification = function(attrs) {
 	var self = this;
 	attrs = attrs ? attrs : {};
 	var d = attrs.date ? new Date(attrs.date) : new Date();
-	attrs = {
-		author: attrs.author ? attrs.author : "System message",
-		text: attrs.text ? attrs.text : "No Text",
-		
-		date: d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
-	};
+	attrs.author = attrs.author ? attrs.author : "System message";
+	attrs.text = attrs.text ? attrs.text : "No Text";
+	attrs.date = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();
 
 	self.setNotification = function() {
 		document.body.appendChild(self.wrapperElem);
 
 		self.timer = setTimeout(self.removeNotification, self.delay);
-		if(socket) {
+		self.active = true;
+		if(socket && self.redirect && globals.action) {
 			var obj = attrs;
-			obj.text = '<span>' + (globals ? (globals.user + " " + globals.action + " " + globals.name) : "System notification, are you sleeping") + '</span>';
+			obj.text = (globals ? (globals.user + " " + globals.action + " " + globals.name) : "System notification, are you sleeping");
 			socket.emit("spreadNotifications", obj);
 		}
 	};
 	self.removeNotification = function() {
-		if(self.action && self.action == "redirect") {
-			 window.location.href = self.target;
+		if(self.redirect) {
+			 window.location.href = self.redirect;
 		}
-		clearTimeout(self.timer);
-		document.body.removeChild(self.wrapperElem);
+		self.active = false;
+		if(self.timer) clearTimeout(self.timer);
+		if(self.wrapperElem) document.body.removeChild(self.wrapperElem);
 	};
 	self.init = function() {
 		self.wrapperElem = document.createElement("div");
@@ -70,14 +76,13 @@ var Notification = function(attrs) {
 
 		self.textElem = document.createElement("div");
 		self.textElem.className = "notification-text";
-		var textElem = $(attrs.text);
-		self.textElem.innerHTML = textElem.text();
-		self.action = textElem.attr('action');
-		self.target = textElem.attr('target');
-		if(self.action && self.action == "redirect") {
+		self.textElem.innerHTML = attrs.text;
+
+		self.redirect = attrs.redirect;
+		if(self.redirect) {
 			self.delay = 1500;
 		} else {
-			self.delay = 10000;
+			self.delay = 5000;
 		}
 
 		self.dateElem = document.createElement("div");
@@ -95,8 +100,9 @@ var Notification = function(attrs) {
 };
 
 var showNotification = function(data) {
+	data = (typeof data == "string") ? JSON.parse(data) : data;
 	data.date = data.date ? new Date(data.date).getTime() : new Date().getTime();
-	if(notification) {
+	if(notification && notification.active) {
 		notification.removeNotification();
 	}
 

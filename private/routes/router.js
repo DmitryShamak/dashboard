@@ -37,27 +37,11 @@ var getCollectionName = function(template) {
 };
 
 var getTemplateData = function (template, id) {
-    var responder = Promise.pending();
     var collection = getCollectionName(template);
     var selector = id ? { name: id } : {};
 
-    //get db data 
-    if(id) db.findOne(collection, selector, responder);
-    else db.find(collection, selector, responder);
-
-    return responder.promise;
-};
-
-var makeParse = function (arr) {
-    var result = {};
-
-    arr.forEach(function (item) {
-        for (var key in item) {
-            result[key] = item[key];
-        }
-    });
-
-    return {data: result};
+    if(id) return db.findOne(collection, selector);
+    else return db.find(collection, selector);
 };
 
 router.get('/logout', function(req, res) {
@@ -66,15 +50,15 @@ router.get('/logout', function(req, res) {
 });
 
 router.get(['/:view', '/:view/:id'], function (req, res, next) {
-    Promise.all([
-           getTemplateData(req.params.view, req.params.id)
-    ]).then(function (results) {
-        req.data = makeParse(results);
+    getTemplateData(req.params.view, req.params.id)
+    .then(function (results) {
+        req.data = {obj: results};
         next();
     });
 }, function (req, res, next) {
-    req.data.user = req.user;
-    if(req.params.id) req.data.data.id = req.params.id;
+    req.data.obj = req.data.obj;
+    req.data.user = req.user ? req.user : false;
+    if(req.params.id) req.data.obj.name = req.params.id;
     renderer.renderTemplate(
         req.params.view, 
         req.data, 

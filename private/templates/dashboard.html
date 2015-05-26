@@ -2,7 +2,7 @@
 	<div class="content-cover text-center">
 		<h2>Projects list</h2>
 		<ul class="project-list pending">
-			{% for project in data %}
+			{% for project in obj %}
             <li class="text-left">
             	<a href="/board/{{project.name}}">{{project.name}}</a>
             	<div class="control">

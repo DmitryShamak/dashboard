@@ -4,19 +4,42 @@ var db = require("../modules/db.js");
 var Promise = require("bluebird");
 var request = require("request");
 var $ = require("cheerio");
+var myPassport = require("../modules/myPassport.js");
 
-var testUnique = function(collection, query) {
-	var responder = Promise.pending();
-	db.checkUnique(collection, query, responder);
-	return responder.promise;
+var getAction = function(url) {
+	var action = "unknown",
+		i = 0,
+		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
+	while(i < actions.length) {
+		if(url.indexOf(actions[i]) != -1) {
+			action = actions[i];
+			break;
+		}
+		i++;
+	}
+	return action;
 };
+
+router.post('/login', function(req, res, next) {
+	myPassport.authenticate('local', function(err, user, info) {
+		if(err) { return res.status(404).send("server error, please reload page."); }
+		if (!user) { res.end("email or password are wrong."); }
+		req.logIn(user, function(err) {
+	      if (err) { return res.status(404).send("server error, please reload page."); }
+	      res.end(JSON.stringify({
+	      	text: "Login succeeded.",
+	      	redirect: "/"
+	      }));
+	    });
+	})(req, res, next);
+});
 
 router.post('/signup', function(req, res) {
 	if(!req.body && req.body.email && req.body.password && req.body.password == req.body.confirmpassword) {
 		return res.end("Sign Up failed.");
 	}
 
-	testUnique("User", {email: req.body.email}).then(function() { return db.add("User", req.body); })
+	db.checkUnique("User", {email: req.body.email}).then(function() { return db.add("User", req.body); })
 	.then(function(results) { 
 		showRedirectMessage(false, "Sign Up Done.", "/", res);
 	}).catch(function(err) { 
@@ -24,14 +47,14 @@ router.post('/signup', function(req, res) {
 	});
 });
 
-app.post('/*', function(req, res, next) {
+/*router.post('/*', function(req, res, next) {
 	var data = {
 		user: (req.user) ? req.user.firstname + " " + req.user.lastname : "Guest",
 		action: getAction(req.url),
 		target: req.body.name
 	};
 	db.addhistory(data).race(next);
-});
+});*/
 
 router.get('/getnews', function(req, res) {
 	request.get('http://tech.onliner.by/', function(error, response, body) {
@@ -50,13 +73,12 @@ router.post('/addproject', function(req, res) {
 		return res.end("Project was NOT added.");
 	}
 
-	//ADDING default values to project
 	var projectAttrs = req.body;
 	projectAttrs.priority = (projectAttrs.priority) ? projectAttrs.priority : 0;
 	projectAttrs.status = (projectAttrs.status) ? projectAttrs.status : 0;
 
 	
-	testUnique("Project", {name: req.body.name}).then(function() { return db.add("Project", req.body); })
+	db.checkUnique("Project", {name: req.body.name}).then(function() { return db.add("Project", req.body); })
 	.then(function(results) { 
 		showRedirectMessage(false, "Project was added successfuly.", "/dashboard", res);
 	}).catch(function(err) { 
@@ -100,7 +122,7 @@ router.post('/addticket/:project', function(req, res) {
 	ticketAttrs.project = req.params.project;
 	ticketAttrs.assignee = (ticketAttrs.assignee) ? ticketAttrs.assignee : "No Assignee";
 	
-	testUnique("Ticket", {name: req.body.name}).then(function() { return db.add("Ticket", ticketAttrs); })
+	db.checkUnique("Ticket", {name: req.body.name}).then(function() { return db.add("Ticket", ticketAttrs); })
 	.then(function(results) { 
 		showRedirectMessage(false, "Ticket was added successfuly.", "/board/"+req.params.project, res);
 	}).catch(function(err) { 
@@ -173,7 +195,7 @@ router.post('/removeticket/:ticketname', function(req, res) {
 
 var showRedirectMessage = function(err, message, redirectUrl, res) {
 	res.setHeader("Content-Type", "text/html");
-	res.end("<span " + (redirectUrl ? "action='redirect' target='"+redirectUrl+"'" : "") + "'>" +message+"</span>");
+	res.end(JSON.stringify({ redirect: redirectUrl, text: message}));
 };
 
 module.exports = router;

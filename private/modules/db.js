@@ -133,7 +133,6 @@ db_control.findOne = function(collection, selector) {
 
     Collections[collection].findOne(selector, function(err, res) {
       if (err) return responder.resolve({});
-
       responder.resolve(res);
     });
     return responder.promise;
@@ -155,7 +154,6 @@ db_control.find = function(collection, selector) {
 
     Collections[collection].find(selector, function(err, res) {
       if (err) return responder.resolve({});
-
       responder.resolve(res);
     });
     return responder.promise;

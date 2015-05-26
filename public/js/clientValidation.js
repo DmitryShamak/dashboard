@@ -20,7 +20,7 @@ var isValid = function(elem, value) {
 			}
 			break;
 		case "email":
-			if(!(/[a-z]*@[a-z]*(.)[a-z][a-z]$/.test(value)) || value == "") {
+			if(!(/[a-z]*@[a-z]*(.)[a-z]*$/.test(value)) || value == "") {
 				res = {
 					error: {
 						target: elem.name,
@@ -88,7 +88,7 @@ var isPassedValidation = function(context) {
 	return !errorList;
 }
 var getAction = function(url) {
-	var action = "Spy Action, or just someone login",
+	var action = false,
 		i = 0,
 		actions = ["add", "update", "delete", "remove", "get", "set", "signup"];
 	while(i < actions.length) {
@@ -120,7 +120,7 @@ var addValidation = function() {
 		data = getFormData(form.context);
 		globals.action = getAction(url);
 		$.post(url, data, function(res) {
-			showNotification({text: res});
+			showNotification(res);
 		});
 	});
 };
