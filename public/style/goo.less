@@ -1,0 +1,63 @@
+@creepSize: 20px;
+@bigEyeSize: @creepSize*0.8;
+@smallEyeSize: @creepSize*0.5;
+
+
+.goo {
+	position: fixed;
+	cursor: pointer;
+
+	z-index: 999;
+
+	.head {
+	    width: @creepSize;
+	    height: @creepSize;
+	    border-radius: @creepSize;
+	    background-color: #000;
+	}
+
+	.head:hover .eye {
+		&.left {
+			height: @bigEyeSize*1.2;
+		}
+
+		&:before {
+			width: 6px;
+		    height: 6px;
+		    margin: -3px;
+		    border-radius: 3px;
+		}
+	}
+
+	.eye {
+		position: absolute;
+		bottom: @creepSize/4;
+
+		background-color: #FFF;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+
+		&:before {
+			content: " ";
+			position: absolute;
+			top: 50%; left: 50%;
+
+		    width: 3px;
+			height: 3px;
+			margin: -2px;
+			background-color: #000;
+		}
+
+		&.left {
+			left: -@bigEyeSize/4;
+			width: @bigEyeSize;
+			height: @bigEyeSize;
+			border-radius: @bigEyeSize;
+		}
+		&.right {
+			right: -@smallEyeSize/3;
+			width: @smallEyeSize;
+			height: @smallEyeSize;
+			border-radius: @smallEyeSize;
+		}
+	}
+}

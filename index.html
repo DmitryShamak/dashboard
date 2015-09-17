@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dashboard</title>
+
+		<link rel="stylesheet/less" type="text/css" href="/public/style/main.less">
+		<link rel="stylesheet/less" type="text/css" href="/public/style/spec.less">
+		<link rel="stylesheet/less" type="text/css" href="/public/style/goo.less">
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.0/less.min.js"></script>
+
+		<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	    <script src="http://knockoutjs.com/downloads/knockout-2.3.0rc.js"></script>
+	</head>
+	<body>
+		<div id="navigation-wrapper">
+			<div class="profile">
+				<div class="profile-image"></div>
+				<div class="profile-name"></div>
+				<div class="profile-status online"></div>
+			</div>
+			<div class="navigation-links">
+				<div class="link active" target="tasks">Tasks</div>
+				<div class="link" target="important">Important</div>
+				<div class="link" target="notes">Notes</div>
+				<div class="link" target="">Chat</div>
+			</div>
+			<div class="filters">
+				<div class="filter alpha-btn btn" data-action="repeat" data-count="4">
+					<span class="icon"></span>
+					<span>#filter</span>
+				</div>
+			</div>
+		</div>
+		<div id="content-wrapper">
+			<div class="content">
+				<div id="tasks" class="content-block active block-example">
+					<div class="control">
+						<div class="part left text-center">Lorem ipsum</div>
+						<div class="part right">Lorem ipsum</div>
+					</div>
+					<div class="task btn" data-action="repeat" data-count="25">
+						<div class="left-block">
+							<div class="active small-block pull-left">
+								<span class="view-elem alpha-btn btn toggle"></span>
+							</div>
+							<div class="important small-block pull-left">
+								<span class="view-elem alpha-btn btn star"></span>
+							</div>
+							<div class="title overflow-text large-block pull-left">Lorem ipsum</div>
+						</div>
+						<div class="center-block">
+							<div class="mark small-block">
+								<span class="view-elem alpha-btn btn filter"></span>
+							</div>
+							<div class="description overflow-text">
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pretium vestibulum sapien varius consequat. Integer posuere diam quis diam porttitor, et tincidunt sem ullamcorper. Praesent vitae hendrerit nisi. Etiam efficitur purus id feugiat accumsan.
+							</div>
+						</div>
+						<div class="right-block">
+							<div class="date medium-block text-center pull-left">Today</div>
+							<div class="time medium-block text-center">PM 10:20</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="preloader"></div>
+		</div>
+		<div id="contacts">
+			
+		</div>
+	</body>
+	<script type="text/javascript" src="/public/script.js"></script>
+</html>
