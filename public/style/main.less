@@ -107,6 +107,10 @@ body {
 @controlHeight: 60px;
 @controlLPartWidth: 200px;
 
+@controlBlockHeight: @controlHeight/2;
+@controlIconSize: @controlBlockHeight*0.8;
+@controlIconMargin: (@controlBlockHeight - @controlIconSize)/2 0;
+
 @taskHeight: 40px;
 @taskHMargin: 10px;
 @taskVMargin: 5px;
@@ -117,7 +121,7 @@ body {
 @taskLBlockWidth: @taskSmallBlockWidth*2 + @taskLargeBlockWidth + @taskHMargin*2;
 @taskRBlockWidth: @taskMediumBlockWidth*2;
 
-@contentMinWidth: @taskLBlockWidth + @taskRBlockWidth + @taskLargeBlockWidth;
+@contentMinWidth: 1200 - @navigationWidth;
 
 #content-wrapper {
 	margin-left: @navigationWidth;
@@ -170,6 +174,7 @@ body {
 		padding: 0 20px;
 		height: @controlHeight;
 	    font-size: 1.5em;
+	    text-align: center;
 
 	    .part {
 	    	position: absolute;
@@ -189,6 +194,61 @@ body {
 	    	&.right {
 	    		left: @controlLPartWidth;
 	    		right: 0;
+	    	}
+
+	    	.control-block {
+	    		display: inline-block;
+	    		height: @controlBlockHeight;
+	    		line-height: @controlBlockHeight;
+	    		margin: 0 20px;
+	    		overflow: hidden;
+
+	    		.icon {
+	    			display: inline-block;
+		    		width: @controlIconSize;
+		    		height: @controlIconSize;
+		    		margin: @controlIconMargin;
+
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: contain;
+
+					&.add {
+						background-image: url("/public/img/add.png");
+					}
+					&.delete {
+						background-image: url("/public/img/delete.png");
+					}
+					&.share {
+						background-image: url("/public/img/share.png");
+					}
+					&.undo {
+						background-image: url("/public/img/undo.png");
+					}
+					&.update {
+						background-image: url("/public/img/reload.png");
+					}
+					&.prev {
+						background-image: url("/public/img/arrow_left.png");
+					}
+					&.next {
+						background-image: url("/public/img/arrow_right.png");
+					}
+		    	}
+
+		    	.page-control {
+		    		margin-right: 20px;
+		    		.page-count {
+					    margin: 0 10px;
+					    font-size: 0.7em;
+					}
+		    	}
+
+		    	input {
+		    		display: inline-block;
+		    		margin: @controlIconMargin;
+		    		height: @controlIconSize;
+		    	}
 	    	}
 	    }
 	}
