@@ -79,6 +79,65 @@ function onTick() {
 	onTick();
 })();
 },{}],2:[function(require,module,exports){
+var ViewModel = function() {
+	var self = this;
+
+	self.profile = ko.observable();
+
+	self.data = ko.observableArray();
+	self.filters = ko.observableArray();
+
+	self.generateFilters = function(arr) {
+		var filters = [],
+			type;
+
+		arr.forEach(function(i) {
+			type = i.type;
+			if(type && !~filters.indexOf(type)) {
+				filters.push(type);
+			}
+		});
+		self.filters(filters);
+	};
+
+	/** This function set data to view component
+		@params {Array} data
+	*/
+	self.setData = function(data) {
+		self.generateFilters(data);
+		self.data(data.map(function(i) {
+			for(key in i) {
+				i[key] = ko.observable(i[key]);
+			}
+			return i;
+		}));
+	};
+	self.setProfile = function(data) {
+		self.profile(data);
+	};
+
+	self.selectItem = function(item, ev) {
+		item.selected(!item.selected());
+	};
+
+	self.openItem = function(item, ev) {
+		//TODO: open item
+		ev.cancelBubble = true;
+	    if (ev.stopPropagation) {
+	    	ev.stopPropagation(); 
+	    }
+	};
+};
+var viewModel = new ViewModel();
+
+ko.applyBindings(viewModel);
+
+/**
+	Return control methods
+*/
+module.exports.setData = viewModel.setData;
+module.exports.setProfile = viewModel.setProfile;
+},{}],3:[function(require,module,exports){
 var viewProvider = require("./providers/viewProvider.js");
 
 function initialize() {
@@ -86,14 +145,73 @@ function initialize() {
 };
 
 window.onload = initialize;
-},{"./providers/viewProvider.js":4}],3:[function(require,module,exports){
+},{"./providers/viewProvider.js":5}],4:[function(require,module,exports){
 var dbProvider = {};
 
+var Profile = function(attrs) {
+	var self = this;
+	attrs = attrs || {};
+
+	self.name = attrs.name || "Guest";
+	self.secondName = attrs.secondName || "User";
+	self.status = attrs.status || "online";
+	self.image = attrs.image || "/public/img/defaultuser.jpg";
+
+	self.fullName = self.name + " " + self.secondName;
+};
+
+var DataTmpl = function(attrs) {
+	var self = this;
+	attrs = attrs || {};
+
+	self.selected = attrs.selected || false;
+	self.title = attrs.title || "[no title]";
+
+	self.favorite = attrs.favorite || randomFavorite();
+	self.type = attrs.type || randomType();
+
+	self.description = attrs.description || "[no description]";
+	self.date = attrs.date || "[no date]";
+	self.time = attrs.tile || "[no time]";
+};
+var randomType = function() {
+	var type,
+		random = Math.round(Math.random()*5);
+
+	switch(random) {
+		case 0:
+			type = "meeting";
+			break;
+		case 1:
+			type = "event";
+			break;
+		default:
+			type = "other";
+			break;
+	}
+
+	return type;
+};
+var randomFavorite = function() {
+	var random = Math.random()*10;
+
+	return (random > 8);
+};
+
+
 dbProvider.getData = function(type, callback) {
-	var delay = Math.random() * 999,
-		data = {
-			type: type
-		};
+	var delay = Math.random() * 9999,
+		length = Math.round(Math.random() * 20),
+		i = 0,
+		data = [];
+
+	if(type == "profile") {
+		data = new Profile();
+	} else {
+		for(i; i<length; i++) {
+			data.push(new DataTmpl());
+		}
+	}
 
 	setTimeout(function() {
 		callback(null, data);
@@ -101,19 +219,17 @@ dbProvider.getData = function(type, callback) {
 };
 
 module.exports = dbProvider;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var dbProvider = require("./dbProvider.js");
+var knockout = require("../knockout.js");
 var viewProvider = {};
 
 viewProvider.addListeners = function() {
 	//Navigation links
 	$(".navigation-links .link").click(viewProvider.linkCallback);
 
-	//Portfolio gallery button
-	$("#portfolio").on("click", ".preview-btn", viewProvider.showGallery);
-
-	//Gallery
-	$("#gallery").on("click", ".close-btn", viewProvider.hideGallery);
+	//Task
+	$("#tasks").on("click", ".toggle, .star", viewProvider.toggleActive);
 };
 
 initAction = function(elem, action) {
@@ -134,6 +250,11 @@ initAction = function(elem, action) {
 			}
 			break;
 	}
+};
+
+viewProvider.toggleActive = function(e) {
+	var elem = this;
+	$(elem).toggleClass("active");
 };
 
 viewProvider.findActions = function() {
@@ -162,7 +283,7 @@ viewProvider.getNotificationElement = function(type) {
 };
 
 viewProvider.toggleContent = function(data) {
-	console.info("Get Data", data);
+	knockout.setData(data);
 }
 
 viewProvider.toggleNavigation = function(target) {
@@ -197,9 +318,20 @@ viewProvider.hidePreloader = function() {
 		preloaderClass = "pending";
 	
 	if(~className.indexOf(preloaderClass)) {
-		viewProvider.contentElem.className = className.replace(" " + preloaderClass, "");
+		viewProvider.contentElem.className = className = className.replace(preloaderClass, "");
+		viewProvider.contentElem.className = className.replace(/\s$/, "");
 	}
 };
+
+viewProvider.getData = function(query, callback) {
+	viewProvider.showPreloader();
+	dbProvider.getData(query, function(err, data) {
+		if(!err) {
+			callback(data);
+			viewProvider.hidePreloader();
+		}
+	});
+}
 
 viewProvider.linkCallback = function(e) {
 	var elem = e.target,
@@ -211,16 +343,12 @@ viewProvider.linkCallback = function(e) {
 
 	viewProvider.toggleNavigation(elem);
 
-	viewProvider.showPreloader();
-	dbProvider.getData(target, function(err, data) {
-		if(!err) {
-			viewProvider.toggleContent(data);
-			viewProvider.hidePreloader();
-		}
-	});
+	viewProvider.getData(target, viewProvider.toggleContent);
 };
 
 viewProvider.inisialize = function() {
+	var defaultQuery = "tasks";
+
 	viewProvider.navigationElem = document.getElementById("navigation-wrapper");
 	viewProvider.contentElem = document.getElementById("content-wrapper");
 
@@ -228,9 +356,11 @@ viewProvider.inisialize = function() {
 		viewProvider.addListeners();
 		viewProvider.findActions();
 	}
+	viewProvider.getData("profile", knockout.setProfile);
+	viewProvider.getData(defaultQuery, viewProvider.toggleContent);
 }
 
 viewProvider.inisialize();
 
 module.exports = viewProvider;
-},{"./dbProvider.js":3}]},{},[1,2]);
+},{"../knockout.js":2,"./dbProvider.js":4}]},{},[1,2,3]);

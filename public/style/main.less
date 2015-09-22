@@ -3,13 +3,15 @@
 	padding: 0;
 }
 
+@mainTextColor: #5B5A5A;
+
 html,
 body {
 	width: 100%;
 	height: 100%;
 
 	font-size: 14px;
-	color: #5B5A5A;
+	color: @mainTextColor;
 }
 
 /**
@@ -21,6 +23,21 @@ body {
 @fourth-color: rgba(248, 219, 209, 0.8);
 
 
+/**
+	ELEM COLORS
+*/
+.type,
+.filter .icon {
+	&[type="meeting"] {
+		background-color: #A9CE27;
+	}
+	&[type="event"] {
+		background-color: #CE27C0;
+	}
+	&[type="other"] {
+		background-color: #AEAEAE;
+	}
+}
 /**
  * Font styles
 */
@@ -50,6 +67,14 @@ body {
 @navigationBgColor: @second-color;
 @navigationColor: @first-color;
 
+@profileBlockHeight: 70px;
+@profileImageSize: @navigationWidth/5;
+@profileImageTopMargin: 10px;
+@profileImageLeftMargin: 10px;
+@profileStatusSize: 30px;
+
+
+@optionBlockHeight: 50px;
 
 #navigation-wrapper {
 	position: fixed;
@@ -57,13 +82,64 @@ body {
 	left: 0;
 
 	width: @navigationWidth;
-	padding: 150px 0;
+	padding: 0;
 
 	background-color: @navigationBgColor;
 	color: @navigationColor;
 	font-size: 1.3em;
 
 	box-sizing: border-box;
+
+	.profile {
+		position: relative;
+		height: @profileBlockHeight;
+
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+		.profile-image {
+			position: absolute;
+			top: @profileImageTopMargin;
+			left: @profileImageLeftMargin;
+			width: @profileImageSize;
+			height: @profileImageSize;
+			border-radius: @profileImageSize;
+
+			border: 4px solid rgba(255, 255, 255, 0.5);
+
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			&.online {
+				border-color: rgba(81, 226, 33, 0.5);
+			}
+		}
+
+		.profile-info {
+			position: absolute;
+			top: 0; bottom: 0;
+			left: @profileImageSize + @profileImageLeftMargin*2; right: 0;
+
+			padding: 0 10px;
+			line-height: @profileBlockHeight;
+
+			.profile-name {
+				font-size: 0.9em;
+			}
+		}
+	}
+
+	.compose-btn {
+		padding: 10px 0;
+		margin: 20px;
+
+		font-weight: bold;
+		background-color: #FF4200;
+	}
+
+	.navigation-links {
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
 
 	.link {
 		padding: 10px 20px;
@@ -95,9 +171,45 @@ body {
 			    height: 10px;
 			    border-radius: 10px;
 			    margin-right: 2px;
-			    background-color: #A9CE27;
 			}
 	    }
+	}
+
+	.options {
+		position: absolute;
+		bottom: 0;
+		left: 0; right: 0;
+
+		padding: 10px 0;
+		height: @optionBlockHeight;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		box-sizing: border-box;
+
+		&:before {
+			content: " ";
+			position: absolute;
+			top: 10px; bottom: 10px;
+			left: 50%;
+			border-right: 1px solid rgba(255, 255, 255, 0.1);
+			z-index: 1;
+		}
+
+		.option-btn {
+			display: inline-block;
+			width: 50%;
+			height: @optionBlockHeight - 20;
+
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: contain;
+			
+			&.logout {
+				background-image: url("/public/img/logout.png");
+			}
+			&.settings {
+				background-image: url("/public/img/settings.png");
+			}
+		}
 	}
 }
 
@@ -120,8 +232,20 @@ body {
 
 @taskLBlockWidth: @taskSmallBlockWidth*2 + @taskLargeBlockWidth + @taskHMargin*2;
 @taskRBlockWidth: @taskMediumBlockWidth*2;
+@taskCenterBlocLeft: @taskLBlockWidth + @taskHMargin*3;
+@taskCenterBlocRight: @taskRBlockWidth + @taskHMargin*2;
 
 @contentMinWidth: 1200 - @navigationWidth;
+
+@keyframes showProgress {
+  from {
+    left: 0;
+  }
+
+  to {
+    left: 100%;
+  }
+}
 
 #content-wrapper {
 	margin-left: @navigationWidth;
@@ -129,58 +253,65 @@ body {
 	min-width: @contentMinWidth;
 
 	&.pending {
-		.content {
-			height: 0;
-			opacity: 0;
-			overflow: hidden;
+		.control {
+			&:before {
+				background-color: #60A9F7;
+			}
+			&:after {
+				display: block;
+				background-color: rgba(255, 255, 255, 0.5);
+				animation-duration: 1s;
+				animation-name: showProgress;
+				animation-iteration-count: infinite;
+				animation-direction: normal;
+			}
 		}
-		.preloader {
-			height: auto;
-			opacity: 1;
-			background-image: url("/public/img/preloader.gif");
-		}
-	}
-
-	.content,
-	.preloader {
-		-webkit-transition: all 0.5s ease 02s;
-		transition: all 0.5s ease 0.2s;
 	}
 
 	.content {
 		height: auto;
 		opacity: 1;
 	}
-	.preloader {
-		position: absolute;
-		top: 0; bottom: 0;
-		left: @navigationWidth; right: 0;
-
-		background-color: #FFD87B;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-image: none;
-
-		height: 0;
-		opacity: 0;
-	}
-
-	#tasks {
-		padding: 0 20px;
-	}
 
 	.control {
-		position: relative;
+		position: fixed;
+		top: 0; left: @navigationWidth; right: 0;
+
 		padding: 0 20px;
 		height: @controlHeight;
 	    font-size: 1.5em;
 	    text-align: center;
 
+	    background-color: @first-color;
+	    z-index: 1;
+
+	    &:before,
+	    &:after {
+			content: " ";
+		    position: absolute;
+		    bottom: 0;
+		    height: 3px;
+
+		    -webkit-transition: all 0.5s ease 02s;
+			transition: all 0.5s ease 0.2s;
+		}
+		&:before {
+		    left: 0; right: 0;
+		    background-color: rgba(255, 255, 255, 0);
+		}
+		&:after {
+			left: 0;
+		    width: 60px;
+		    display: none;
+		}
+
 	    .part {
 	    	position: absolute;
 	    	top: 0; bottom: 0;
 
-	    	padding: 15px 10px;
+	    	padding: 15px 10px 0;
+	    	margin-bottom: 15px;
+
 	    	box-sizing: border-box;
 
 	    	&:not(:last-child) {
@@ -244,22 +375,68 @@ body {
 					}
 		    	}
 
+		    	@searchIconWidth: 30px;
+		    	.search-wrapper {
+		    		position: relative;
+		    		padding-left: @searchIconWidth;
+		    		height: @controlBlockHeight;
+		    		border-radius: @controlBlockHeight/2;
+		    		border: 1px solid rgba(0, 0, 0, 0.2);
+		    		line-height: normal;
+		    		background-color: #FFF;
+		    		box-sizing: border-box;
+		    		overflow: hidden;
+
+		    		&:before {
+		    			content: " ";
+		    			position: absolute;
+		    			top: 0; bottom: 0;
+		    			left: 0;
+		    			width: @searchIconWidth;
+
+		    			background-position: center;
+						background-repeat: no-repeat;
+						background-size: contain;
+						background-image: url("/public/img/search.png");
+		    		}
+		    	}
+
 		    	input {
 		    		display: inline-block;
-		    		margin: @controlIconMargin;
-		    		height: @controlIconSize;
+		    		margin: 0;
+		    		height: @controlBlockHeight;
+		    		padding: 0;
+
+		    		color: @mainTextColor;
+		    		border-radius: 3px;
+				    outline: 0;
+				    border: 0;
+				    box-sizing: border-box;
+
+				    &:focus {
+				    	border-color: rgba(249, 198, 157, 1);
+				    };
 		    	}
 	    	}
 	    }
+	}
+
+	.data-wrapper {
+	    position: fixed;
+		top: 0; bottom: 0;
+	    left: @navigationWidth; right: 0;
+		padding: @controlHeight 20px 0;
+	    overflow: auto;
 	}
 
 	.task {
 		position: relative;
 
 		height: @taskHeight;
-    	border: 0;
     	padding: @taskVMargin @taskHMargin;
 		line-height: @taskHeight;
+    	border: 0;
+    	border-radius: 5px;
 
 		box-sizing: border-box;
 		overflow: hidden;
@@ -268,9 +445,34 @@ body {
 			background-color: rgba(255, 255, 255, 0.4);
 		}
 
+		&.active {
+			background-color: #BDDAAB;
+
+			.toggle:before {
+	    		content: " ";
+			    position: absolute;
+			    top: @viewElemSize/5;
+			    bottom: @viewElemSize/5;
+			    left: @viewElemSize/5;
+			    right: @viewElemSize/5;
+			    background-color: #A9CE27;
+	    	}
+		}
+
 		&:hover {
 			border: 2px solid @third-color;
 			background-color: @fourth-color;
+			
+			.left-block {
+				left: 8px;
+			}
+			.center-block {
+				left: @taskCenterBlocLeft - 2;
+				right: @taskCenterBlocRight - 2;
+			}
+			.right-block {
+				right: -2px;
+			}
 		}
 
 		div {
@@ -290,7 +492,7 @@ body {
 			width: @taskMediumBlockWidth;
 		}
 		.large-block {
-			width: @taskLargeBlockWidth;
+			max-width: @taskLargeBlockWidth;
 		}
 
 		.left-block {
@@ -303,8 +505,8 @@ body {
 		.center-block {
 			position: absolute;
 			top: 0; bottom: 0;
-			left: @taskLBlockWidth + @taskHMargin*3;
-			right: @taskRBlockWidth + @taskHMargin*2;
+			left: @taskCenterBlocLeft;
+			right: @taskCenterBlocRight;
 
 			.description {
 				position: absolute;
@@ -334,7 +536,7 @@ body {
 		    	background-color: #FFF;
 		    	outline: 1px solid rgba(0, 0, 0, 0.3);
 		    }
-		    &.star {
+		    &.favorite {
 		    	background-size: contain;
 				background-position: center;
 				background-repeat: no-repeat;
@@ -344,14 +546,21 @@ body {
 					background-image: url("/public/img/star-a.png");
 				}
 		    }
-		    &.filter {
+		    &.type {
+		    	width: @viewElemSize/1.5;
+			    height: @viewElemSize/1.5;
+			    margin: -@viewElemSize/3.5;
 		    	border-radius: @viewElemSize;
-		    	background-color: #A9CE27;
 		    }
 		}
 
 		.title {
 			margin-left: @taskHMargin*2;
+
+			&:hover {
+			    color: #2A87CE;
+			    text-decoration: underline;
+			}
 		}
 	}
 }

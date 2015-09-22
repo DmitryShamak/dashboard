@@ -30,7 +30,10 @@
 }
 
 .alpha-btn {
-	opacity: 0.5;
+	
+	&:not(.active) {
+		opacity: 0.5;
+	}
 
     &:hover {
     	opacity: 1;
@@ -41,6 +44,13 @@
 	-webkit-box-shadow: 0 1px 5px 0 #999;
 	-moz-box-shadow: 0 1px 5px 0 #999;
 	box-shadow: 0 1px 5px 0 #999;
+}
+
+.block-selection {
+	* {
+		user-select: none;
+		-webkit-user-select: none;
+	}
 }
 
 .overflow-text {

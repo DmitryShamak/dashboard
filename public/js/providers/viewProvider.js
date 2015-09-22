@@ -1,15 +1,13 @@
 var dbProvider = require("./dbProvider.js");
+var knockout = require("../knockout.js");
 var viewProvider = {};
 
 viewProvider.addListeners = function() {
 	//Navigation links
 	$(".navigation-links .link").click(viewProvider.linkCallback);
 
-	//Portfolio gallery button
-	$("#portfolio").on("click", ".preview-btn", viewProvider.showGallery);
-
-	//Gallery
-	$("#gallery").on("click", ".close-btn", viewProvider.hideGallery);
+	//Task
+	$("#tasks").on("click", ".toggle, .star", viewProvider.toggleActive);
 };
 
 initAction = function(elem, action) {
@@ -30,6 +28,11 @@ initAction = function(elem, action) {
 			}
 			break;
 	}
+};
+
+viewProvider.toggleActive = function(e) {
+	var elem = this;
+	$(elem).toggleClass("active");
 };
 
 viewProvider.findActions = function() {
@@ -58,7 +61,7 @@ viewProvider.getNotificationElement = function(type) {
 };
 
 viewProvider.toggleContent = function(data) {
-	console.info("Get Data", data);
+	knockout.setData(data);
 }
 
 viewProvider.toggleNavigation = function(target) {
@@ -93,9 +96,20 @@ viewProvider.hidePreloader = function() {
 		preloaderClass = "pending";
 	
 	if(~className.indexOf(preloaderClass)) {
-		viewProvider.contentElem.className = className.replace(" " + preloaderClass, "");
+		viewProvider.contentElem.className = className = className.replace(preloaderClass, "");
+		viewProvider.contentElem.className = className.replace(/\s$/, "");
 	}
 };
+
+viewProvider.getData = function(query, callback) {
+	viewProvider.showPreloader();
+	dbProvider.getData(query, function(err, data) {
+		if(!err) {
+			callback(data);
+			viewProvider.hidePreloader();
+		}
+	});
+}
 
 viewProvider.linkCallback = function(e) {
 	var elem = e.target,
@@ -107,16 +121,12 @@ viewProvider.linkCallback = function(e) {
 
 	viewProvider.toggleNavigation(elem);
 
-	viewProvider.showPreloader();
-	dbProvider.getData(target, function(err, data) {
-		if(!err) {
-			viewProvider.toggleContent(data);
-			viewProvider.hidePreloader();
-		}
-	});
+	viewProvider.getData(target, viewProvider.toggleContent);
 };
 
 viewProvider.inisialize = function() {
+	var defaultQuery = "tasks";
+
 	viewProvider.navigationElem = document.getElementById("navigation-wrapper");
 	viewProvider.contentElem = document.getElementById("content-wrapper");
 
@@ -124,6 +134,8 @@ viewProvider.inisialize = function() {
 		viewProvider.addListeners();
 		viewProvider.findActions();
 	}
+	viewProvider.getData("profile", knockout.setProfile);
+	viewProvider.getData(defaultQuery, viewProvider.toggleContent);
 }
 
 viewProvider.inisialize();

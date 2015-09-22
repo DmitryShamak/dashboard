@@ -13,26 +13,34 @@
 	</head>
 	<body>
 		<div id="navigation-wrapper">
-			<div class="profile">
-				<div class="profile-image"></div>
-				<div class="profile-name"></div>
-				<div class="profile-status online"></div>
+			<div class="profile" data-bind="with: profile">
+				<div class="profile-image" data-bind="css: status, style: {backgroundImage: 'url('+ image +')'}"></div>
+				<div class="profile-info">
+					<div class="profile-name overflow-text" data-bind="text: fullName">Lorem ipsum</div>
+				</div>
 			</div>
+			<div class="compose-btn btn text-center">Compose</div>
 			<div class="navigation-links">
 				<div class="link active" target="tasks">Tasks</div>
 				<div class="link" target="important">Important</div>
 				<div class="link" target="notes">Notes</div>
 				<div class="link" target="">Chat</div>
 			</div>
-			<div class="filters">
-				<div class="filter alpha-btn btn" data-action="repeat" data-count="4">
-					<span class="icon"></span>
-					<span>#type</span>
+			<div class="filters" data-bind="foreach: filters">
+				<div class="filter alpha-btn btn">
+					<span class="icon" data-bind="attr: {type: $data}"></span>
+					<span data-bind="text: $data"></span>
+				</div>
+			</div>
+			<div class="options">
+				<div class="text-center">
+					<span class="option-btn logout btn alpha-btn pull-left"></span>
+					<span class="option-btn settings btn alpha-btn"></span>
 				</div>
 			</div>
 		</div>
 		<div id="content-wrapper">
-			<div class="content">
+			<div class="content block-selection">
 				<div id="tasks" class="content-block active block-example">
 					<div class="control">
 						<div class="part left text-center">Lorem ipsum</div>
@@ -49,38 +57,38 @@
 							<div class="control-block clearfix pull-right">
 								<div class="page-control pull-left">
 									<span class="page-count pull-left">
-										<span class="range">1-25 of 25</span>
+										<span class="range page">1</span>-<span class="range limit">25</span> of <span class="range count">25</span>
 									</span>
 									<span class="icon prev alpha-btn btn"></span>
 									<span class="icon next alpha-btn btn"></span>
 								</div>
-								<div class="pull-right">
+								<div class="search-wrapper pull-right">
 									<input type="text" placeholder="Search.." />
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="task btn" data-action="repeat" data-count="25">
-						<div class="left-block">
-							<div class="active small-block pull-left">
-								<span class="view-elem alpha-btn btn toggle"></span>
+					<div class="data-wrapper" data-bind="foreach: data">
+						<div class="task btn" data-bind="css: {'active': selected}, click: $parent.selectItem">
+							<div class="left-block">
+								<div class="active small-block pull-left">
+									<span class="view-elem toggle"></span>
+								</div>
+								<div class="important small-block pull-left">
+									<span class="view-elem alpha-btn btn favorite" data-bind="css: {'active': favorite}"></span>
+								</div>
+								<div class="title overflow-text large-block pull-left" data-bind="text: title, click: $parent.openItem"></div>
 							</div>
-							<div class="important small-block pull-left">
-								<span class="view-elem alpha-btn btn star"></span>
+							<div class="center-block">
+								<div class="small-block">
+									<span class="view-elem type" data-bind="attr: {type: type}"></span>
+								</div>
+								<div class="description overflow-text" data-bind="text: description"></div>
 							</div>
-							<div class="title overflow-text large-block pull-left">Lorem ipsum dolor sit amet</div>
-						</div>
-						<div class="center-block">
-							<div class="mark small-block">
-								<span class="view-elem alpha-btn btn filter"></span>
+							<div class="right-block">
+								<div class="date medium-block text-center pull-left" data-bind="text: date"></div>
+								<div class="time medium-block text-center" data-bind="text: time"></div>
 							</div>
-							<div class="description overflow-text">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pretium vestibulum sapien varius consequat. Integer posuere diam quis diam porttitor, et tincidunt sem ullamcorper. Praesent vitae hendrerit nisi. Etiam efficitur purus id feugiat accumsan.
-							</div>
-						</div>
-						<div class="right-block">
-							<div class="date medium-block text-center pull-left">Today</div>
-							<div class="time medium-block text-center">PM 10:20</div>
 						</div>
 					</div>
 				</div>
