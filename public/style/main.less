@@ -68,7 +68,7 @@ body {
 @navigationColor: @first-color;
 
 @profileBlockHeight: 70px;
-@profileImageSize: @navigationWidth/5;
+@profileImageSize: @navigationWidth/4;
 @profileImageTopMargin: 10px;
 @profileImageLeftMargin: 10px;
 @profileStatusSize: 30px;
@@ -104,15 +104,9 @@ body {
 			height: @profileImageSize;
 			border-radius: @profileImageSize;
 
-			border: 4px solid rgba(255, 255, 255, 0.5);
-
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: cover;
-
-			&.online {
-				border-color: rgba(81, 226, 33, 0.5);
-			}
 		}
 
 		.profile-info {
@@ -125,6 +119,22 @@ body {
 
 			.profile-name {
 				font-size: 0.9em;
+			}
+		}
+
+		.profile-status {
+			position: absolute;
+			top: 0; bottom: 0;
+			right: 0;
+			width: 5px;
+
+			background-color: rgba(255, 255, 255, 0.5);
+
+			&.online {
+				background-color: rgba(81, 226, 33, 0.5);
+			}
+			&.busy {
+				background-color: rgba(255, 0, 0, 0.5);
 			}
 		}
 	}
@@ -433,7 +443,8 @@ body {
 		position: relative;
 
 		height: @taskHeight;
-    	padding: @taskVMargin @taskHMargin;
+
+    	margin: @taskVMargin @taskHMargin;
 		line-height: @taskHeight;
     	border: 0;
     	border-radius: 5px;
@@ -561,6 +572,53 @@ body {
 			    color: #2A87CE;
 			    text-decoration: underline;
 			}
+		}
+	}
+
+	@editWrapperWidth: 600px;
+	@editWrapperHeight: 200px;
+	@editWrapperLMargin: -@editWrapperWidth/2;
+	@editWrapperTMargin: -@editWrapperHeight/2;
+
+	#edit-wrapper {
+	    position: fixed;
+		top: 0; bottom: 0;
+		left: @navigationWidth; right: 0;
+
+		background-color: rgba(0, 0, 0, 0.8);
+		z-index: 2;
+
+		input,
+		textarea {
+			display: block;
+			width: 100%;
+			max-width: none;
+			padding: 5px 10px;
+			margin: 10px 0;
+			box-sizing: border-box;
+			border: 0;
+			outline: 0;
+			font-size: 1.2em;
+			color: @mainTextColor;
+			resize: none;
+		}
+
+		select,
+		.btn {
+			display: inline-block;
+			padding: 5px 10px;
+		}
+
+		.edit-note {
+			position: absolute;
+			top: 50%; left: 50%;
+
+			width: @editWrapperWidth;
+			height: @editWrapperHeight;
+			margin: @editWrapperTMargin @editWrapperLMargin;
+			padding: 20px;
+
+			background-color: #FFF;
 		}
 	}
 }

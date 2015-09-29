@@ -1,11 +1,35 @@
 var express = require("express");
-var fs = require("fs");
+var path = require("path");
+var bodyParser = require("body-parser");
+var db = require("./private/db.js");
 
-var port = 8088;
 var app = express();
-app.use("/", express.static(__dirname + '/'));
-app.use("/public", express.static(__dirname + '/public/'));
+var port = 8088,
+	rootPath = __dirname;
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
+app.use("/", express.static(rootPath));
+app.use("/public", express.static(path.join(rootPath,'public/')));
+
+app.get("/board", function(req, res, next) {
+	db.find({}, function(err, data) {
+		if(err) {
+			return res.end();
+		}
+
+		res.send(JSON.stringify(data));
+	});
+});
+
+app.post("/add", function(req, res, next) {
+	db.add(req.body, function(err) {
+		return res.end(err || "200");
+	});
+});
 
 app.listen(port, function() {
 	console.info("Listen port %s", port);

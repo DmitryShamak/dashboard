@@ -6,8 +6,8 @@ var Profile = function(attrs) {
 
 	self.name = attrs.name || "Guest";
 	self.secondName = attrs.secondName || "User";
-	self.status = attrs.status || "online";
-	self.image = attrs.image || "/public/img/defaultuser.jpg";
+	self.status = attrs.status || randomStatus();
+	self.image = attrs.image || "/public/img/beast.jpg";
 
 	self.fullName = self.name + " " + self.secondName;
 };
@@ -49,7 +49,24 @@ var randomFavorite = function() {
 
 	return (random > 8);
 };
+var randomStatus = function() {
+	var status,
+		random = Math.round(Math.random()*4);
 
+	switch(random) {
+		case 0:
+			status = "online";
+			break;
+		case 1:
+			status = "busy";
+			break;
+		default:
+			status = "offline";
+			break;
+	}
+
+	return status;
+};
 
 dbProvider.getData = function(type, callback) {
 	var delay = Math.random() * 9999,

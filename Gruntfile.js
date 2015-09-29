@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          './public/script.js': [path+'/public/js/*.js']
+          './build/script.js': [path+'/public/js/app.js', path+'/public/js/controllers/*.js']
         }
       }
     },
@@ -16,13 +16,13 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: ['./public/js/main.js', './public/creep.js'],
-        dest: './public/script.min.js'
+        src: ['./build/script.js'],
+        dest: './build/script.min.js'
       }
     },
     watch: {
       scripts: {
-        files: [path+'/public/js/*.js', path+'/public/js/*/*.js'],
+        files: [path+'/public/js/controllers/*.js', path+'/public/js/app.js'],
         tasks: ['build'],
         options: {
           livereload: true,
@@ -37,6 +37,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task(s).
-  grunt.registerTask('build', ['uglify', 'browserify']);
+  grunt.registerTask('build', ['browserify', 'uglify']);
 
 };
