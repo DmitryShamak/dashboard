@@ -12,6 +12,7 @@ var NoteSch = new Schema({
 	description: String,
 	type: String,
 	favorite: Boolean,
+	priority: Number,
 	date: Date
 });
 var Model = mongoose.model('Note', NoteSch);

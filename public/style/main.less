@@ -37,6 +37,12 @@ body {
 	&[type="other"] {
 		background-color: #AEAEAE;
 	}
+	&[type="bug"] {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-image: url('/public/img/bug.png');
+	}
 }
 /**
  * Font styles
@@ -236,6 +242,7 @@ body {
 @taskHeight: 40px;
 @taskHMargin: 10px;
 @taskVMargin: 5px;
+@taskBorderRadius: 5px;
 @taskSmallBlockWidth: 30px;
 @taskMediumBlockWidth: 90px;
 @taskLargeBlockWidth: 200px;
@@ -258,6 +265,7 @@ body {
 }
 
 #content-wrapper {
+	position: relative;
 	margin-left: @navigationWidth;
 	padding: 0 0 20px;
 	min-width: @contentMinWidth;
@@ -363,6 +371,9 @@ body {
 					&.share {
 						background-image: url("/public/img/share.png");
 					}
+					&.edit {
+						background-image: url("/public/img/edit.png");
+					}
 					&.undo {
 						background-image: url("/public/img/undo.png");
 					}
@@ -447,7 +458,7 @@ body {
     	margin: @taskVMargin @taskHMargin;
 		line-height: @taskHeight;
     	border: 0;
-    	border-radius: 5px;
+    	border-radius: @taskBorderRadius;
 
 		box-sizing: border-box;
 		overflow: hidden;
@@ -471,9 +482,9 @@ body {
 		}
 
 		&:hover {
-			border: 2px solid @third-color;
-			background-color: @fourth-color;
-			
+			/*border: 2px solid @third-color;*/
+			/*background-color: @fourth-color;*/
+			/*			
 			.left-block {
 				left: 8px;
 			}
@@ -483,7 +494,8 @@ body {
 			}
 			.right-block {
 				right: -2px;
-			}
+			}*/
+			background-color: rgba(0, 0, 0, 0.2);
 		}
 
 		div {
@@ -573,6 +585,26 @@ body {
 			    text-decoration: underline;
 			}
 		}
+
+		.priority {
+		    position: absolute;
+		    top: 0; bottom: 0;
+		    left: 0;
+		    width: @taskBorderRadius;
+		    
+		    &.urgent {
+		    	background-color: #DC4444;
+		    }
+		    &.hight {
+		    	background-color: #EA9F5B;
+		    }
+		    &.medium {
+		    	background-color: #56B6D4;
+		    }
+		    &.low {
+		    	/*background-color: #CAD5D8;*/
+		    }
+		}
 	}
 
 	@editWrapperWidth: 600px;
@@ -587,6 +619,10 @@ body {
 
 		background-color: rgba(0, 0, 0, 0.8);
 		z-index: 2;
+
+		&:not(.active) {
+			display: none;
+		}
 
 		input,
 		textarea {

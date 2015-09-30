@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          './build/script.js': [path+'/public/js/app.js', path+'/public/js/controllers/*.js']
+          './build/script.js': [path+'/public/js/app.js', path+'/public/js/*/*.js']
         }
       }
     },
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: [path+'/public/js/controllers/*.js', path+'/public/js/app.js'],
+        files: [path+'/public/js/*/*.js', path+'/public/js/app.js'],
         tasks: ['build'],
         options: {
           livereload: true,
