@@ -31,6 +31,18 @@ app.post("/add", function(req, res, next) {
 	});
 });
 
+app.post("/update", function(req, res, next) {
+	db.update(req.body, function(err) {
+		return res.end(err || "200");
+	});
+});
+
+app.post("/remove", function(req, res, next) {
+	db.remove(req.body, function(err) {
+		return res.end(err || "200");
+	});
+});
+
 app.listen(port, function() {
 	console.info("Listen port %s", port);
 })

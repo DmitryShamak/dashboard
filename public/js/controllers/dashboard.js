@@ -3,14 +3,16 @@ var Note = function(attrs) {
 	attrs = attrs || {};
 
 	self.selected = !!attrs.selected;
-	self.title = attrs.title || "[no title]";
+	self.title = attrs.title || "";
 
 	self.favorite = !!attrs.favorite;
 	self.type = attrs.type || "other";
 	self.priority = attrs.priority || 0;
 
-	self.description = attrs.description || "[no description]";
+	self.description = attrs.description || "";
 	self.date = attrs.date || new Date().getTime();
+
+	self.storage = attrs.storage || "note";
 };
 
 var dashboardCtrl = function($scope, $http) {
@@ -26,7 +28,8 @@ var dashboardCtrl = function($scope, $http) {
 				$scope.board = data;
 			})
 			.error(function(err) {
-				console.info(err);
+				err = err || "Connection problems. Service already know about this problem and working on it.";
+				$scope.showNotification(err, "warning");
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
@@ -42,24 +45,32 @@ var dashboardCtrl = function($scope, $http) {
 
 	$scope.submit = function(data) {
 		if($scope.updateMode) {
-			$scope.update(data);
+			$scope.post(
+				{
+					_id: data._id,
+					upsert: new Note(data)
+				}, "/update"
+			);
 		} else {
-			$scope.add(data);
+			$scope.post(new Note(data), "/add");
 		}
-	}
-
-	$scope.update = function(data) {
-		//TODO
-		$scope.closeEdit();
 	};
 
-	$scope.add = function(data) {
-		//TODO: validate data
-		var canSubmit;
+	$scope.removeNote = function(data) {
+		data = data || $scope.activeNote;
+		var confirmCb;
 
 		if(data) {
-			data = new Note(data);
+			confirmCb = function() { $scope.post({_id: data._id}, "/remove"); }
+			$scope.showConfirmationPopup("Please, confirm deleting.", null, confirmCb);
+		} else {
+			$scope.closeEdit();
 		}
+	};
+
+	$scope.post = function(data, url) {
+		//TODO: validate data
+		var canSubmit;
 		canSubmit = !!data;
 
 		if(!canSubmit) {
@@ -67,13 +78,13 @@ var dashboardCtrl = function($scope, $http) {
 		}
 		$scope.showPreloader();
 		$http({
-				url: '/add',
+				url: url,
 				method: 'POST',
 				data: data,
 				headers : {'Content-Type': 'application/json'} 
 			})
 			.success(function() {
-				$scope.board.push(new Note(data));
+				$scope.refresh();
 				$scope.closeEdit();
 			})
 			.error(function(err) {

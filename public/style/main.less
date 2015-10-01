@@ -252,7 +252,7 @@ body {
 @taskCenterBlocLeft: @taskLBlockWidth + @taskHMargin*3;
 @taskCenterBlocRight: @taskRBlockWidth + @taskHMargin*2;
 
-@contentMinWidth: 1200 - @navigationWidth;
+@contentMinWidth: 1080px;
 
 @keyframes showProgress {
   from {
@@ -265,8 +265,9 @@ body {
 }
 
 #content-wrapper {
-	position: relative;
-	margin-left: @navigationWidth;
+	position: fixed;
+	top: 0; bottom: 0;
+	left: @navigationWidth; right: 0;
 	padding: 0 0 20px;
 	min-width: @contentMinWidth;
 
@@ -292,8 +293,8 @@ body {
 	}
 
 	.control {
-		position: fixed;
-		top: 0; left: @navigationWidth; right: 0;
+		position: absolute;
+		top: 0; left: 0; right: 0;
 
 		padding: 0 20px;
 		height: @controlHeight;
@@ -443,10 +444,10 @@ body {
 	}
 
 	.data-wrapper {
-	    position: fixed;
-		top: 0; bottom: 0;
-	    left: @navigationWidth; right: 0;
-		padding: @controlHeight 20px 0;
+	    position: absolute;
+		top: @controlHeight; bottom: 0;
+	    left: 0; right: 0;
+		padding: 0 20px 0;
 	    overflow: auto;
 	}
 
@@ -612,10 +613,11 @@ body {
 	@editWrapperLMargin: -@editWrapperWidth/2;
 	@editWrapperTMargin: -@editWrapperHeight/2;
 
-	#edit-wrapper {
-	    position: fixed;
+	#edit-wrapper,
+	#confirm-wrapper {
+	    position: absolute;
 		top: 0; bottom: 0;
-		left: @navigationWidth; right: 0;
+		left: 0; right: 0;
 
 		background-color: rgba(0, 0, 0, 0.8);
 		z-index: 2;
@@ -656,6 +658,45 @@ body {
 
 			background-color: #FFF;
 		}
+
+		.confirm {
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    z-index: 3;
+		    background-color: #fff;
+		    width: 350px;
+		    height: 150px;
+		    margin: -70px -100px;
+
+		    .title {
+		    	margin: 50px auto;
+		    }
+
+		    .confirm-control {
+		    	position: absolute;
+		    	bottom: 10px;
+		    	left: 0; right: 0;
+
+		    	.btn {
+		    		padding: 10px 20px;
+		    		font-size: 1.2em;
+		    	}
+		    }
+		}
+	}
+
+	#notification-wrapper {
+	    position: fixed;
+	    top: @controlHeight; right: 0;
+
+	    max-width: 400px;
+
+	    z-index: 4;
+
+	    &:not(.active) {
+			display: none;
+		}
 	}
 }
 
@@ -663,16 +704,24 @@ body {
  * Notification
 */
 @nwarning-color: rgba(255, 182, 182, 0.8);
+@nwarning-tcolor: rgba(0, 0, 0, 1);
 @ndefault-color: rgba(255, 223, 182, 0.8);
 
 .notification {
-    padding: 10px 20px;
+    padding: 10px 50px 10px 20px;
 
     background-color: @ndefault-color;
     border-top: 2px solid rgba(0, 0, 0, 0.2);
 
     &.warning {
     	background-color: @nwarning-color;
+    	color: @nwarning-tcolor;
+    }
+
+    opacity: 0.8;
+
+    &:hover {
+    	opacity: 1;
     }
 }
 

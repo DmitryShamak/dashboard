@@ -13,9 +13,11 @@ var NoteSch = new Schema({
 	type: String,
 	favorite: Boolean,
 	priority: Number,
-	date: Date
+	date: Date,
+	storage: String
 });
-var Model = mongoose.model('Note', NoteSch);
+var NoteModel = mongoose.model('Note', NoteSch);
+var ArchiveModel = mongoose.model('Archive', NoteSch);
 var DB = {};
 
 /**
@@ -24,8 +26,8 @@ var DB = {};
 	@param {Function} cb //callback function -> (err, data)
 */
 DB.find = function(query, cb) {
-	query = query || {};
-	Model.find(query, cb);
+	query = query || {storage: "note"};
+	NoteModel.find(query, cb);
 };
 
 /**
@@ -34,8 +36,22 @@ DB.find = function(query, cb) {
 	@param {Function} cb //callback function -> (err)
 */
 DB.add = function(data, cb) {
-	var model = new Model(data);
+	var model = new NoteModel(data);
 	model.save(cb);
+};
+
+DB.update = function(data, cb) {
+	NoteModel.update({_id: data._id}, data.upsert, {upsert: true}, cb);
+};
+
+DB.remove = function(data, cb) {
+	NoteModel.remove({_id: data._id}, cb);
+};
+
+DB.archive = function(data, cb) {
+	//TODO: get note -> add to archive -> remove note
+	//NoteModel.remove({_id: data._id}, cb);
+	cb();
 };
 
 //TODO: [delete, update]

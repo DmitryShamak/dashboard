@@ -1,0 +1,25 @@
+<div id="edit-wrapper" data-ng-class="{'active': editing}">
+	<div class="edit-note">
+		<form id="note-form" data-ng-submit="submit(activeNote)">
+			<h2 class="text-center">Edit Note</h2>
+			<input type="text" data-ng-model="activeNote.title" placeholder="Title.." />
+			<textarea data-ng-model="activeNote.description" placeholder="Description.."></textarea>
+			<div class="clearfix">
+				<div class="pull-left">
+					<select type="text" data-ng-model="activeNote.type">
+						<option value="" disabled selected>Select type</option>
+						<option id="{{type}}" data-ng-repeat="type in getNoteTypes()">{{type}}</option>
+					</select>
+					<select type="text" data-ng-model="activeNote.priority">
+						<option value="" disabled selected>Select priority</option>
+						<option id="{{priority}}" value="{{priority}}" data-ng-repeat="priority in getNotePriorities()">{{getPriorityTitle(priority)}}</option>
+					</select>
+				</div>
+				<div class="pull-right">
+					<button class="cancel-btn btn btn-success" type="submit" form="note-form">Save</button>
+					<button class="cancel-btn btn btn-warning" data-ng-click="closeEdit($event)">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

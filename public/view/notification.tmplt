@@ -1,0 +1,5 @@
+<div id="notification-wrapper" data-ng-class="{'active': notification.active}">
+	<div class="notification {{notification.type}} btn" data-ng-click="hideNotification()">
+		<h3 class="message text-center">{{notification.text}}</h3>
+	</div>
+</div>
