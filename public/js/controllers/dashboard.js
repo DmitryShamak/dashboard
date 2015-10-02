@@ -2,6 +2,8 @@ var Note = function(attrs) {
 	var self = this;
 	attrs = attrs || {};
 
+	self._id = attrs._id;
+
 	self.selected = !!attrs.selected;
 	self.title = attrs.title || "";
 
@@ -17,13 +19,23 @@ var Note = function(attrs) {
 
 var dashboardCtrl = function($scope, $http) {
 	$scope.board = [];
+	$scope.links = [];
 	$scope.activeNote = null;
 	$scope.pending = false;
 	$scope.updateMode = false;
 
+	$scope.orders = ["priority", "title", "type", "date"];
+	$scope.noteOrder = $scope.orders[0];
+	$scope.reverse = true;
+
 	$scope.refresh = function() {
+		//TODO: load selected url || defaultUrl -> active/last
+		$scope.getData("/board");
+	};
+
+	$scope.getData = function(url) {
 		$scope.showPreloader();
-		$http.get("/board")
+		$http.get(url)
 			.success(function(data) {
 				$scope.board = data;
 			})
@@ -33,7 +45,7 @@ var dashboardCtrl = function($scope, $http) {
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
-	};
+	}
 
 	$scope.showPreloader = function() {
 		$scope.pending = true;
@@ -94,6 +106,23 @@ var dashboardCtrl = function($scope, $http) {
 			.finally($scope.hidePreloader);
 	};
 
+	$scope.getLinks = function() {
+		var links = [{
+				title: "Notes",
+				target: "note",
+				active: true
+			}, {
+				title: "Archive",
+				target: "archive"
+			}, {
+				title: "Trash",
+				target: "trash"
+			}
+		];
+
+		return links;
+	};
+
 	$scope.getNoteTypes = function() {
 		//TODO: get data from server
 		var types = ["event", "meeting", "task", "bug"];
@@ -109,7 +138,7 @@ var dashboardCtrl = function($scope, $http) {
 	};
 
 	$scope.getNotePriorities = function() {
-		var priorities = ["0", "1", "2", "3"];
+		var priorities = [0, 1, 2, 3];
 
 		return priorities;
 	};
@@ -134,13 +163,17 @@ var dashboardCtrl = function($scope, $http) {
 	};
 
 	$scope.closeEdit = function(ev) {
-		$scope.clearActiveNote();
-		$scope.editing = false;
-		$scope.updateMode = false;
-
+		$scope.closeEdit();
 		if(ev) {
 			$scope.stopBubbling(ev);
 		}
+		$scope.refresh();
+	}
+
+	$scope.closeEdit = function() {
+		$scope.clearActiveNote();
+		$scope.editing = false;
+		$scope.updateMode = false;
 	};
 
 	$scope.updateControlPanel = function() {
@@ -179,7 +212,12 @@ var dashboardCtrl = function($scope, $http) {
 		}
 	};
 
-	$scope.refresh();
+	$scope.init = function() {
+		$scope.links = $scope.getLinks();
+		$scope.refresh();
+	};
+
+	$scope.init();
 };
 
 module.exports = dashboardCtrl;

@@ -10,14 +10,18 @@
 						<option value="" disabled selected>Select type</option>
 						<option id="{{type}}" data-ng-repeat="type in getNoteTypes()">{{type}}</option>
 					</select>
-					<select type="text" data-ng-model="activeNote.priority">
+					<select type="text" data-ng-model="activeNote.priority" convert-to-number>
 						<option value="" disabled selected>Select priority</option>
-						<option id="{{priority}}" value="{{priority}}" data-ng-repeat="priority in getNotePriorities()">{{getPriorityTitle(priority)}}</option>
+						<option 
+							data-ng-repeat="priority in getNotePriorities()"
+							id="{{priority}}"
+							value="{{priority}}"
+							data-ng-selected="priority==activeNote.priority">{{getPriorityTitle(priority)}}</option>
 					</select>
 				</div>
 				<div class="pull-right">
 					<button class="cancel-btn btn btn-success" type="submit" form="note-form">Save</button>
-					<button class="cancel-btn btn btn-warning" data-ng-click="closeEdit($event)">Cancel</button>
+					<button class="cancel-btn btn btn-warning" data-ng-click="cancelEdit($event)">Cancel</button>
 				</div>
 			</div>
 		</form>

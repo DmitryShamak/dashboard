@@ -239,6 +239,8 @@ body {
 @controlIconSize: @controlBlockHeight*0.8;
 @controlIconMargin: (@controlBlockHeight - @controlIconSize)/2 0;
 
+@orderControlHeight: 30px;
+
 @taskHeight: 40px;
 @taskHMargin: 10px;
 @taskVMargin: 5px;
@@ -443,71 +445,114 @@ body {
 	    }
 	}
 
+	.order-control-wrapper {
+	    position: absolute;
+		top: @controlHeight;
+	    left: 0; right: 0;
+	    height: @orderControlHeight;
+	    padding: 0 20px 0;
+
+	    .order-control {
+	    	position: relative;
+	    	height: @orderControlHeight;
+	    	padding: 0 20px 0;
+	    	overflow: hidden;
+
+	    	select {
+	    		border: 0;
+			    padding: 5px 10px;
+			    background-color: inherit;
+			    outline: 0;
+			    color: @mainTextColor;
+			    font-size: 1.1em;
+			    text-transform: uppercase;
+	    	}
+
+	    	.order-btn {
+	    		padding: 0 10px;
+	    		text-align: center;
+	    		line-height: @orderControlHeight;
+	    		box-sizing: border-box;
+	    	}
+
+	    	.reverse-btn {
+	    		display: inline-block;
+	    		padding-right: 30px;
+	    		height: @orderControlHeight;
+	    		min-height: inherit;
+	    		margin-left: 10px;
+	    		line-height: @orderControlHeight;
+	    		background-size: 20px;
+				background-position: right center;
+				background-repeat: no-repeat;
+				background-image: url("/public/img/arrow_up.png");
+
+				&.reverse {
+					background-image: url("/public/img/arrow_down.png");
+				}
+	    	}
+	    }
+	}
+
 	.data-wrapper {
 	    position: absolute;
-		top: @controlHeight; bottom: 0;
+		top: @controlHeight + @orderControlHeight; bottom: 0;
 	    left: 0; right: 0;
 		padding: 0 20px 0;
 	    overflow: auto;
 	}
 
-	.task {
-		position: relative;
 
-		height: @taskHeight;
-
-    	margin: @taskVMargin @taskHMargin;
-		line-height: @taskHeight;
-    	border: 0;
-    	border-radius: @taskBorderRadius;
-
-		box-sizing: border-box;
-		overflow: hidden;
-
-		&:nth-child(odd) {
-			background-color: rgba(255, 255, 255, 0.4);
-		}
-
-		&.active {
-			background-color: #BDDAAB;
-
-			.toggle:before {
-	    		content: " ";
-			    position: absolute;
-			    top: @viewElemSize/5;
-			    bottom: @viewElemSize/5;
-			    left: @viewElemSize/5;
-			    right: @viewElemSize/5;
-			    background-color: #A9CE27;
-	    	}
-		}
-
-		&:hover {
-			/*border: 2px solid @third-color;*/
-			/*background-color: @fourth-color;*/
-			/*			
-			.left-block {
-				left: 8px;
-			}
-			.center-block {
-				left: @taskCenterBlocLeft - 2;
-				right: @taskCenterBlocRight - 2;
-			}
-			.right-block {
-				right: -2px;
-			}*/
-			background-color: rgba(0, 0, 0, 0.2);
-		}
-
-		div {
+	.task,
+	.order-control {
+		&.task {
 			position: relative;
-			display: inline-block;
-			margin: 0;
-			padding: 0;
-			min-height: @taskHeight;
-			box-sizing: border-box;
-		}
 
+			height: @taskHeight;
+
+	    	margin: @taskVMargin @taskHMargin;
+			line-height: @taskHeight;
+	    	border: 0;
+	    	border-radius: @taskBorderRadius;
+
+			box-sizing: border-box;
+			overflow: hidden;
+
+			&:nth-child(odd) {
+				background-color: rgba(255, 255, 255, 0.4);
+			}
+
+			&.active {
+				background-color: #BDDAAB;
+
+				.toggle:before {
+		    		content: " ";
+				    position: absolute;
+				    top: @viewElemSize/5;
+				    bottom: @viewElemSize/5;
+				    left: @viewElemSize/5;
+				    right: @viewElemSize/5;
+				    background-color: #A9CE27;
+		    	}
+			}
+
+			&:hover {
+				/*border: 2px solid @third-color;*/
+				/*background-color: @fourth-color;*/
+				/*			
+				.left-block {
+					left: 8px;
+				}
+				.center-block {
+					left: @taskCenterBlocLeft - 2;
+					right: @taskCenterBlocRight - 2;
+				}
+				.right-block {
+					right: -2px;
+				}*/
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+		}
 
 		.small-block {
 			width: @taskSmallBlockWidth;
@@ -517,6 +562,10 @@ body {
 		}
 		.large-block {
 			max-width: @taskLargeBlockWidth;
+		}
+		.content-block {
+			max-width: 100%;
+			width: 100%;
 		}
 
 		.left-block {
@@ -544,6 +593,15 @@ body {
 			right: 0;
 
 			width: @taskRBlockWidth;
+		}
+
+		div {
+			position: relative;
+			display: inline-block;
+			margin: 0;
+			padding: 0;
+			min-height: @taskHeight;
+			box-sizing: border-box;
 		}
 
 		@viewElemSize: 15px;

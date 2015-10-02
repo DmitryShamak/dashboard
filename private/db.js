@@ -17,7 +17,6 @@ var NoteSch = new Schema({
 	storage: String
 });
 var NoteModel = mongoose.model('Note', NoteSch);
-var ArchiveModel = mongoose.model('Archive', NoteSch);
 var DB = {};
 
 /**

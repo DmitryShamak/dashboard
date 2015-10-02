@@ -1,0 +1,7 @@
+<div class="order-control text-right">
+	<span>Order by: </span>
+	<select class="btn" data-ng-model="noteOrder">
+		<option data-ng-repeat="order in orders">{{order}}</option>
+	</select>
+	<div class="reverse-btn btn pull-right" data-ng-class="{'reverse': reverse}" data-ng-click="reverse = !reverse;">Reverse: </div>
+</div>

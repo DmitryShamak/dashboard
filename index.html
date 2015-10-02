@@ -25,10 +25,7 @@
 			</div>
 			<div class="compose-btn btn text-center">Compose</div>
 			<div class="navigation-links">
-				<div class="link active" target="tasks">Tasks</div>
-				<div class="link" target="important">Important</div>
-				<div class="link" target="notes">Notes</div>
-				<div class="link" target="">Chat</div>
+				<div navigation-link data-ng-repeat="link in links"></div>
 			</div>
 			<div class="filters" data-bind="foreach: filters">
 				<div class="filter alpha-btn btn">
@@ -73,8 +70,11 @@
 							</div>
 						</div>
 					</div>
+					<div class="order-control-wrapper">
+						<div order-control></div>
+					</div>
 					<div class="data-wrapper">
-						<div data-ng-repeat="note in board" board-note></div>
+						<div data-ng-repeat="note in board | orderBy: noteOrder : reverse" board-note></div>
 					</div>
 				</div>
 			</div>

@@ -2,19 +2,25 @@
 var app = angular.module("app", ["ngMask"]);
 var dashboardCtrl = require("./controllers/dashboard.js");
 var boardNoteDir = require("./directives/boardNote.js");
+var orderControlDir = require("./directives/orderControl.js");
 var editNoteDir = require("./directives/editNote.js");
 var confirmDir = require("./directives/confirm.js");
 var notificationDir = require("./directives/notification.js");
+var navLinkDir = require("./directives/navLink.js");
 
 app.controller("dashboardCtrl", dashboardCtrl);
 app.directive("boardNote", boardNoteDir);
+app.directive("orderControl", orderControlDir);
 app.directive("editNote", editNoteDir);
 app.directive("confirm", confirmDir);
 app.directive("notification", notificationDir);
-},{"./controllers/dashboard.js":2,"./directives/boardNote.js":3,"./directives/confirm.js":4,"./directives/editNote.js":5,"./directives/notification.js":6}],2:[function(require,module,exports){
+app.directive("navigationLink", navLinkDir);
+},{"./controllers/dashboard.js":2,"./directives/boardNote.js":3,"./directives/confirm.js":4,"./directives/editNote.js":5,"./directives/navLink.js":6,"./directives/notification.js":7,"./directives/orderControl.js":8}],2:[function(require,module,exports){
 var Note = function(attrs) {
 	var self = this;
 	attrs = attrs || {};
+
+	self._id = attrs._id;
 
 	self.selected = !!attrs.selected;
 	self.title = attrs.title || "";
@@ -31,13 +37,23 @@ var Note = function(attrs) {
 
 var dashboardCtrl = function($scope, $http) {
 	$scope.board = [];
+	$scope.links = [];
 	$scope.activeNote = null;
 	$scope.pending = false;
 	$scope.updateMode = false;
 
+	$scope.orders = ["priority", "title", "type", "date"];
+	$scope.noteOrder = $scope.orders[0];
+	$scope.reverse = true;
+
 	$scope.refresh = function() {
+		//TODO: load selected url || defaultUrl -> active/last
+		$scope.getData("/board");
+	};
+
+	$scope.getData = function(url) {
 		$scope.showPreloader();
-		$http.get("/board")
+		$http.get(url)
 			.success(function(data) {
 				$scope.board = data;
 			})
@@ -47,7 +63,7 @@ var dashboardCtrl = function($scope, $http) {
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
-	};
+	}
 
 	$scope.showPreloader = function() {
 		$scope.pending = true;
@@ -108,6 +124,23 @@ var dashboardCtrl = function($scope, $http) {
 			.finally($scope.hidePreloader);
 	};
 
+	$scope.getLinks = function() {
+		var links = [{
+				title: "Notes",
+				target: "note",
+				active: true
+			}, {
+				title: "Archive",
+				target: "archive"
+			}, {
+				title: "Trash",
+				target: "trash"
+			}
+		];
+
+		return links;
+	};
+
 	$scope.getNoteTypes = function() {
 		//TODO: get data from server
 		var types = ["event", "meeting", "task", "bug"];
@@ -123,7 +156,7 @@ var dashboardCtrl = function($scope, $http) {
 	};
 
 	$scope.getNotePriorities = function() {
-		var priorities = ["0", "1", "2", "3"];
+		var priorities = [0, 1, 2, 3];
 
 		return priorities;
 	};
@@ -148,13 +181,17 @@ var dashboardCtrl = function($scope, $http) {
 	};
 
 	$scope.closeEdit = function(ev) {
-		$scope.clearActiveNote();
-		$scope.editing = false;
-		$scope.updateMode = false;
-
+		$scope.closeEdit();
 		if(ev) {
 			$scope.stopBubbling(ev);
 		}
+		$scope.refresh();
+	}
+
+	$scope.closeEdit = function() {
+		$scope.clearActiveNote();
+		$scope.editing = false;
+		$scope.updateMode = false;
 	};
 
 	$scope.updateControlPanel = function() {
@@ -193,7 +230,12 @@ var dashboardCtrl = function($scope, $http) {
 		}
 	};
 
-	$scope.refresh();
+	$scope.init = function() {
+		$scope.links = $scope.getLinks();
+		$scope.refresh();
+	};
+
+	$scope.init();
 };
 
 module.exports = dashboardCtrl;
@@ -262,6 +304,26 @@ var editNote = function() {
 
 module.exports = editNote;
 },{}],6:[function(require,module,exports){
+var navLink = function() {
+	return {
+		templateUrl: "/public/view/nav_link.tmplt",
+		replace: true,
+
+		link: function(scope, elem, attrs) {
+			scope.onLinkClick = function() {
+				scope.getData(scope.link.target);
+				scope.link.active = true;
+			};
+
+			elem.bind("click", function() {
+				scope.onLinkClick();
+			});
+		}
+	}
+};
+
+module.exports = navLink;
+},{}],7:[function(require,module,exports){
 var notificationDir = function() {
 	return {
 		templateUrl: "/public/view/notification.tmplt",
@@ -297,4 +359,23 @@ var notificationDir = function() {
 };
 
 module.exports = notificationDir;
-},{}]},{},[1,2,3,4,5,6]);
+},{}],8:[function(require,module,exports){
+var orderControl = function() {
+	return {
+		templateUrl: "/public/view/order_control.tmplt",
+		replace: false,
+
+		link: function(scope, elem, attrs) {
+			scope.toggleOrder = function() {
+				
+			};
+
+			elem.bind("click", function() {
+				//TODO: toggleOrder(order.type)
+			});
+		}
+	}
+};
+
+module.exports = orderControl;
+},{}]},{},[1,2,3,4,5,6,7,8]);
