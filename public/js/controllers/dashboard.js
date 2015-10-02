@@ -20,6 +20,9 @@ var Note = function(attrs) {
 var dashboardCtrl = function($scope, $http) {
 	$scope.board = [];
 	$scope.links = [];
+	$scope.backlog = null;
+	$scope.activeLink;
+
 	$scope.activeNote = null;
 	$scope.pending = false;
 	$scope.updateMode = false;
@@ -29,8 +32,7 @@ var dashboardCtrl = function($scope, $http) {
 	$scope.reverse = true;
 
 	$scope.refresh = function() {
-		//TODO: load selected url || defaultUrl -> active/last
-		$scope.getData("/board");
+		$scope.getData($scope.activeLink.target);
 	};
 
 	$scope.getData = function(url) {
@@ -41,7 +43,7 @@ var dashboardCtrl = function($scope, $http) {
 			})
 			.error(function(err) {
 				err = err || "Connection problems. Service already know about this problem and working on it.";
-				$scope.showNotification(err, "warning");
+				$scope.addToBackLog(err, "warning");
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
@@ -68,19 +70,18 @@ var dashboardCtrl = function($scope, $http) {
 		}
 	};
 
-	$scope.removeNote = function(data) {
-		data = data || $scope.activeNote;
+	$scope.moveNoteTo = function(storage) {
 		var confirmCb;
 
-		if(data) {
-			confirmCb = function() { $scope.post({_id: data._id}, "/remove"); }
-			$scope.showConfirmationPopup("Please, confirm deleting.", null, confirmCb);
+		if($scope.activeNote) {
+			confirmCb = function(data, cb) { $scope.post({_id: data._id}, "/" + storage, cb); }
+			$scope.showConfirmationPopup("Please, confirm action `" + storage + "` .", null, confirmCb);
 		} else {
 			$scope.closeEdit();
 		}
 	};
 
-	$scope.post = function(data, url) {
+	$scope.post = function(data, url, cb) {
 		//TODO: validate data
 		var canSubmit;
 		canSubmit = !!data;
@@ -100,23 +101,27 @@ var dashboardCtrl = function($scope, $http) {
 				$scope.closeEdit();
 			})
 			.error(function(err) {
-				console.info(err);
-				$scope.board = [];
+				err = err || "Connection problems. Please try again later.";
+				$scope.addToBackLog(err, "warning");
 			})
-			.finally($scope.hidePreloader);
+			.finally(function() {
+				$scope.hidePreloader();
+				if(cb) {
+					cb();
+				}
+			});
 	};
 
 	$scope.getLinks = function() {
 		var links = [{
 				title: "Notes",
-				target: "note",
-				active: true
+				target: "/board/note"
 			}, {
 				title: "Archive",
-				target: "archive"
+				target: "/board/archive"
 			}, {
 				title: "Trash",
-				target: "trash"
+				target: "/board/trash"
 			}
 		];
 
@@ -206,6 +211,18 @@ var dashboardCtrl = function($scope, $http) {
 		$scope.apply();
 	};
 
+	$scope.setActiveLink = function(link) {
+		if($scope.activeLink) {
+			$scope.activeLink.active = false;
+		}
+
+		$scope.getData(link.target);
+		$scope.activeLink = link;
+		$scope.activeLink.active = true;
+
+		$scope.apply();
+	};
+
 	$scope.apply = function() {
 		if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
 		    $scope.$apply();
@@ -214,6 +231,8 @@ var dashboardCtrl = function($scope, $http) {
 
 	$scope.init = function() {
 		$scope.links = $scope.getLinks();
+		$scope.setActiveLink($scope.links[0]);
+
 		$scope.refresh();
 	};
 

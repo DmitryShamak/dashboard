@@ -1,5 +1,5 @@
-<div id="confirm-wrapper">
-	<div class="confirm" data-ng-class="{'active': confirmation.active}">
+<div id="confirm-wrapper" data-ng-class="{'active': confirmation.active}">
+	<div class="confirm">
 		<h2 class="title text-center">{{confirmation.text}}</h2>
 		<div class="confirm-control clearfix">
 			<div class="btn btn-confirm pull-left" data-ng-click="confirmation.onConfirm()">Confirm</div>

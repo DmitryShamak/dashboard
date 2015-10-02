@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var app = angular.module("app", ["ngMask"]);
 var dashboardCtrl = require("./controllers/dashboard.js");
+var boardControlDir = require("./directives/boardControl.js");
 var boardNoteDir = require("./directives/boardNote.js");
 var orderControlDir = require("./directives/orderControl.js");
 var editNoteDir = require("./directives/editNote.js");
@@ -9,13 +10,14 @@ var notificationDir = require("./directives/notification.js");
 var navLinkDir = require("./directives/navLink.js");
 
 app.controller("dashboardCtrl", dashboardCtrl);
+app.directive("boardControl", boardControlDir);
 app.directive("boardNote", boardNoteDir);
 app.directive("orderControl", orderControlDir);
 app.directive("editNote", editNoteDir);
 app.directive("confirm", confirmDir);
 app.directive("notification", notificationDir);
 app.directive("navigationLink", navLinkDir);
-},{"./controllers/dashboard.js":2,"./directives/boardNote.js":3,"./directives/confirm.js":4,"./directives/editNote.js":5,"./directives/navLink.js":6,"./directives/notification.js":7,"./directives/orderControl.js":8}],2:[function(require,module,exports){
+},{"./controllers/dashboard.js":2,"./directives/boardControl.js":3,"./directives/boardNote.js":4,"./directives/confirm.js":5,"./directives/editNote.js":6,"./directives/navLink.js":7,"./directives/notification.js":8,"./directives/orderControl.js":9}],2:[function(require,module,exports){
 var Note = function(attrs) {
 	var self = this;
 	attrs = attrs || {};
@@ -38,6 +40,9 @@ var Note = function(attrs) {
 var dashboardCtrl = function($scope, $http) {
 	$scope.board = [];
 	$scope.links = [];
+	$scope.backlog = null;
+	$scope.activeLink;
+
 	$scope.activeNote = null;
 	$scope.pending = false;
 	$scope.updateMode = false;
@@ -47,8 +52,7 @@ var dashboardCtrl = function($scope, $http) {
 	$scope.reverse = true;
 
 	$scope.refresh = function() {
-		//TODO: load selected url || defaultUrl -> active/last
-		$scope.getData("/board");
+		$scope.getData($scope.activeLink.target);
 	};
 
 	$scope.getData = function(url) {
@@ -59,7 +63,7 @@ var dashboardCtrl = function($scope, $http) {
 			})
 			.error(function(err) {
 				err = err || "Connection problems. Service already know about this problem and working on it.";
-				$scope.showNotification(err, "warning");
+				$scope.addToBackLog(err, "warning");
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
@@ -86,19 +90,18 @@ var dashboardCtrl = function($scope, $http) {
 		}
 	};
 
-	$scope.removeNote = function(data) {
-		data = data || $scope.activeNote;
+	$scope.moveNoteTo = function(storage) {
 		var confirmCb;
 
-		if(data) {
-			confirmCb = function() { $scope.post({_id: data._id}, "/remove"); }
-			$scope.showConfirmationPopup("Please, confirm deleting.", null, confirmCb);
+		if($scope.activeNote) {
+			confirmCb = function(data, cb) { $scope.post({_id: data._id}, "/" + storage, cb); }
+			$scope.showConfirmationPopup("Please, confirm action `" + storage + "` .", null, confirmCb);
 		} else {
 			$scope.closeEdit();
 		}
 	};
 
-	$scope.post = function(data, url) {
+	$scope.post = function(data, url, cb) {
 		//TODO: validate data
 		var canSubmit;
 		canSubmit = !!data;
@@ -118,23 +121,27 @@ var dashboardCtrl = function($scope, $http) {
 				$scope.closeEdit();
 			})
 			.error(function(err) {
-				console.info(err);
-				$scope.board = [];
+				err = err || "Connection problems. Please try again later.";
+				$scope.addToBackLog(err, "warning");
 			})
-			.finally($scope.hidePreloader);
+			.finally(function() {
+				$scope.hidePreloader();
+				if(cb) {
+					cb();
+				}
+			});
 	};
 
 	$scope.getLinks = function() {
 		var links = [{
 				title: "Notes",
-				target: "note",
-				active: true
+				target: "/board/note"
 			}, {
 				title: "Archive",
-				target: "archive"
+				target: "/board/archive"
 			}, {
 				title: "Trash",
-				target: "trash"
+				target: "/board/trash"
 			}
 		];
 
@@ -224,6 +231,18 @@ var dashboardCtrl = function($scope, $http) {
 		$scope.apply();
 	};
 
+	$scope.setActiveLink = function(link) {
+		if($scope.activeLink) {
+			$scope.activeLink.active = false;
+		}
+
+		$scope.getData(link.target);
+		$scope.activeLink = link;
+		$scope.activeLink.active = true;
+
+		$scope.apply();
+	};
+
 	$scope.apply = function() {
 		if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
 		    $scope.$apply();
@@ -232,6 +251,8 @@ var dashboardCtrl = function($scope, $http) {
 
 	$scope.init = function() {
 		$scope.links = $scope.getLinks();
+		$scope.setActiveLink($scope.links[0]);
+
 		$scope.refresh();
 	};
 
@@ -240,6 +261,24 @@ var dashboardCtrl = function($scope, $http) {
 
 module.exports = dashboardCtrl;
 },{}],3:[function(require,module,exports){
+var boardControl = function() {
+	return {
+		templateUrl: "/public/view/board_control.tmplt",
+		replace: true,
+
+		link: function(scope, elem, attrs) {
+			scope.addToBackLog = function(err) {
+				if(!scope.backlog) {
+					scope.backlog = [];
+				}
+				scope.backlog.push(err);
+			};
+		}
+	}
+};
+
+module.exports = boardControl;
+},{}],4:[function(require,module,exports){
 var boardNote = function() {
 	return {
 		templateUrl: "/public/view/note.tmpl",
@@ -257,14 +296,14 @@ var boardNote = function() {
 };
 
 module.exports = boardNote;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var confirmDir = function() {
 	return {
 		templateUrl: "/public/view/confirm.tmplt",
 		replace: true,
 
 		link: function(scope, elem, attrs) {
-			scope.confirmation = {active: true};
+			scope.confirmation = {active: false};
 
 			scope.showConfirmationPopup = function(text, cancelCb, confirmCb) {
 				if(!cancelCb) {
@@ -273,7 +312,9 @@ var confirmDir = function() {
 
 				if(confirmCb) {
 					scope.confirmation = {
-						onConfirm: confirmCb,
+						onConfirm: function() {
+							confirmCb(scope.activeNote, scope.hideConfirmationPopup);
+						},
 						onCancel: cancelCb,
 						text: text,
 						active: true 
@@ -294,7 +335,7 @@ var confirmDir = function() {
 };
 
 module.exports = confirmDir;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var editNote = function() {
 	return {
 		templateUrl: "/public/view/edit_note.tmplt",
@@ -303,7 +344,7 @@ var editNote = function() {
 };
 
 module.exports = editNote;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var navLink = function() {
 	return {
 		templateUrl: "/public/view/nav_link.tmplt",
@@ -311,8 +352,7 @@ var navLink = function() {
 
 		link: function(scope, elem, attrs) {
 			scope.onLinkClick = function() {
-				scope.getData(scope.link.target);
-				scope.link.active = true;
+				scope.setActiveLink(scope.link);
 			};
 
 			elem.bind("click", function() {
@@ -323,7 +363,7 @@ var navLink = function() {
 };
 
 module.exports = navLink;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var notificationDir = function() {
 	return {
 		templateUrl: "/public/view/notification.tmplt",
@@ -359,7 +399,7 @@ var notificationDir = function() {
 };
 
 module.exports = notificationDir;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var orderControl = function() {
 	return {
 		templateUrl: "/public/view/order_control.tmplt",
@@ -378,4 +418,4 @@ var orderControl = function() {
 };
 
 module.exports = orderControl;
-},{}]},{},[1,2,3,4,5,6,7,8]);
+},{}]},{},[1,2,3,4,5,6,7,8,9]);

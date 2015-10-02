@@ -1,5 +1,6 @@
 var app = angular.module("app", ["ngMask"]);
 var dashboardCtrl = require("./controllers/dashboard.js");
+var boardControlDir = require("./directives/boardControl.js");
 var boardNoteDir = require("./directives/boardNote.js");
 var orderControlDir = require("./directives/orderControl.js");
 var editNoteDir = require("./directives/editNote.js");
@@ -8,6 +9,7 @@ var notificationDir = require("./directives/notification.js");
 var navLinkDir = require("./directives/navLink.js");
 
 app.controller("dashboardCtrl", dashboardCtrl);
+app.directive("boardControl", boardControlDir);
 app.directive("boardNote", boardNoteDir);
 app.directive("orderControl", orderControlDir);
 app.directive("editNote", editNoteDir);

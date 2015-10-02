@@ -25,6 +25,7 @@ var DB = {};
 	@param {Function} cb //callback function -> (err, data)
 */
 DB.find = function(query, cb) {
+	console.log(query);
 	query = query || {storage: "note"};
 	NoteModel.find(query, cb);
 };

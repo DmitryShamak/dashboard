@@ -43,33 +43,7 @@
 		<div id="content-wrapper" class="{{pending ? 'pending' : ''}}">
 			<div class="content block-selection">
 				<div id="tasks" class="content-block active block-example">
-					<div class="control">
-						<div class="part left text-center">Lorem ipsum</div>
-						<div class="part right">
-							<div class="control-block">
-								<span class="icon update alpha-btn btn" data-ng-click="refresh()"></span>
-								<span class="icon share alpha-btn btn"></span>
-							</div>
-							<div class="control-block">
-								<span class="icon add alpha-btn btn" data-ng-click="editNote({})"></span>
-								<span class="icon edit alpha-btn btn" data-ng-click="editNote()"></span>
-								<span class="icon delete alpha-btn btn" data-ng-click="removeNote()"></span>
-								<span class="icon undo alpha-btn btn"></span>
-							</div>
-							<div class="control-block clearfix pull-right">
-								<div class="page-control pull-left">
-									<span class="page-count pull-left">
-										<span class="range page">1</span>-<span class="range limit">25</span> of <span class="range count">25</span>
-									</span>
-									<span class="icon prev alpha-btn btn"></span>
-									<span class="icon next alpha-btn btn"></span>
-								</div>
-								<div class="search-wrapper pull-right">
-									<input type="text" placeholder="Search.." />
-								</div>
-							</div>
-						</div>
-					</div>
+					<div board-control></div>
 					<div class="order-control-wrapper">
 						<div order-control></div>
 					</div>

@@ -5,8 +5,7 @@ var navLink = function() {
 
 		link: function(scope, elem, attrs) {
 			scope.onLinkClick = function() {
-				scope.getData(scope.link.target);
-				scope.link.active = true;
+				scope.setActiveLink(scope.link);
 			};
 
 			elem.bind("click", function() {

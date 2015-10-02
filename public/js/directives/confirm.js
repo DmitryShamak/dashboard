@@ -4,7 +4,7 @@ var confirmDir = function() {
 		replace: true,
 
 		link: function(scope, elem, attrs) {
-			scope.confirmation = {active: true};
+			scope.confirmation = {active: false};
 
 			scope.showConfirmationPopup = function(text, cancelCb, confirmCb) {
 				if(!cancelCb) {
@@ -13,7 +13,9 @@ var confirmDir = function() {
 
 				if(confirmCb) {
 					scope.confirmation = {
-						onConfirm: confirmCb,
+						onConfirm: function() {
+							confirmCb(scope.activeNote, scope.hideConfirmationPopup);
+						},
 						onCancel: cancelCb,
 						text: text,
 						active: true 

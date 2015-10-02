@@ -15,12 +15,11 @@ app.use(bodyParser.urlencoded({
 app.use("/", express.static(rootPath));
 app.use("/public", express.static(path.join(rootPath,'public/')));
 
-app.get("/board", function(req, res, next) {
-	db.find({}, function(err, data) {
+app.get("/board/:storage", function(req, res, next) {
+	db.find({storage: req.params.storage}, function(err, data) {
 		if(err) {
 			return res.end();
 		}
-
 		res.send(JSON.stringify(data));
 	});
 });
