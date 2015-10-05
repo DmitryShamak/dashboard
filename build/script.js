@@ -1,7 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var app = angular.module("app", ["ngMask"]);
+
 var dashboardCtrl = require("./controllers/dashboard.js");
+var loginDir = require("./directives/login.js");
+var layoutDir = require("./directives/layout.js");
 var boardControlDir = require("./directives/boardControl.js");
+var backlogDir = require("./directives/backlog.js");
 var boardNoteDir = require("./directives/boardNote.js");
 var orderControlDir = require("./directives/orderControl.js");
 var editNoteDir = require("./directives/editNote.js");
@@ -10,14 +14,17 @@ var notificationDir = require("./directives/notification.js");
 var navLinkDir = require("./directives/navLink.js");
 
 app.controller("dashboardCtrl", dashboardCtrl);
+app.directive("login", loginDir);
+app.directive("layout", layoutDir);
 app.directive("boardControl", boardControlDir);
+app.directive("backlog", backlogDir);
 app.directive("boardNote", boardNoteDir);
 app.directive("orderControl", orderControlDir);
 app.directive("editNote", editNoteDir);
 app.directive("confirm", confirmDir);
 app.directive("notification", notificationDir);
 app.directive("navigationLink", navLinkDir);
-},{"./controllers/dashboard.js":2,"./directives/boardControl.js":3,"./directives/boardNote.js":4,"./directives/confirm.js":5,"./directives/editNote.js":6,"./directives/navLink.js":7,"./directives/notification.js":8,"./directives/orderControl.js":9}],2:[function(require,module,exports){
+},{"./controllers/dashboard.js":2,"./directives/backlog.js":3,"./directives/boardControl.js":4,"./directives/boardNote.js":5,"./directives/confirm.js":6,"./directives/editNote.js":7,"./directives/layout.js":8,"./directives/login.js":9,"./directives/navLink.js":10,"./directives/notification.js":11,"./directives/orderControl.js":12}],2:[function(require,module,exports){
 var Note = function(attrs) {
 	var self = this;
 	attrs = attrs || {};
@@ -63,7 +70,7 @@ var dashboardCtrl = function($scope, $http) {
 			})
 			.error(function(err) {
 				err = err || "Connection problems. Service already know about this problem and working on it.";
-				$scope.addToBackLog(err, "warning");
+				$scope.addToBackLog(err, "error");
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
@@ -122,7 +129,7 @@ var dashboardCtrl = function($scope, $http) {
 			})
 			.error(function(err) {
 				err = err || "Connection problems. Please try again later.";
-				$scope.addToBackLog(err, "warning");
+				$scope.addToBackLog(err, "error");
 			})
 			.finally(function() {
 				$scope.hidePreloader();
@@ -188,18 +195,15 @@ var dashboardCtrl = function($scope, $http) {
 	};
 
 	$scope.closeEdit = function(ev) {
-		$scope.closeEdit();
+		$scope.clearActiveNote();
+		$scope.editing = false;
+		$scope.updateMode = false;
+
 		if(ev) {
 			$scope.stopBubbling(ev);
 		}
 		$scope.refresh();
 	}
-
-	$scope.closeEdit = function() {
-		$scope.clearActiveNote();
-		$scope.editing = false;
-		$scope.updateMode = false;
-	};
 
 	$scope.updateControlPanel = function() {
 		//TODO: update control panel
@@ -214,21 +218,10 @@ var dashboardCtrl = function($scope, $http) {
 			$scope.apply();
 		}
 	};
-	$scope.setActiveNote = function(note) {
-		if($scope.activeNote) {
-			$scope.clearActiveNote();
-		}
-		$scope.activeNote = note;
-		$scope.updateControlPanel();
-	};
 
-	$scope.selectNote = function(note, attrs) {
-		if(!note.selected) {
-			$scope.setActiveNote(note);
-			note.selected = true;
-		}
-
-		$scope.apply();
+	$scope.logOut = function() {
+		$scope.profile = null;
+		$scope.logged = false;
 	};
 
 	$scope.setActiveLink = function(link) {
@@ -261,42 +254,113 @@ var dashboardCtrl = function($scope, $http) {
 
 module.exports = dashboardCtrl;
 },{}],3:[function(require,module,exports){
+var Info = function(attrs) {
+	var self = this;
+	self.text = attrs.text;
+	self.type = attrs.type || "";
+};
+
+var backlog = function() {
+	return {
+		templateUrl: "/public/view/backlog.tmplt",
+		replace: true,
+
+		link: function(scope, elem, attrs) {
+			scope.backlogVisible = false;
+
+			scope.toggleBacklog = function(state) {
+				scope.backlogVisible = !!state;
+
+				if(!scope.backlogVisible && scope.backlog && !scope.backlog.length) {
+					scope.backlog = null;
+				}
+			};
+
+			scope.addToBackLog = function(text, type) {
+				if(!scope.backlog) {
+					scope.backlog = [];
+				}
+				scope.backlog.push(new Info({text: text, type: type}));
+			};
+
+			scope.removeItem = function(item) {
+				scope.backlog.splice(scope.backlog.indexOf(item), 1);
+
+				scope.apply();
+			};
+
+			scope.showBackLog = function() {
+				scope.toggleBacklog(true);
+			};
+
+			scope.clearBackLog = function(err) {
+				scope.backlog = null;
+				scope.toggleBacklog(false);
+			};
+		}
+	}
+};
+
+module.exports = backlog;
+},{}],4:[function(require,module,exports){
 var boardControl = function() {
 	return {
 		templateUrl: "/public/view/board_control.tmplt",
 		replace: true,
 
 		link: function(scope, elem, attrs) {
-			scope.addToBackLog = function(err) {
-				if(!scope.backlog) {
-					scope.backlog = [];
-				}
-				scope.backlog.push(err);
-			};
+			
 		}
 	}
 };
 
 module.exports = boardControl;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var boardNote = function() {
 	return {
-		templateUrl: "/public/view/note.tmpl",
+		templateUrl: "/public/view/note.tmplt",
 		replace: true,
 
 		link: function(scope, elem, attrs) {
+			scope.selectedNotes = [];
+
+			scope.setActiveNote = function(note) {
+				scope.selectedNotes.push(note);
+
+				scope.activeNote = note;
+				scope.updateControlPanel();
+			};
+
+			scope.selectNote = function(note, attrs) {
+				if(!note.selected) {
+					scope.setActiveNote(note);
+					note.selected = true;
+				} else {
+					scope.unselectNote(note);
+				}
+
+				scope.apply();
+			};
+
+			scope.unselectNote = function(note) {
+				note.selected = false;
+				scope.activeNote = scope.selectedNotes(scope.selectedNotes.length-1);
+
+				scope.selectedNotes.splice(scope.selectedNotes.indexOf(note), 1);
+				scope.updateControlPanel();
+
+				scope.apply();
+			};
+
 			elem.bind("click", function() {
 				scope.selectNote(scope.note, attrs);
-			});
-			elem.bind("dblclick", function() {
-				scope.editNote(scope.note, true);
 			});
 		}
 	}
 };
 
 module.exports = boardNote;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var confirmDir = function() {
 	return {
 		templateUrl: "/public/view/confirm.tmplt",
@@ -335,7 +399,7 @@ var confirmDir = function() {
 };
 
 module.exports = confirmDir;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var editNote = function() {
 	return {
 		templateUrl: "/public/view/edit_note.tmplt",
@@ -344,7 +408,73 @@ var editNote = function() {
 };
 
 module.exports = editNote;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+var layout = function() {
+	return {
+		templateUrl: "/public/view/dashboard.tmplt",
+		replace: false
+	}
+};
+
+module.exports = layout;
+},{}],9:[function(require,module,exports){
+var login = function() {
+	return {
+		templateUrl: "/public/view/login.tmplt",
+		replace: false,
+
+		link: function(scope, elem, attrs) {
+			scope.profile = null;
+			scope.logged = false;
+			scope.passLevel = "low";
+			scope.validLogData = false;
+
+			scope.logIn = function() {
+				scope.profile = {};
+				scope.logged = true;
+			};
+
+			scope.toggleForm = function() {
+				scope.form = {};
+				scope.passLevel = "low";
+				scope.registration = !scope.registration;
+			};
+
+			scope.getPasswordLevel = function() {
+				var pass = scope.form.pass || "";
+
+				var levels = ["low", "medium", "hight"],
+					ind = 0,
+					length = pass.length;
+
+				if(length > 8 && length <= 16) {
+					ind = 1;
+				} else if(length > 16) {
+					ind = 2;
+				}
+
+				scope.passLevel = levels[ind];
+			};
+
+			scope.confirmPass = function(confirm) {
+				return scope.validLogData = scope.form.pass == confirm;
+			};
+
+			scope.validate = function(type, value) {
+				scope.validLogData = !!scope.form.name && !!scope.form.pass;
+
+				if(scope.registration) {
+					scope.validLogData = scope.validLogData && scope.confirmPass(scope.form.cpass);
+				}
+
+				return false;
+			};
+		}
+	}
+};
+
+module.exports = login;
+},{}],10:[function(require,module,exports){
 var navLink = function() {
 	return {
 		templateUrl: "/public/view/nav_link.tmplt",
@@ -363,7 +493,7 @@ var navLink = function() {
 };
 
 module.exports = navLink;
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var notificationDir = function() {
 	return {
 		templateUrl: "/public/view/notification.tmplt",
@@ -399,7 +529,7 @@ var notificationDir = function() {
 };
 
 module.exports = notificationDir;
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var orderControl = function() {
 	return {
 		templateUrl: "/public/view/order_control.tmplt",
@@ -418,4 +548,4 @@ var orderControl = function() {
 };
 
 module.exports = orderControl;
-},{}]},{},[1,2,3,4,5,6,7,8,9]);
+},{}]},{},[1,2,3,4,5,6,7,8,9,10,11,12]);

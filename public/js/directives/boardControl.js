@@ -4,12 +4,7 @@ var boardControl = function() {
 		replace: true,
 
 		link: function(scope, elem, attrs) {
-			scope.addToBackLog = function(err) {
-				if(!scope.backlog) {
-					scope.backlog = [];
-				}
-				scope.backlog.push(err);
-			};
+			
 		}
 	}
 };

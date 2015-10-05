@@ -2,8 +2,8 @@
 	<div class="confirm">
 		<h2 class="title text-center">{{confirmation.text}}</h2>
 		<div class="confirm-control clearfix">
-			<div class="btn btn-confirm pull-left" data-ng-click="confirmation.onConfirm()">Confirm</div>
-			<div class="btn btn-cancel pull-right" data-ng-click="confirmation.onCancel()">Cancel</div>
+			<div class="btn confirm-btn alpha-btn pull-left" data-ng-click="confirmation.onConfirm()">Confirm</div>
+			<div class="btn cancel-btn alpha-btn pull-right" data-ng-click="confirmation.onCancel()">Cancel</div>
 		</div>
 	</div>
 </div>

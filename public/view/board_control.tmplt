@@ -2,7 +2,8 @@
 	<div class="part left text-center">Lorem ipsum</div>
 	<div class="part right">
 		<div class="control-block">
-			<span class="icon info alpha-btn btn" ng-show="backlog"></span>
+			<span class="icon info alpha-btn btn" ng-show="backlog" data-ng-click="toggleBacklog(!backlogVisible);"></span>
+			<div backlog></div>
 		</div>
 		<div class="control-block">
 			<span class="icon update alpha-btn btn" data-ng-click="refresh()"></span>

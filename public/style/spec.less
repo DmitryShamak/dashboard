@@ -58,3 +58,16 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+.animated {
+	-webkit-transition: all 0.5s ease 02s;
+	-moz-transition: all 0.5s ease 02s;
+	transition: all 0.5s ease 0.2s;
+
+	&:before,
+	&:after {
+		-webkit-transition: all 0.5s ease 02s;
+		-moz-transition: all 0.5s ease 02s;
+		transition: all 0.5s ease 0.2s;
+	}
+}

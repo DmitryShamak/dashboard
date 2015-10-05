@@ -43,7 +43,7 @@ var dashboardCtrl = function($scope, $http) {
 			})
 			.error(function(err) {
 				err = err || "Connection problems. Service already know about this problem and working on it.";
-				$scope.addToBackLog(err, "warning");
+				$scope.addToBackLog(err, "error");
 				$scope.board = [];
 			})
 			.finally($scope.hidePreloader);
@@ -102,7 +102,7 @@ var dashboardCtrl = function($scope, $http) {
 			})
 			.error(function(err) {
 				err = err || "Connection problems. Please try again later.";
-				$scope.addToBackLog(err, "warning");
+				$scope.addToBackLog(err, "error");
 			})
 			.finally(function() {
 				$scope.hidePreloader();
@@ -168,18 +168,15 @@ var dashboardCtrl = function($scope, $http) {
 	};
 
 	$scope.closeEdit = function(ev) {
-		$scope.closeEdit();
+		$scope.clearActiveNote();
+		$scope.editing = false;
+		$scope.updateMode = false;
+
 		if(ev) {
 			$scope.stopBubbling(ev);
 		}
 		$scope.refresh();
 	}
-
-	$scope.closeEdit = function() {
-		$scope.clearActiveNote();
-		$scope.editing = false;
-		$scope.updateMode = false;
-	};
 
 	$scope.updateControlPanel = function() {
 		//TODO: update control panel
@@ -194,21 +191,10 @@ var dashboardCtrl = function($scope, $http) {
 			$scope.apply();
 		}
 	};
-	$scope.setActiveNote = function(note) {
-		if($scope.activeNote) {
-			$scope.clearActiveNote();
-		}
-		$scope.activeNote = note;
-		$scope.updateControlPanel();
-	};
 
-	$scope.selectNote = function(note, attrs) {
-		if(!note.selected) {
-			$scope.setActiveNote(note);
-			note.selected = true;
-		}
-
-		$scope.apply();
+	$scope.logOut = function() {
+		$scope.profile = null;
+		$scope.logged = false;
 	};
 
 	$scope.setActiveLink = function(link) {

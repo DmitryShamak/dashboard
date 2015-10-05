@@ -82,6 +82,83 @@ body {
 
 @optionBlockHeight: 50px;
 
+/**
+ * LogIn styles
+*/
+@logStatusHeight: 150px;
+@logFormWidth: 500px;
+
+.login-wrapper {
+	position: fixed;
+	top: 0; bottom: 0;
+	left: 0; right: 0;
+
+	background-color: rgb(20,21,25);
+	z-index: 10;
+
+	.form-wrapper {
+	    position: absolute;
+	    top: @logStatusHeight;
+	    left: 50%;
+	    width: @logFormWidth;
+	    margin-left: -@logFormWidth/2;
+
+	    input {
+		    display: block;
+		    width: 100%;
+		    padding: 10px 20px;
+		    margin: 10px 0;
+		    font-size: 1.1em;
+
+		    box-sizing: border-box;
+		}
+
+		.login-btn {
+			position: relative;
+		    padding: 15px 0;
+		    color: #FFF;
+		    font-weight: bold;
+		    margin: 10px 0 5px;
+		    font-size: 1.3em;
+		    background-color: rgb(106, 148, 57);
+
+		    &.registration {
+		    	background-color: #397294;
+		    }
+
+		    &.low {
+		    	&:before {
+		    		background-color: rgb(189, 57, 57);
+		    	}
+		    }
+		    &.medium {
+		    	&:before {
+		    		background-color: rgb(189, 161, 57);
+		    	}
+		    }
+
+		    &.disabled {
+		    	background-color: #656464 !important;
+		    	opacity: 0.5;
+		    }
+
+		    &:before {
+		    	content: " ";
+		    	position: absolute;
+		    	top: 0; bottom: 0;
+		    	left: 0;
+		    	width: 50px;
+		    	background-color: rgba(0, 0, 0, 0.2);
+
+		    	background-size: 20px;
+			    background-position: center;
+			    background-repeat: no-repeat;
+			    background-image: url("/public/img/key.png");
+		    };
+		}
+	}
+}
+
 #navigation-wrapper {
 	position: fixed;
 	top: 0; bottom: 0;
@@ -349,11 +426,11 @@ body {
 	    	}
 
 	    	.control-block {
+	    		position: relative;
 	    		display: inline-block;
 	    		height: @controlBlockHeight;
 	    		line-height: @controlBlockHeight;
 	    		margin: 0 20px;
-	    		overflow: hidden;
 
 	    		.icon {
 	    			display: inline-block;
@@ -447,6 +524,53 @@ body {
 				    	border-color: rgba(249, 198, 157, 1);
 				    };
 		    	}
+	    	}
+	    }
+	}
+
+	@backlogBtnSize: 20px;
+	@backlogBtnMarginTop: @controlBlockHeight - @backlogBtnSize - 2px;
+
+	.backlog-wrapper {
+	    position: absolute;
+	    top: @controlBlockHeight;
+	    padding: 5px;
+	    font-size: 0.8em;
+	    left: 50%;
+	    width: 250px;
+	    margin-left: -125px;
+	    background-color: rgba(255, 255, 255, 0.5);
+	    z-index: 3;
+
+	    .backlog-item {
+	    	position: relative;
+	    	margin: 5px 0;
+	    	padding: 3px 25px 3px 30px;
+	    	background-color: rgba(206, 164, 89, 0.3);
+
+	    	background-size: 20px;
+		    background-position: left 5px center;
+		    background-repeat: no-repeat;
+		    background-image: url("/public/img/info.png");
+
+		    font-size: 0.9em;
+
+	    	&.error {
+	    		background-color: rgba(206, 89, 89, 0.3);
+	    		background-image: url("/public/img/error.png");
+	    	}
+
+	    	.close-btn {
+	    		position: absolute;
+	    		top: @backlogBtnMarginTop;
+	    		right: 5px;
+	    		width: @backlogBtnSize;
+	    		height: @backlogBtnSize;
+
+	    		background-size: contain;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-image: url("/public/img/close.png");
 	    	}
 	    }
 	}
@@ -734,7 +858,7 @@ body {
 		    margin: -70px -100px;
 
 		    .title {
-		    	margin: 50px auto;
+		    	margin: 40px auto 0;
 		    }
 
 		    .confirm-control {
@@ -745,6 +869,15 @@ body {
 		    	.btn {
 		    		padding: 10px 20px;
 		    		font-size: 1.2em;
+		    		margin: 0 15px;
+		    		color: #fff;
+
+					&.confirm-btn {
+						background-color: #5E9E19;
+					}
+					&.cancel-btn {
+						background-color: #9E1919;
+					}
 		    	}
 		    }
 		}
