@@ -1,7 +1,0 @@
-<div class="backlog-wrapper" ng-show="backlogVisible">
-	<div data-ng-show="!backlog || !backlog.length">No info</div>
-	<div class="backlog-item {{item.type}} clearfix" data-ng-repeat="item in backlog">
-		<div class="overflow-text info text-left">{{item.text}}</div>
-		<div class="btn close-btn alpha-btn" data-ng-click="removeItem(item);"></div>
-	</div>
-</div>

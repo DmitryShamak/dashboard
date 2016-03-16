@@ -1,0 +1,55 @@
+@import "conf";
+
+.landing-item {
+  margin: 15px 0;
+  padding: 30px 15px;
+
+  &:nth-child(odd):not(:first-child) {
+    background-color: #EEE;
+  }
+
+  &:first-child {
+    margin-top: 0;
+
+    background-color: #2d3037;
+    color: #FFF;
+  }
+
+  .logo-image {
+    font-size: 5em;
+  }
+
+  .provider {
+    display: inline-block;
+
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+
+    @media screen and (max-width: $screen-xs) {
+      &:not(:last-child) {
+        margin-right: 30px;
+      }
+    }
+
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+
+    color: #444;
+    font-size: 1.5em;
+  }
+
+  h2 {
+    margin-bottom: 30px;
+  }
+
+  .item-image {
+    height: 125px;
+    margin: 0 -15px;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #000;
+    background-position: center;
+  }
+}

@@ -1,1 +1,0 @@
-<div class="link" data-ng-class="{'active': link.active}">{{link.title}}</div>

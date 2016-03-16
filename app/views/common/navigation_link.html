@@ -1,0 +1,12 @@
+<a ng-if="item.state" class="navigation-link"
+   ui-sref="{{item.state}}" ui-sref-active="active" title="{{item.title}}" ng-class="{disabled: item.disabled}">
+    <!--<i class="fa" ng-class="item.icon"></i>-->
+    <span ng-bind="item.title"></span>
+    <span ng-if="item.value" class="link-value" ng-bind="item.value"></span>
+</a>
+<a ng-if="item.action" class="navigation-link"
+   ng-click="item.action();" ui-sref-active="active" title="{{item.title}}" ng-class="{disabled: item.disabled}">
+    <!--<i class="fa" ng-class="item.icon"></i>-->
+    <span ng-bind="item.title"></span>
+    <span ng-if="item.value" class="link-value" ng-bind="item.value"></span>
+</a>

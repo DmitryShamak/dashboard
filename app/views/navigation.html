@@ -1,0 +1,20 @@
+<div id="navigation" class="navigation-wrapper">
+	<div class="navigation-wrapper clearfix">
+		<div class="logo text-center pull-left">
+			<i class="profile-icon fa fa-modx"></i>
+		</div>
+		<div class="navbar clearfix">
+			<div class="navigation-group left-group pull-left clearfix">
+				<div class="pull-left" ng-repeat="link in navigation.topLinks track by $index">
+					<div navigation-link="link"></div>
+				</div>
+			</div>
+
+			<div class="navigation-group right-group pull-right clearfix">
+				<div class="pull-left" ng-repeat="link in navigation.bottomLinks track by $index">
+					<div navigation-link="link"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

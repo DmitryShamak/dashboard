@@ -1,0 +1,19 @@
+<div id="footer">
+    <div class="footer-content row">
+        <div class="col-xs-4 text-left">
+            <span class="copyright">
+                <i class="fa fa-copyright"></i>
+                {{footer.today.format("YYYY")}}
+            </span>
+            <a class="social-link" ng-repeat="link in footer.socialLinks track by $index" ng-href="{{link.href}}" target="_blank">
+                <i class="fa fa-{{link.icon}}"></i>
+            </a>
+        </div>
+        <div class="col-xs-4 text-center">
+            <a class="locale-link" ng-repeat="locale in footer.locals track by $index" ng-class="{'active': locale.active}" ng-bind="locale.text"></a>
+        </div>
+        <div class="col-xs-4 text-right">
+            <a ng-href="">FOR INVESTORS</a>
+        </div>
+    </div>
+</div>
