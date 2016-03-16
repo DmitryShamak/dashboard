@@ -18,6 +18,31 @@ body {
 	padding: $navigationHeight 0 $footerHeight;
 }
 
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 768px) {
+  .container {
+	width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+	width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+	width: 1170px;
+  }
+}
+
 h5 {
   font-size: 1.4em;
 }
@@ -52,6 +77,10 @@ h1 {
 
 .disabled {
   pointer-events: none;
+}
+
+.hidden-content {
+  overflow: hidden;
 }
 
 .cutted-text {

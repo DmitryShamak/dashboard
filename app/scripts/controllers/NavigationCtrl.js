@@ -8,6 +8,11 @@ angular.module("app")
 			state: "landing",
 			icon: "fa-home"
 		};
+		topLinks.connectaccount = {
+			title: "Connect Account",
+			state: "connectaccount",
+			icon: "fa-plus"
+		};
 		topLinks.page_1 = {
 			title: "Page 1",
 			state: "page_1",

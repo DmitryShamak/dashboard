@@ -14,6 +14,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
           },
           controller: "LandingCtrl"
         })
+        .state('connectaccount', {
+            url: "/connectaccount",
+            templateUrl: "/views/connect_account.html",
+            data: {
+                pageTitle: 'Connect Account'
+            },
+            controller: "ConnectAccountCtrl"
+        })
         .state('page_1', {
             url: "/page_1",
             templateUrl: "/views/blank_page.html",
