@@ -1,7 +1,7 @@
 function config($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise("/landing");
+    $urlRouterProvider.otherwise("/404");
 
     jQuery.ajaxSetup({cache: true});
 
@@ -21,6 +21,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
                 pageTitle: 'Connect Account'
             },
             controller: "ConnectAccountCtrl"
+        })
+        .state('404', {
+            url: "/404",
+            templateUrl: "/views/404.html",
+            data: {
+                pageTitle: 'No Page'
+            },
+            controller: "404Ctrl"
         })
         .state('page_1', {
             url: "/page_1",
@@ -54,6 +62,7 @@ angular
   .run(function($rootScope, $state, $injector, $location) {
 
     $rootScope.redirectToMainPage = function() {
+        console.log("to landing");
         $state.go("landing");
     };
 

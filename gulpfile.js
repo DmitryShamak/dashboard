@@ -52,8 +52,16 @@ gulp.task('serve',function() {
 });
 
 gulp.task('move_files',function() {
+    gulp.start('move_views', 'move_imgs');
+});
+gulp.task('move_views',function() {
     return gulp.src('./app/views/**/*')
+        .pipe(cleanUrls())
         .pipe(gulp.dest("./dist/views"));
+});
+gulp.task('move_imgs',function() {
+    return gulp.src('./app/imgs/**/*')
+        .pipe(gulp.dest("./dist/imgs"));
 });
 
 var cleanUrls = function() {

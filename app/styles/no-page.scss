@@ -1,0 +1,17 @@
+.no-page-wrapper {
+  position: absolute;
+  top: -50px;
+  bottom: -50px;
+
+  display: table;
+  height: 100vh;
+  float: none;
+
+  background-color: #141414;
+
+  .content {
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+  }
+}
