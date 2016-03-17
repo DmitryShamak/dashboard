@@ -1,17 +1,15 @@
 <div class="page-wrapper animated fadeIn clearfix">
     <div ng-hide="pageParams.busy">
         <div class="clearfix" ng-hide="pageParams.offline">
-            <div class="row">
-                <div class="content-header page-group col-xs-12">
-                    <h1>
-                        <span class="animated fadeIn" ng-hide="page.noAccount">Sign In</span>
-                        <span class="animated fadeIn" ng-show="page.noAccount">Signt Up</span>
-                    </h1>
-                </div>
-            </div>
             <div class="container">
                 <div class="connect-account-wrapper hidden-content">
                     <div class="row form-group">
+                        <div class="col-xs-12">
+                            <h1>
+                                <span class="animated fadeIn" ng-hide="page.noAccount">Sign In</span>
+                                <span class="animated fadeIn" ng-show="page.noAccount">Signt Up</span>
+                            </h1>
+                        </div>
                         <div class="col-xs-12">
                             <input type="checkbox" ng-model="page.noAccount" />
                             <label>I don`t have account.</label>
@@ -53,6 +51,15 @@
                             <button class="btn btn-primary">Sign Up</button>
                         </div>
                     </form>
+                </div>
+                <div class="page-group-wrapper">
+                    <div class="text-center">
+                        <div class="row">
+                            <div class="connect-provider" ng-repeat="provider in ['google', 'instagram', 'linkedin', 'vk'] track by $index">
+                                <i class="fa fa-{{provider}}"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

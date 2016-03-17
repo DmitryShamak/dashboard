@@ -4,3 +4,22 @@
 
   background: rgba(0,0,0,0.1);
 }
+
+.connect-provider {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 0 10px;
+
+  background: rgba(0, 0, 0, 0.7);
+
+  color: #FFF;
+  font-size: 1.3em;
+
+  opacity: 0.8;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+    background-color: #337ab7;
+  }
+}
