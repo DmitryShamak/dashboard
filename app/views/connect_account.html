@@ -2,7 +2,7 @@
     <div ng-hide="pageParams.busy">
         <div class="clearfix" ng-hide="pageParams.offline">
             <div class="container">
-                <div class="connect-account-wrapper hidden-content">
+                <div class="connect-account-wrapper hidden-content disabled">
                     <div class="row form-group">
                         <div class="col-xs-12">
                             <h1>
@@ -55,8 +55,8 @@
                 <div class="page-group-wrapper">
                     <div class="text-center">
                         <div class="row">
-                            <div class="connect-provider" ng-repeat="provider in ['google', 'instagram', 'linkedin', 'vk'] track by $index">
-                                <i class="fa fa-{{provider}}"></i>
+                            <div class="connect-provider" ng-repeat="provider in page.providers track by $index" ng-class="{'disabled': !provider.available}" ng-click="connectToProvider(provider);">
+                                <i class="fa fa-{{provider.type}}"></i>
                             </div>
                         </div>
                     </div>
