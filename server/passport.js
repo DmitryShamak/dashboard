@@ -40,7 +40,7 @@ passport.use(new GoogleStrategy(oauthConfig.googleAuth,
         //    }
         //    console.log("Source", data);
         //});
-        console.log(user);
+        //console.log(user);
         done(null, user);
     }
 ));

@@ -108,7 +108,6 @@ angular
     };
 
     $rootScope.$on('$stateChangeStart', function() {
-        console.log($rootScope.user);
         $rootScope.checkAuthentication();
     });
 

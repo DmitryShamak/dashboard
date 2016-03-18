@@ -2,24 +2,17 @@ angular.module("app")
 	.controller("NavigationCtrl", function($scope) {
 
 		$scope.navigation = {};
-		var topLinks = {};
-		topLinks.landing = {
+		var leftLinks = {};
+		leftLinks.landing = {
 			title: "Landing",
 			state: "landing",
 			icon: "fa-home"
 		};
-		topLinks.connectaccount = {
+		leftLinks.connectaccount = {
 			title: "Connect Account",
 			state: "connectaccount",
 			icon: "fa-plus",
 			hide: !!$scope.user
-		};
-		topLinks.signout = {
-			title: "Sign Out",
-			state: false,
-			action: $scope.signout,
-			icon: "fa-sign-out",
-			hide: !$scope.user
 		};
 		//topLinks.page_2 = {
 		//	title: "Page 2",
@@ -31,14 +24,21 @@ angular.module("app")
 		//	state: "page_3",
 		//	icon: "fa-info"
 		//};
+		$scope.navigation.leftLinks = leftLinks;
 
-		$scope.navigation.topLinks = topLinks;
+		var rightLinks = {};
+		rightLinks.signout = {
+			title: "Sign Out",
+			state: false,
+			action: $scope.signout,
+			icon: "fa-sign-out",
+			hide: !$scope.user
+		};
+		$scope.navigation.rightLinks = rightLinks;
 
-		//var bottomLinks = {};
-		//$scope.navigation.bottomLinks = bottomLinks;
 
 		$scope.$watch("user", function() {
-			topLinks.connectaccount.hide = !!$scope.user;
-			topLinks.signout.hide = !$scope.user;
+			leftLinks.connectaccount.hide = !!$scope.user;
+			rightLinks.signout.hide = !$scope.user;
 		});
 	});
