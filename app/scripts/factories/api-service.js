@@ -13,7 +13,6 @@ angular.module("app")
         api.login = $resource(api.serverUrl + "/api/login");
         api.signout = function(callback) {
             var url = api.serverUrl + "/logout";
-            $.cookie("user", null);
             $http({
                 method: 'GET',
                 url: url

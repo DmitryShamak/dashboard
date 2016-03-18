@@ -12,7 +12,7 @@ angular.module("app")
 			title: "Connect Account",
 			state: "connectaccount",
 			icon: "fa-plus",
-			hide: $scope.user
+			hide: !!$scope.user
 		};
 		topLinks.signout = {
 			title: "Sign Out",
@@ -37,5 +37,8 @@ angular.module("app")
 		//var bottomLinks = {};
 		//$scope.navigation.bottomLinks = bottomLinks;
 
-		//update history link
+		$scope.$watch("user", function() {
+			topLinks.connectaccount.hide = !!$scope.user;
+			topLinks.signout.hide = !$scope.user;
+		});
 	});

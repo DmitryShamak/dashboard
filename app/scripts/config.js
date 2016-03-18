@@ -77,13 +77,14 @@ angular
     $rootScope.signout = function() {
         var api = $injector.get('api');
         api.signout(function(res) {
+            $rootScope.user = null;
             $rootScope.redirectToMainPage();
         });
     };
 
     $rootScope.checkAuthentication = function() {
         if($rootScope.user || $rootScope.pending) {
-            return;
+            return true;
         }
 
         var api = $injector.get('api');
@@ -99,6 +100,7 @@ angular
                 $rootScope.apply($rootScope);
             }
         });
+        return false;
     };
 
     $rootScope.redirectToMainPage = function() {
