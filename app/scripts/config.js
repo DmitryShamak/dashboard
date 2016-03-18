@@ -1,7 +1,7 @@
 function config($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise("/404");
+    //$urlRouterProvider.otherwise("/404");
 
     jQuery.ajaxSetup({cache: true});
 
@@ -29,6 +29,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
                 pageTitle: 'No Page'
             },
             controller: "404Ctrl"
+        })
+        .state('profile', {
+            url: "/page_1",
+            templateUrl: "/views/blank_page.html",
+            data: {
+                pageTitle: 'Profile'
+            },
+            controller: "BlankPageCtrl"
         })
         .state('page_1', {
             url: "/page_1",
@@ -60,15 +68,49 @@ angular
   .module('app')
   .config(config)
   .run(function($rootScope, $state, $injector, $location) {
+    $rootScope.apply = function(scope) {
+        if (scope.$root.$$phase != '$apply' && scope.$root.$$phase != '$digest') {
+            scope.$apply();
+        }
+    };
+
+    $rootScope.signout = function() {
+        var api = $injector.get('api');
+        api.signout(function(res) {
+            $rootScope.redirectToMainPage();
+        });
+    };
+
+    $rootScope.checkAuthentication = function() {
+        if($rootScope.user || $rootScope.pending) {
+            return;
+        }
+
+        var api = $injector.get('api');
+        $rootScope.pending = true;
+        api.check_auth(function(res) {
+            var state = $state.current.name || $location.path();
+            $rootScope.user = res.data;
+            $rootScope.pending = false;
+
+            if(!state) {
+                $state.go("profile");
+            } else {
+                $rootScope.apply($rootScope);
+            }
+        });
+    };
 
     $rootScope.redirectToMainPage = function() {
-        console.log("to landing");
         $state.go("landing");
     };
 
-    $rootScope.apply = function(scope) {
-      if (scope.$root.$$phase != '$apply' && scope.$root.$$phase != '$digest') {
-          scope.$apply();
-      }
-    };
+    $rootScope.$on('$stateChangeStart', function() {
+        console.log($rootScope.user);
+        $rootScope.checkAuthentication();
+    });
+
+    $(document).ready(function() {
+        $rootScope.checkAuthentication();
+    });
   });

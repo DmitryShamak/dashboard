@@ -6,13 +6,13 @@
 		<div class="navbar clearfix">
 			<div class="navigation-group left-group pull-left clearfix">
 				<div class="pull-left" ng-repeat="link in navigation.topLinks track by $index">
-					<div navigation-link="link"></div>
+					<div ng-hide="link.hide" navigation-link="link"></div>
 				</div>
 			</div>
 
 			<div class="navigation-group right-group pull-right clearfix">
 				<div class="pull-left" ng-repeat="link in navigation.bottomLinks track by $index">
-					<div navigation-link="link"></div>
+					<div ng-hide="link.hide" navigation-link="link"></div>
 				</div>
 			</div>
 		</div>

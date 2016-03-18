@@ -3,7 +3,7 @@ angular.module("app")
     //    // Don't strip trailing slashes from calculated URLs
     //    $resourceProvider.defaults.stripTrailingSlashes = false;
     //}])
-    .factory("api", function($resource, $window) {
+    .factory("api", function($resource, $window, $http) {
         var api = {};
         api.serverUrl = "http://localhost:3337";
         /*
@@ -11,9 +11,24 @@ angular.module("app")
         * scoreboard [add, get, update, delete]
         * */
         api.login = $resource(api.serverUrl + "/api/login");
+        api.signout = function(callback) {
+            var url = api.serverUrl + "/logout";
+            $.cookie("user", null);
+            $http({
+                method: 'GET',
+                url: url
+            }).then(callback);
+        };
+        api.check_auth = function(callback) {
+            var url = api.serverUrl + "/api/auth";
+            $http({
+                method: 'GET',
+                url: url
+            }).then(callback);
+        };
         api.auth = function(provider) {
-            var path = api.serverUrl + "/auth/" + provider.type;
-            $window.location.href = path;
+            var url = api.serverUrl + "/auth/" + provider.type;
+            $window.location.href = url;
         };
         api.user = $resource(api.serverUrl + "/api/user", null, {
             'update': { method:'PUT' }
