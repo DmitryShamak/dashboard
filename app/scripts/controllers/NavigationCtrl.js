@@ -40,8 +40,14 @@ angular.module("app")
 
 			if($scope.user) {
 				var profileImage = $scope.user.photos.length ? $scope.user.photos[0].value.replace('?sz=50', "") : "/dist/imgs/gif/fun.gif";
-				$scope.navigation.avatar = {
-					'backgroundImage': 'url('+ profileImage + ')'
+				var img = new Image();
+				img.src = profileImage;
+				img.onload = function () {
+					$scope.navigation.avatar = {
+						'backgroundImage': 'url('+ profileImage + ')'
+					};
+
+					$scope.apply($scope);
 				}
 			}
 		});

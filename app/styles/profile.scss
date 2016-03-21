@@ -2,13 +2,34 @@
 
 .profile-wrapper {
   .profile-image {
+    display: inline-block;
     width: $profileImageSize;
     height: $profileImageSize;
-
-    margin: 0 auto;
 
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+    background-image: url("/imgs/gif/fun.gif");
+  }
+
+  .profile-control {
+    margin: 10px 0 0;
+  }
+
+  .profile-settings {
+    padding: 15px;
+
+    background-color: rgba(0, 0, 0, 0.1);
+
+    .profile-item-wrapper {
+      padding: 10px;
+      margin: 10px 0;
+
+      background: #fff;
+
+      .profile-item {
+        line-height: 35px;
+      }
+    }
   }
 }

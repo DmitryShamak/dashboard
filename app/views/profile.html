@@ -1,11 +1,36 @@
 <div class="page-wrapper animated fadeIn clearfix">
-    <div class="row profile-wrapper" ng-hide="pageParams.busy">
-        <div class="page-group-wrapper text-center col-xs-12">
-            <div class="profile-image" ng-style="navigation.avatar"></div>
-            <h3 ng-bind="user.name"></h3>
-            <h5><small ng-bind="user.email"></small></h5>
+    <div class="row profile-wrapper" ng-hide="page.busy">
+        <div class="page-group-wrapper col-xs-12">
+            <div class="row">
+                <div class="col-xs-6 text-right">
+                    <div class="profile-image" ng-style="navigation.avatar"></div>
+                </div>
+                <div class="col-xs-6">
+                    <h3 ng-bind="user.name"></h3>
+                    <h5><small ng-bind="user.email"></small></h5>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-12" ng-hide="pageParams.offline"></div>
+        <div class="col-xs-12">
+            <div class="profile-control-wrapper clearfix" ng-repeat="item in page.profile.items track by $index">
+                <div class="btn control-btn pull-right" title="Add new item">
+                    <i class="fa fa-plus"></i>
+                </div>
+            </div>
+            <div class="profile-settings">
+                <div class="profile-item-wrapper" ng-repeat="item in page.profile.items track by $index">
+                    <div class="clearfix">
+                        <div class="profile-item col-xs-6 col-sm-2" ng-bind="item.label"></div>
+                        <div class="profile-item col-xs-6 col-sm-5" ng-bind="item.description"></div>
+                        <div class="profile-item col-xs-6 col-sm-2" ng-bind="item.status"></div>
+                        <div class="profile-item text-right col-xs-6 col-sm-3">
+                            <div class="btn btn-primary">details</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-hide="page.offline"></div>
     </div>
-    <p class="form-group alert alert-info" ng-hide="!pageParams.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
+    <p class="form-group alert alert-info" ng-hide="!page.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
 </div>

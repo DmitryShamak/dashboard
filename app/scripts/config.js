@@ -36,7 +36,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             data: {
                 pageTitle: 'Profile'
             },
-            controller: "BlankPageCtrl"
+            controller: "ProfileCtrl"
         })
         .state('blank_page', {
             url: "/blank_page",
@@ -52,6 +52,11 @@ angular
   .module('app')
   .config(config)
   .run(function($rootScope, $state, $injector, $location) {
+    $rootScope.today = function() {
+        var today = moment();
+        return today;
+    };
+
     $rootScope.apply = function(scope) {
         if (scope.$root.$$phase != '$apply' && scope.$root.$$phase != '$digest') {
             scope.$apply();
