@@ -1,0 +1,14 @@
+@import "conf";
+
+.profile-wrapper {
+  .profile-image {
+    width: $profileImageSize;
+    height: $profileImageSize;
+
+    margin: 0 auto;
+
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+  }
+}

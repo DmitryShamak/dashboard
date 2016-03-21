@@ -31,34 +31,18 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: "404Ctrl"
         })
         .state('profile', {
-            url: "/page_1",
-            templateUrl: "/views/blank_page.html",
+            url: "/profile",
+            templateUrl: "/views/profile.html",
             data: {
                 pageTitle: 'Profile'
             },
             controller: "BlankPageCtrl"
         })
-        .state('page_1', {
-            url: "/page_1",
+        .state('blank_page', {
+            url: "/blank_page",
             templateUrl: "/views/blank_page.html",
             data: {
-                pageTitle: 'Page 1'
-            },
-            controller: "BlankPageCtrl"
-        })
-        .state('page_2', {
-            url: "/page_2",
-            templateUrl: "/views/blank_page.html",
-            data: {
-                pageTitle: 'Page 2'
-            },
-            controller: "BlankPageCtrl"
-        })
-        .state('page_3', {
-            url: "/page_3",
-            templateUrl: "/views/blank_page.html",
-            data: {
-                pageTitle: 'Page 3'
+                pageTitle: 'Blank Page'
             },
             controller: "BlankPageCtrl"
         });
@@ -93,6 +77,7 @@ angular
             var state = $state.current.name || $location.path();
             $rootScope.user = res.data;
             $rootScope.pending = false;
+            console.log($rootScope.user);
 
             if(!state) {
                 $state.go("profile");

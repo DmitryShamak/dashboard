@@ -14,16 +14,12 @@ angular.module("app")
 			icon: "fa-plus",
 			hide: !!$scope.user
 		};
-		//topLinks.page_2 = {
-		//	title: "Page 2",
-		//	state: "page_2",
-		//	icon: "fa-info"
-		//};
-		//topLinks.page_3 = {
-		//	title: "Page 3",
-		//	state: "page_3",
-		//	icon: "fa-info"
-		//};
+		leftLinks.profile = {
+			title: "Profile",
+			state: "profile",
+			icon: "fa-info",
+			hide: !$scope.user
+		};
 		$scope.navigation.leftLinks = leftLinks;
 
 		var rightLinks = {};
@@ -39,6 +35,14 @@ angular.module("app")
 
 		$scope.$watch("user", function() {
 			leftLinks.connectaccount.hide = !!$scope.user;
+			leftLinks.profile.hide = !$scope.user;
 			rightLinks.signout.hide = !$scope.user;
+
+			if($scope.user) {
+				var profileImage = $scope.user.photos.length ? $scope.user.photos[0].value.replace('?sz=50', "") : "/dist/imgs/gif/fun.gif";
+				$scope.navigation.avatar = {
+					'backgroundImage': 'url('+ profileImage + ')'
+				}
+			}
 		});
 	});
