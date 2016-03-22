@@ -72,7 +72,7 @@ var cleanUrls = function() {
 };
 
 var change = require('gulp-change');
-gulp.task("clean_urls", ["clean_js"]);
+gulp.task("clean_urls", ["clean_js", "clean_styles"]);
 gulp.task("clean_js",  function() {
     return gulp.src(["./dist/js/*.js"])
         .pipe(change(function (content, done) {
@@ -80,6 +80,14 @@ gulp.task("clean_js",  function() {
             done(null, newContent);
         }))
         .pipe(gulp.dest("./dist/js"));
+});
+gulp.task("clean_styles",  function() {
+    return gulp.src(["./dist/css/*.css"])
+        .pipe(change(function (content, done) {
+            var newContent = content.replace(/(\/)?(imgs\/.*)/g, "/dist/$2");
+            done(null, newContent);
+        }))
+        .pipe(gulp.dest("./dist/css"));
 });
 
 gulp.task('watch', function() {

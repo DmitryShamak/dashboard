@@ -12,17 +12,17 @@
             </div>
         </div>
         <div class="col-xs-12">
-            <div class="profile-control-wrapper clearfix" ng-repeat="item in page.profile.items track by $index">
-                <div class="btn control-btn pull-right" title="Add new item">
-                    <i class="fa fa-plus"></i>
+            <div class="profile-control-wrapper clearfix">
+                <div class="btn control-btn pull-right" ng-click="showPlugins()" title="Add new plugin">
+                    <i class="fa fa-plus-circle"></i>
                 </div>
             </div>
             <div class="profile-settings">
-                <div class="profile-item-wrapper" ng-repeat="item in page.profile.items track by $index">
+                <div class="profile-item-wrapper" ng-repeat="plugin in page.profile.plugins track by $index">
                     <div class="clearfix">
-                        <div class="profile-item col-xs-6 col-sm-2" ng-bind="item.label"></div>
-                        <div class="profile-item col-xs-6 col-sm-5" ng-bind="item.description"></div>
-                        <div class="profile-item col-xs-6 col-sm-2" ng-bind="item.status"></div>
+                        <div class="profile-item col-xs-6 col-sm-2" ng-bind="plugin.label"></div>
+                        <div class="profile-item col-xs-6 col-sm-5" ng-bind="plugin.description"></div>
+                        <div class="profile-item col-xs-6 col-sm-2" ng-bind="plugin.status"></div>
                         <div class="profile-item text-right col-xs-6 col-sm-3">
                             <div class="btn btn-primary">details</div>
                         </div>

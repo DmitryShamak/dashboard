@@ -12,8 +12,12 @@
     background-image: url("/imgs/gif/fun.gif");
   }
 
-  .profile-control {
+  .profile-control-wrapper {
     margin: 10px 0 0;
+
+    .control-btn {
+      font-size: 1.3em;
+    }
   }
 
   .profile-settings {
@@ -31,5 +35,11 @@
         line-height: 35px;
       }
     }
+  }
+}
+
+.ngdialog.ngdialog-theme-default.plagin-modal {
+  .ngdialog-content {
+    width: 90%;
   }
 }
