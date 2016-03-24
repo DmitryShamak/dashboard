@@ -1,0 +1,42 @@
+@import "conf";
+
+.ngdialog.ngdialog-theme-default.plagin-modal {
+  padding: 0;
+  border-radius: 0;
+
+  .ngdialog-content {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+
+    border-radius: 0;
+    background: #fbfaf8;
+  }
+
+  .ngdialog-close {
+    top: 5px;
+    right: 5px;
+
+    &:before {
+      font-size: 40px;
+    }
+  }
+}
+
+.plugin-wrapper {
+  .header {
+    padding: 20px;
+
+    background-color: $bgMainColor;
+    color: #FFF;
+  }
+
+  .content {
+    margin-top: 20px;
+
+    .categories,
+    .list-wrapper {
+      padding: 0 20px;
+    }
+  }
+}

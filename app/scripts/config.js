@@ -1,11 +1,20 @@
 function config($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    //$urlRouterProvider.otherwise("/404");
+    $urlRouterProvider
+        .otherwise("/404");
 
     jQuery.ajaxSetup({cache: true});
 
     $stateProvider
+        .state('main', {
+            url: "/",
+            templateUrl: "/views/landing.html",
+            data: {
+                pageTitle: 'Landing'
+            },
+            controller: "LandingCtrl"
+        })
         .state('landing', {
           url: "/landing",
           templateUrl: "/views/landing.html",
