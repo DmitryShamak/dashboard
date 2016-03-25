@@ -1,0 +1,15 @@
+<div class="clearfix">
+	<div class="item-image" ng-style="{'background-image': 'url('+plugin.image+')'}"></div>
+	<div class="col-xs-12 item-group">
+		<h5 class="item-label cutted-text text-bold" ng-bind="plugin.label"></h5>
+		<div class="item-text cutted-text" ng-bind="plugin.description"></div>
+	</div>
+	<div class="col-xs-12 item-group">
+		<div class="btn btn-primary" ng-disabled="pending" ng-click="installPlugin();">
+			<i class="fa fa-plus"></i>
+			<span>Install plugin</span>
+
+			<i class="pending-icon fa fa-refresh fa-spin" ng-show="pending"></i>
+		</div>
+	</div>
+</div>

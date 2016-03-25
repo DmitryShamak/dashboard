@@ -1,5 +1,5 @@
 <div class="plugin-wrapper">
-	<div class="header row">
+	<div class="header">
 		<div class="col-xs-12">
 			<h4>Find plugin</h4>
 			<div class="row">
@@ -12,15 +12,35 @@
 			</div>
 		</div>
 	</div>
-	<div class="content row">
-		<div class="col-xs-4">
+	<div class="content-wrapper">
+		<div class="plugin-nav">
 			<div class="categories">
-				<h5>Categories</h5>
+				<div class="category" ng-repeat="category in plugings.categories track by $index">
+					<h5 class="text-bold" ng-bind="category.header"></h5>
+					<ul>
+						<li class="pointer" ng-class="{selected: item.selected}" ng-click="selectCategory(item);" ng-repeat="item in category.items track by $index" ng-bind="item.label"></li>
+					</ul>
+				</div>
 			</div>
 		</div>
-		<div class="col-xs-8">
-			<div class="list-wrapper col-xs-8">
-				<h5>The list</h5>
+		<div class="plugin-content">
+			<div class="list-wrapper animated fadeIn" ng-show="plugings.content">
+				<h5 class="content-header pending-wrapper">
+					<i class="pending-icon fa fa-refresh fa-spin" ng-show="plugings.content.pending"></i>
+					<span ng-bind="plugings.content.category"></span>
+				</h5>
+				<ul ng-hide="plugings.content.pending" class="clearfix animated fadeIn">
+					<li class="category-item pointer col-xs-12 col-sm-6 col-lg-4"
+						ng-repeat="item in plugings.content.data track by $index" ng-click="openPlugin(item);">
+						<div class="category-item-content clearfix">
+							<div class="item-image" ng-style="{'background-image': 'url('+item.image+')'}"></div>
+							<div class="col-xs-12 item-content">
+								<h5 class="item-label cutted-text text-bold" ng-bind="item.label"></h5>
+								<div class="item-text cutted-text" ng-bind="item.description"></div>
+							</div>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

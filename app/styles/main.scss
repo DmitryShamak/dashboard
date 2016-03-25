@@ -59,6 +59,19 @@ h1 {
   font-size: 2em;
 }
 
+.text-bold {
+  font-weight: 700;
+}
+.text-medium {
+  font-weight: 500;
+}
+.text-light {
+  font-weight: 300;
+}
+.text-thin {
+  font-weight: 100;
+}
+
 .page-pending {
   position: fixed;
   top: $navigationHeight;  bottom: 0; left: 0; right: 0;
@@ -69,6 +82,16 @@ h1 {
   background-image: url('/app/imgs/page_pending.gif');
 
   z-index: 2;
+}
+
+.pending-wrapper {
+  position: relative;
+  padding-left: 30px;
+
+  .pending-icon {
+    position: absolute;
+    top: 0; left: 0;
+  }
 }
 
 .pointer {

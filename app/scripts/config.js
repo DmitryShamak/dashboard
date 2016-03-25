@@ -1,8 +1,7 @@
 function config($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider
-        .otherwise("/404");
+    $urlRouterProvider.otherwise("/404");
 
     jQuery.ajaxSetup({cache: true});
 
@@ -91,7 +90,7 @@ angular
             var state = $state.current.name || $location.path();
             $rootScope.user = res.data;
             $rootScope.pending = false;
-            console.log($rootScope.user);
+            //console.log($rootScope.user);
 
             if(!state) {
                 $state.go("profile");
