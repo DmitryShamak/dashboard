@@ -26,8 +26,6 @@ $pluginItemWidth: 50px;
   .profile-settings {
     padding: 15px;
 
-    background-color: rgba(0, 0, 0, 0.1);
-
     .profile-plugins-wrapper {
       margin: 10px 0;
 
@@ -38,7 +36,7 @@ $pluginItemWidth: 50px;
 
         padding: $pluginItemPadding;
 
-        background-color: #FFF;
+        background-color: rgba(0, 0, 0, 0.1);
 
         overflow: hidden;
 
@@ -54,6 +52,8 @@ $pluginItemWidth: 50px;
 
         .plugin-details {
           margin-left: $pluginItemWidth;
+
+          font-size: 0.8em;
 
           h5,
           p {
