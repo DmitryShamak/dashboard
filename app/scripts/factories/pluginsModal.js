@@ -31,7 +31,9 @@ angular.module("app")
 					var defaultCategory = $scope.plugings.categories[0].items[0];
 					var selectedItem = null;
 
-					$scope.openPlugin = pluginDetails.show;
+					$scope.openPlugin = function(plugin) {
+						pluginDetails.show(plugin, scope)
+					};
 
 					$scope.selectCategory = function(category) {
 						if(!category) {

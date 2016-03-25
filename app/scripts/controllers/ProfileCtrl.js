@@ -3,13 +3,16 @@ angular.module("app")
 		$scope.page = {};
 		$scope.page.profile = {};
 		//fake data initializing
-		$scope.page.profile.plugins = [{
-			label: "Onliner",
-			description: "last update on " + $scope.today().format("DD.MM.YYYYY"),
-			status: "disabled"
-		}];
+		$scope.page.profile.plugins = [];
 
-		$scope.showPlugins = pluginsModal.show;
+		$scope.setPlugin = function(plugin) {
+			//TODO: check that this plugin is not installed
+			$scope.page.profile.plugins.push(plugin);
+		};
+
+		$scope.showStore = function() {
+			pluginsModal.show($scope);
+		};
 
 		$scope.init = function() {
 			$scope.page.busy = false;

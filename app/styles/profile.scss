@@ -1,5 +1,8 @@
 @import "conf";
 
+$pluginItemPadding: 5px;
+$pluginItemWidth: 50px;
+
 .profile-wrapper {
   .profile-image {
     display: inline-block;
@@ -25,14 +28,38 @@
 
     background-color: rgba(0, 0, 0, 0.1);
 
-    .profile-item-wrapper {
-      padding: 10px;
+    .profile-plugins-wrapper {
       margin: 10px 0;
 
       background: #fff;
 
-      .profile-item {
-        line-height: 35px;
+      .profile-plugin {
+        position: relative;
+
+        padding: $pluginItemPadding;
+
+        background-color: #FFF;
+
+        overflow: hidden;
+
+        .plugin-image {
+          position: absolute;
+          left: $pluginItemPadding; top: $pluginItemPadding; bottom: $pluginItemPadding;
+          width: $pluginItemWidth;
+
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+
+        .plugin-details {
+          margin-left: $pluginItemWidth;
+
+          h5,
+          p {
+            margin-bottom: 0;
+          }
+        }
       }
     }
   }

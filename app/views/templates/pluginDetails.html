@@ -6,10 +6,9 @@
 	</div>
 	<div class="col-xs-12 item-group">
 		<div class="btn btn-primary" ng-disabled="pending" ng-click="installPlugin();">
-			<i class="fa fa-plus"></i>
-			<span>Install plugin</span>
-
+			<i class="fa fa-plus" ng-hide="pending"></i>
 			<i class="pending-icon fa fa-refresh fa-spin" ng-show="pending"></i>
+			<span>Install plugin</span>
 		</div>
 	</div>
 </div>

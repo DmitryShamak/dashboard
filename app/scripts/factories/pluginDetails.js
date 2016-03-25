@@ -26,6 +26,7 @@ angular.module("app")
 							}
 
 							//TODO: set new plugin to user account
+							scope.setPlugin(data);
 							$scope.closeThisDialog();
 						});
 					};
