@@ -24,12 +24,14 @@ passport.use(new GoogleStrategy(oauthConfig.googleAuth,
 
         var user = {
             id: profile.id,
-            photos: profile.photos,
+            photo: profile.photos && profile.photos[0].value,
             provider: profile.provider,
             email: profile.emails[0].value,
             name: profile.displayName,
             token: accessToken
         };
+
+        db.findOrCreate("user", {email: user.email}, user, done);
         //TODO: save user source data (tokens)
         //sources.add({
         //    email: _.find(profile.emails, {type: "account"}).value,
@@ -41,7 +43,6 @@ passport.use(new GoogleStrategy(oauthConfig.googleAuth,
         //    console.log("Source", data);
         //});
         //console.log(user);
-        done(null, user);
     }
 ));
 

@@ -39,7 +39,7 @@ angular.module("app")
 			rightLinks.signout.hide = !$scope.user;
 
 			if($scope.user) {
-				var profileImage = $scope.user.photos.length ? $scope.user.photos[0].value.replace('?sz=50', "") : "/dist/imgs/gif/fun.gif";
+				var profileImage = $scope.user.photo ? $scope.user.photo.replace('?sz=50', "") : "/dist/imgs/gif/fun.gif";
 				var img = new Image();
 				img.src = profileImage;
 				img.onload = function () {

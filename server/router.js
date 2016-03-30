@@ -8,9 +8,10 @@ var passport = require("./passport.js");
 
 function getUserAuth(req, res, next) {
     // if user is authenticated in the session, carry on
-    console.log("AUTH", req.user);
     if (req.isAuthenticated() && req.user) {
-        res.status(200).send(JSON.stringify(req.user));
+        db.find("user", {email: req.user.email}, function(err, user) {
+            res.status(200).send(JSON.stringify(user.toJSON()));
+        })
     } else {
         res.status(400).send(null);
     }
