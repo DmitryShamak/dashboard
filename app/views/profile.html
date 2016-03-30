@@ -17,7 +17,7 @@
                     <i class="fa fa-plus-circle"></i>
                 </div>
             </div>
-            <div class="profile-settings">
+            <div class="profile-settings" ng-class="{'disabled': page.busy}">
                 <div ng-hide="page.profile.plugins.length">
                     <h5>No plugins installed</h5>
                 </div>
@@ -33,7 +33,7 @@
                                 <p ng-bind="plugin.description"></p>
                             </div>
                         </div>
-                        <div class="plugin-btn pointer" title="Delete plugin">
+                        <div class="plugin-btn pointer" ng-click="removePlugin($index);" title="Delete plugin">
                             <i class="fa fa-close"></i>
                         </div>
                     </div>
