@@ -12,10 +12,6 @@ angular.module("app")
 				data: {
 					plugins: $scope.page.profile.plugins
 				}
-			}, function() {
-				console.log("success");
-			}, function() {
-				console.log("FAIL");
 			});
 		};
 

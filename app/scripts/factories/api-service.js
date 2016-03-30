@@ -23,7 +23,15 @@ angular.module("app")
             $http({
                 method: 'GET',
                 url: url
-            }).then(callback);
+            }).then(function(res) {
+                if(res.status != 200) {
+                    return callback(res.statusText, null);
+                }
+
+                callback(null, res.data);
+            }).catch(function(res) {
+                callback(res.statusText, null)
+            });
         };
         api.auth = function(provider) {
             var url = api.serverUrl + "/auth/" + provider.type;

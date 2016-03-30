@@ -86,11 +86,15 @@ angular
 
         var api = $injector.get('api');
         $rootScope.pending = true;
-        api.check_auth(function(res) {
-            var state = $state.current.name || $location.path();
-            $rootScope.user = res.data;
+        api.check_auth(function(err, data) {
+            var state = $state.current.name || $location.path().replace(/^\//, "");
+
+            if(err) {
+                return (state === "profile" ? $state.go("landing") : true);
+            }
+
+            $rootScope.user = data;
             $rootScope.pending = false;
-            //console.log($rootScope.user);
 
             if(!state) {
                 $state.go("profile");
