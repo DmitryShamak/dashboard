@@ -53,6 +53,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
                 pageTitle: 'Blank Page'
             },
             controller: "BlankPageCtrl"
+        })
+        .state('admin', {
+            url: "/admin",
+            templateUrl: "/views/admin.html",
+            data: {
+                pageTitle: 'Admin'
+            },
+            controller: "AdminCtrl"
         });
 }
 

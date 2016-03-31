@@ -1,0 +1,35 @@
+<div class="page-wrapper animated fadeIn clearfix">
+	<div class="row" ng-hide="page.busy">
+		<div class="admin-header col-xs-12">
+			<div class="clearfix">
+				<div class="btn" ng-class="{'btn-warning' : link.active}" ng-repeat="link in admin.links track by $index" ng-click="selectTab(link.tab);">
+					<span ng-bind="link.label"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12" ng-hide="page.offline">
+			<div class="row">
+				<div class="col-xs-4">
+					<h5>Add item</h5>
+					<form class="admin-form" ng-submit="onSubmit(admin.form);">
+						<div class="form-group" ng-repeat="item in admin.schema track by $index">
+							<label ng-bind="item.key"></label>
+							<input class="form-control" ng-model="admin.form[item.key]" type="text" />
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary">Save</button>
+						</div>
+					</form>
+				</div>
+				<div class="col-xs-8">
+					<h5>Items list</h5>
+					<h5 ng-hide="admin.data.length"><small>No items</small></h5>
+					<div class="form-group" ng-repeat="item in admin.data track by $index">
+						<h6 ng-bind="item.label"></h6>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p class="form-group alert alert-info" ng-hide="!page.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
+</div>

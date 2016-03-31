@@ -23,6 +23,11 @@ angular.module("app")
 		$scope.navigation.leftLinks = leftLinks;
 
 		var rightLinks = {};
+		rightLinks.admin = {
+			title: "Admin",
+			state: "admin",
+			icon: "fa-lock"
+		};
 		rightLinks.signout = {
 			title: "Sign Out",
 			state: false,
