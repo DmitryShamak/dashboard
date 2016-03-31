@@ -16,23 +16,23 @@
 		<div ng-show="store.categories.length">
 			<div class="store-nav">
 				<div class="categories">
-					<div class="category" ng-repeat="category in store.categories track by $index">
-						<h5 class="text-bold" ng-bind="category.header"></h5>
+					<div class="category-item">
+						<h5 class="text-bold text-capitalize">Categories</h5>
 						<ul>
-							<li class="pointer" ng-class="{selected: item.selected}" ng-click="selectCategory(item);" ng-repeat="item in category.items track by $index" ng-bind="item.label"></li>
+							<li class="pointer text-capitalize" ng-repeat="category in store.categories track by $index"
+								ng-class="{selected: category.selected}" ng-click="selectCategory(category);" ng-bind="category.label"></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="store-content">
 				<div class="list-wrapper animated fadeIn" ng-hide="store.offline">
-					<h5 class="content-header pending-wrapper">
-						<i class="pending-icon fa fa-refresh fa-spin" ng-show="store.busy"></i>
-						<span ng-bind="store.selectedCategory"></span>
+					<h5 class="content-header pending-wrapper" ng-show="store.busy">
+						<i class="pending-icon fa fa-refresh fa-spin"></i>
 					</h5>
 					<ul ng-hide="store.busy" class="clearfix animated fadeIn">
 						<li class="category-item pointer col-xs-12 col-sm-6 col-lg-4"
-							ng-repeat="item in store.data track by $index | filter: store.filter" ng-click="openPlugin(item);">
+							ng-repeat="item in store.data | filter : store.filter" ng-click="openPlugin(item);">
 							<div class="category-item-content clearfix">
 								<div class="item-image" ng-style="{'background-image': 'url('+item.image+')'}"></div>
 								<div class="col-xs-12 item-content">
