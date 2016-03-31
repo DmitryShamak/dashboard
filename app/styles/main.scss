@@ -76,6 +76,10 @@ h1 {
   text-transform: capitalize;
 }
 
+.text-marked {
+  color: $activeColor;
+}
+
 .page-pending {
   position: fixed;
   top: $navigationHeight;  bottom: 0; left: 0; right: 0;

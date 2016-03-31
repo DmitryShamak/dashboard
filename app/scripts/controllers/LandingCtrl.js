@@ -1,9 +1,14 @@
 angular.module("app")
-	.controller("LandingCtrl", function($rootScope, $scope, $interval, $state, api) {
-		$scope.pageParams = {};
+.controller("LandingCtrl", function($rootScope, $scope, api) {
+		$scope.now = $scope.today().format("DD.MM.YYYY");
+		$scope.page = {
+			busy: true
+		};
 
 		$scope.init = function() {
-			$scope.pageParams.busy = true;
-			$scope.pageParams.offline = false;
+			$scope.page.busy = false;
+			$scope.page.offline = false;
 		};
+
+		$scope.init();
 	});
