@@ -1,10 +1,10 @@
 angular.module("app")
 	.controller("BlankPageCtrl", function($rootScope, $scope) {
-		$scope.pageParams = {};
+		$scope.page = {};
 
 		$scope.init = function() {
-			$scope.pageParams.busy = false;
-			$scope.pageParams.offline = false;
+			$scope.page.busy = false;
+			$scope.page.offline = false;
 		};
 
 		$scope.init();

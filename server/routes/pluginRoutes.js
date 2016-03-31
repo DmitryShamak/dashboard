@@ -29,11 +29,12 @@ module.exports = function(db) {
             //TODO: featured list
             var categories = [];
             _.forEach(plugins, function(plugin, key) {
-                if(~categories.indexOf(plugin.category)) {
-                    return;
+                var exists = _.find(categories, {'label': plugin.category});
+                if(!exists) {
+                    categories.push({
+                        label: plugin.category
+                    });
                 }
-
-                categories.push(plugin.category);
             });
 
             res.send(JSON.stringify({
