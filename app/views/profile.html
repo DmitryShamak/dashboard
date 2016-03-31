@@ -26,11 +26,11 @@
                         <div class="plugin-image" ng-style="{'background-image': 'url('+plugin.image+')'}"></div>
                         <div class="plugin-details col-xs-12">
                             <div class="col-xs-12">
-                                <h5>
+                                <h5 class="cutted-text">
                                     <span class="text-bold" ng-bind="plugin.label"></span>
                                     <small ng-bind="plugin.status"></small>
                                 </h5>
-                                <p ng-bind="plugin.description"></p>
+                                <p class="cutted-text" ng-bind="plugin.description"></p>
                             </div>
                         </div>
                         <div class="plugin-btn pointer" ng-click="removePlugin($index);" title="Delete plugin">

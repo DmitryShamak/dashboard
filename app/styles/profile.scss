@@ -28,10 +28,11 @@ $pluginItemWidth: 50px;
 
     .profile-plugins-wrapper {
       display: inline-block;
+      max-width: 250px;
       margin: 10px 0;
 
-      &:not(:first-child) {
-        margin-left: 10px;
+      &:not(:last-child) {
+        margin-right: 10px;
       }
 
       background: #fff;
