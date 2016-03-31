@@ -21,13 +21,16 @@ module.exports = function(mongoose) {
     collections.user = mongoose.model('users', collections.userSchema);
 
     collections.PluginSchema = new Schema({
-        id: String,
+        category: String,
+        keywords: Array,
+        image: String,
+        rate: Number,
         label: String,
         description: String,
         date: String,
         link: String
     });
-    collections.plugin = mongoose.model('scoreboards', collections.PluginSchema);
+    collections.plugin = mongoose.model('plugins', collections.PluginSchema);
 
     return collections;
 };

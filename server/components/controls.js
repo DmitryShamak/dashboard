@@ -5,11 +5,19 @@ module.exports = function(collections) {
             cb(true, null);
         }
 
+        collections[collection].find(query, cb);
+    };
+
+    db.findOne = function(collection, query, cb) {
+        if(!query) {
+            cb(true, null);
+        }
+
         collections[collection].findOne(query, cb);
     };
 
     db.findOrCreate = function(collection, query, obj, cb) {
-        db.find(collection, query, function(err, data) {
+        db.findOne(collection, query, function(err, data) {
             if(err || !data) {
                 return db.save(collection, obj, cb);
             }

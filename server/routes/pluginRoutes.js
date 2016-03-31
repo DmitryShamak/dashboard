@@ -1,15 +1,12 @@
-var jwt = require("jsonwebtoken");
-var JWT_SECRET = "oldmansecret";
+var _ = require("lodash");
 
 module.exports = function(db) {
     var routes = {};
 
     routes.save = function(req, res) {
         var body = req.body;
-        var user = body;
-        user.token = jwt.sign(user, JWT_SECRET);
 
-        db.save("user", user, function(err, data) {
+        db.save("plugin", body, function(err, data) {
             if(err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
@@ -20,35 +17,42 @@ module.exports = function(db) {
         });
     };
 
-    routes.get = function(req, res) {
-        var query = req.query;
-        db.findOne("user", query, function(err, user) {
-            if(err) {
+    routes.store = function (req, res) {
+        db.find("plugin", {}, function (err, plugin) {
+            if (err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
                 return res.send();
             }
 
-            res.send(JSON.stringify(user));
+            var plugins = plugin ? plugin : [];
+            //TODO: featured list
+            var categories = [];
+            _.forEach(plugins, function(plugin, key) {
+                if(~categories.indexOf(plugin.category)) {
+                    return;
+                }
+
+                categories.push(plugin.category);
+            });
+
+            res.send(JSON.stringify({
+                categories: categories,
+                data: plugins
+            }));
         });
     };
 
-    routes.authenticate = function(req, res) {
-        var data = req.body;
-        var query = {
-            token: data.token
-        };
-        db.find("user", query, function(err, user) {
-            if(err || !user) {
+    routes.get = function (req, res) {
+        var query = req.query;
+        db.find("plugin", query, function (err, plugin) {
+            if (err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
                 return res.send();
             }
 
-            res.send(JSON.stringify({
-                _id: user._id,
-                name: user.name
-            }));
+            res.send(JSON.stringify(plugin.toJSON()));
         });
     };
 
@@ -59,14 +63,14 @@ module.exports = function(db) {
             res.statusMessage = 'Bad Data';
             return res.send();
         }
-        db.update("user", body.query, body.data, function(err, user) {
+        db.update("plugin", body.query, body.data, function(err, plugin) {
             if(err || !user) {
                 res.statusCode = 404;
                 res.statusMessage = 'Bad Data';
                 return res.send();
             }
 
-            res.send(JSON.stringify(user));
+            res.send(JSON.stringify(plugin));
         });
     };
 

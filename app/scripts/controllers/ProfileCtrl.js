@@ -1,5 +1,5 @@
 angular.module("app")
-	.controller("ProfileCtrl", function($rootScope, $scope, pluginsModal, api) {
+	.controller("ProfileCtrl", function($rootScope, $scope, storeModal, api) {
 		$scope.page = {
 			busy: true
 		};
@@ -33,7 +33,7 @@ angular.module("app")
 		};
 
 		$scope.showStore = function() {
-			pluginsModal.show($scope);
+			storeModal.show($scope);
 		};
 
 		$scope.init = function() {
@@ -49,5 +49,5 @@ angular.module("app")
 			if($scope.user) {
 				$scope.init();
 			}
-		})
+		});
 	});

@@ -34,7 +34,7 @@ $pluginItemPadding: 10px;
   }
 }
 
-.plugin-wrapper {
+.store-wrapper {
   position: absolute;
   top: 0; left: 0;
   width: 100%;
@@ -61,13 +61,13 @@ $pluginItemPadding: 10px;
     width: 100%;
     margin-top: 20px;
 
-    .plugin-nav,
-    .plugin-content {
+    .store-nav,
+    .store-content {
       position: absolute;
       top: $pluginContentMarginTop; bottom: $pluginContentMarginBottom;
     }
 
-    .plugin-nav {
+    .store-nav {
       left: 0;
       width: $pluginNavWidth;
 
@@ -91,7 +91,7 @@ $pluginItemPadding: 10px;
       }
     }
 
-    .plugin-content {
+    .store-content {
       left: $pluginNavWidth;
       right: 0;
 

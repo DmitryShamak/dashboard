@@ -90,12 +90,11 @@ h1 {
   .pending-icon {
     position: absolute;
     top: 0; left: 0;
-    width: 60px;
     font-size: 1.2em;
 
     &.pending-center {
       top: 50%; left: 50%;
-      margin: -30px;
+      margin: -15px;
     }
 
   }

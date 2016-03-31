@@ -41,13 +41,11 @@ angular.module("app")
             'update': { method:'PUT' }
         });
         api.authenticate = $resource(api.serverUrl + "/api/authenticate");
-        api.scoreboard = $resource(api.serverUrl + "/api/scoreboard/:key", null, {
+
+        api.plugin = $resource(api.serverUrl + "/api/plugin", null, {
             'update': { method:'PUT' }
         });
-        api.source = $resource(api.serverUrl + "/api/source", null, {
-            'update': { method:'PUT' }
-        });
-        api.search = $resource(api.serverUrl + "/api/search");
+        api.store = $resource(api.serverUrl + "/api/store");
 
         return api;
     });

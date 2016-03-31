@@ -1,0 +1,52 @@
+<div class="store-wrapper">
+	<div class="header">
+		<div class="col-xs-12">
+			<h4>Find plugin</h4>
+			<div class="row">
+				<div class="col-xs-10 col-sm-11">
+					<input type="text" placeholder="Search.." class="form-control" />
+				</div>
+				<div class="col-xs-2 col-sm-1">
+					<div class="btn btn-primary">GO!</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content-wrapper">
+		<div ng-show="store.categories.length">
+			<div class="store-nav">
+				<div class="categories">
+					<div class="category" ng-repeat="category in store.categories track by $index">
+						<h5 class="text-bold" ng-bind="category.header"></h5>
+						<ul>
+							<li class="pointer" ng-class="{selected: item.selected}" ng-click="selectCategory(item);" ng-repeat="item in category.items track by $index" ng-bind="item.label"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="store-content">
+				<div class="list-wrapper animated fadeIn" ng-hide="store.offline">
+					<h5 class="content-header pending-wrapper">
+						<i class="pending-icon fa fa-refresh fa-spin" ng-show="store.busy"></i>
+						<span ng-bind="store.selectedCategory"></span>
+					</h5>
+					<ul ng-hide="store.busy" class="clearfix animated fadeIn">
+						<li class="category-item pointer col-xs-12 col-sm-6 col-lg-4"
+							ng-repeat="item in store.data track by $index | filter: store.filter" ng-click="openPlugin(item);">
+							<div class="category-item-content clearfix">
+								<div class="item-image" ng-style="{'background-image': 'url('+item.image+')'}"></div>
+								<div class="col-xs-12 item-content">
+									<h5 class="item-label cutted-text text-bold" ng-bind="item.label"></h5>
+									<div class="item-text cutted-text" ng-bind="item.description"></div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div ng-hide="store.categories.length">
+			<h5 class="text-center">The Store is empty, come back later. Please, come back..</h5>
+		</div>
+	</div>
+</div>
