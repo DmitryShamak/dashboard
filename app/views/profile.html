@@ -17,10 +17,10 @@
                     <i class="fa fa-plus-circle"></i>
                 </div>
             </div>
+            <div ng-hide="page.profile.plugins.length">
+                <h5>No plugins installed</h5>
+            </div>
             <div class="profile-settings" ng-class="{'disabled': page.busy}">
-                <div ng-hide="page.profile.plugins.length">
-                    <h5>No plugins installed</h5>
-                </div>
                 <div class="profile-plugins-wrapper" ng-repeat="plugin in page.profile.plugins track by $index">
                     <div class="profile-plugin clearfix">
                         <div class="plugin-image" ng-style="{'background-image': 'url('+plugin.image+')'}"></div>

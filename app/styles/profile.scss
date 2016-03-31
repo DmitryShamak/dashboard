@@ -27,7 +27,12 @@ $pluginItemWidth: 50px;
     padding: 15px;
 
     .profile-plugins-wrapper {
+      display: inline-block;
       margin: 10px 0;
+
+      &:not(:first-child) {
+        margin-left: 10px;
+      }
 
       background: #fff;
 
