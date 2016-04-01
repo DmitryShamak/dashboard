@@ -1,6 +1,6 @@
 var _ = require("lodash");
 
-var scrappers = require("../scrapper");
+var scrapper = require("../scrapper");
 
 module.exports = function(db) {
     var routes = {};
