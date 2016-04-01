@@ -6,19 +6,23 @@ angular.module("app")
 		};
 
 		$scope.getFeeds = function() {
-			$scope.feeds = { busy: true };
+			$scope.feeds = {};
 
 			var feeds = _.filter($scope.user.plugins, {category: "scrappers"});
 			var providers = feeds && feeds.map(function(feed) {
 					return feed.label.toLowerCase()
 				});
 
-			api.feed.get({
-				providers: providers
-			}, function(res) {
-				$scope.feeds.data = res;
-				$scope.feeds.busy = false;
-			})
+			if(!$scope.feeds.busy) {
+				$scope.feeds.busy = true;
+
+				api.feed.get({
+					providers: providers
+				}, function(res) {
+					$scope.feeds.data = res;
+					$scope.feeds.busy = false;
+				})
+			}
 		};
 
 		$scope.toggleFeed = function(feed) {
@@ -28,6 +32,10 @@ angular.module("app")
 		$scope.init = function() {
 			$scope.page.busy = false;
 			$scope.page.offline = false;
+
+			if($scope.user) {
+				$scope.getFeeds();
+			}
 		};
 
 		$scope.$watch("user", function() {
