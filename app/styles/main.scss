@@ -15,7 +15,7 @@ body {
 }
 
 #content {
-	padding: $navigationHeight 0 $footerHeight;
+	padding: $navigationHeight 0 0;
 }
 
 .container {
@@ -43,6 +43,9 @@ body {
   }
 }
 
+h6 {
+  font-size: 1.1em;
+}
 h5 {
   font-size: 1.4em;
 }
