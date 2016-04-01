@@ -5,9 +5,20 @@ angular.module("app")
 			busy: true
 		};
 
-		$scope.faker = function() {
+		$scope.getFeeds = function() {
+			$scope.feeds = { busy: true };
+
 			var feeds = _.filter($scope.user.plugins, {category: "scrappers"});
-			$scope.feeds = feeds;
+			var providers = feeds && feeds.map(function(feed) {
+					return feed.label.toLowerCase()
+				});
+
+			api.feed.get({
+				providers: providers
+			}, function(res) {
+				$scope.feeds.data = res;
+				$scope.feeds.busy = false;
+			})
 		};
 
 		$scope.toggleFeed = function(feed) {
@@ -21,7 +32,7 @@ angular.module("app")
 
 		$scope.$watch("user", function() {
 			if($scope.user) {
-				$scope.faker();
+				$scope.getFeeds();
 			}
 		});
 		$scope.init();

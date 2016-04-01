@@ -47,5 +47,7 @@ angular.module("app")
         });
         api.store = $resource(api.serverUrl + "/api/store");
 
+        api.feed = $resource(api.serverUrl + "/api/feed");
+
         return api;
     });

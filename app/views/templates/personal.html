@@ -2,32 +2,34 @@
     <div class="page-group-wrapper text-center">
         <h5>
             <span>Your feeds for</span>
-            <span class="text-marked" ng-bind="now"></span>
+            <span class="text-bigger text-marked" ng-bind="now"></span>
         </h5>
     </div>
     <div class="page-group-wrapper text-center" ng-hide="feeds">
         <h5>Sems like you don`t have any news today, please check your plugins.</h5>
         <a ui-sref="profile">Go to profile page</a>
     </div>
-    <div class="feed" ng-repeat="feed in feeds track by $index">
-        <div class="feed-header">
-            <h5>
-                <span class="feed-count text-medium">10</span>
-                <span ng-bind="feed.label"></span>
-            </h5>
-            <div class="btn feed-btn" ng-click="toggleFeed(feed);">
-                <i class="fa" ng-class="{'fa-angle-up': feed.active, 'fa-angle-down': !feed.active}"></i>
+    <div class="feeds-wrapper" ng-class="{'disabled': feeds && feeds.busy}">
+        <div class="feed" ng-repeat="feed in feeds.data track by $index">
+            <div class="feed-header">
+                <h5>
+                    <span class="feed-count text-medium" ng-bind="feed.items ? feed.items.length : 0"></span>
+                    <span ng-bind="feed.label"></span>
+                </h5>
+                <div class="btn feed-btn" ng-show="feed.items && feed.items.length" ng-click="toggleFeed(feed);">
+                    <i class="fa" ng-class="{'fa-angle-up': feed.active, 'fa-angle-down': !feed.active}"></i>
+                </div>
             </div>
-        </div>
-        <div class="feed-content row" ng-show="feed.active">
-            <div class="col-xs-12">
-                <a href="#" target="_blank" title="Click to read more" class="feed-item" ng-repeat="item in [1,2,3,4,5] track by $index">
-                    <div class="feed-image"></div>
-                    <h6>
-                        <span>Feed item</span> <br />
-                        <small>Feed description</small>
-                    </h6>
-                </a>
+            <div class="feed-content row" ng-show="feed.active">
+                <div class="col-xs-12">
+                    <a href="#" target="_blank" title="Click to read more" class="feed-item" ng-repeat="item in feed.items track by $index">
+                        <div class="feed-image" ng-style="{'background-image': 'url('+item.image+')'}"></div>
+                        <h6>
+                            <span>Feed item</span> <br />
+                            <small>Feed description</small>
+                        </h6>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

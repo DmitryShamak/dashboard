@@ -83,6 +83,10 @@ h1 {
   color: $activeColor;
 }
 
+.text-bigger {
+  font-size: 1.2em;
+}
+
 .page-pending {
   position: fixed;
   top: $navigationHeight;  bottom: 0; left: 0; right: 0;
