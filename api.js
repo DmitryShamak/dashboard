@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 var router = require("./server/router.js")(app);
-var scraper = require("./server/scraper.js")(app);
+var scraper = require("./server/scrappers/scraper.js")(app);
 
 app.all('/*', function(req, res) {
     res.sendfile('index.html');
