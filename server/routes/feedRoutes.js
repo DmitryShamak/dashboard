@@ -11,6 +11,10 @@ module.exports = function(db) {
         var query = req.query;
         var providers = req.query.providers;
 
+        if(!_.isArray(providers)) {
+            providers = [providers];
+        }
+
         var promises = [];
         _.forEach(providers, function(provider) {
             if(scrapper[provider]) {
