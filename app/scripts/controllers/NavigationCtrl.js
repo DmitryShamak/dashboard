@@ -1,5 +1,5 @@
 angular.module("app")
-	.controller("NavigationCtrl", function($scope) {
+	.controller("NavigationCtrl", function($scope, $interval) {
 
 		$scope.navigation = {};
 		var leftLinks = {};
@@ -32,6 +32,29 @@ angular.module("app")
 		};
 		$scope.navigation.rightLinks = rightLinks;
 
+		$scope.goTop = function() {
+			$(document).scrollTop(0);
+		};
+
+		$(document).on("scroll", function() {
+			var scrollTop = $(this).scrollTop();
+			var minHeight = 500;
+			var delay = 2000;
+
+			if(scrollTop > minHeight) {
+				$(".go-top").removeClass("hidden");
+
+				if(!$scope.flashInterval) {
+					$scope.flashInterval = $interval(function() {
+						$(".go-top").toggleClass("flash");
+					}, delay);
+				}
+			} else {
+				$interval.cancel($scope.flashInterval);
+				$scope.flashInterval = null;
+				$(".go-top").removeClass("flash").addClass("hidden");
+			}
+		});
 
 		$scope.$watch("user", function() {
 			leftLinks.connectaccount.hide = !!$scope.user;

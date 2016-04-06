@@ -12,6 +12,9 @@
 			</div>
 
 			<div class="navigation-group right-group pull-right clearfix">
+				<div class="pull-left go-top animated pointer hidden" ng-click="goTop();" title="GO TOP">
+					<i class="fa fa-arrow-circle-up"></i>
+				</div>
 				<div class="pull-left" ng-repeat="link in navigation.rightLinks track by $index">
 					<div ng-hide="link.hide" navigation-link="link"></div>
 				</div>

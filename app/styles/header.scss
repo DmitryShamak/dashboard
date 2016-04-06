@@ -48,6 +48,11 @@
 
   }
 
+  .go-top {
+    line-height: $navigationHeight;
+    font-size: 1.3em;
+  }
+
   .navigation-link {
     position: relative;
     display: inline-block;
