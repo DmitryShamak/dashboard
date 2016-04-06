@@ -1,0 +1,46 @@
+<div class="clearfix">
+    <div class="page-group-wrapper text-center">
+        <h5>
+            <span>Your feeds for</span>
+            <span class="text-bigger text-marked" ng-bind="now"></span>
+        </h5>
+    </div>
+    <div class="page-group-wrapper text-center" ng-hide="feeds">
+        <h5>Sems like you don`t have any news today, please check your plugins.</h5>
+        <a ui-sref="profile">Go to profile page</a>
+    </div>
+    <p class="form-group alert alert-info" ng-show="feeds.busy">
+        <i class="fa fa-refresh fa-pulse"></i>
+        <span>in progress..</span>
+    </p>
+    <div class="feeds-wrapper" ng-class="{'disabled': feeds && feeds.busy}">
+        <div class="feed" ng-repeat="feed in feeds.data track by $index">
+            <div class="feed-header">
+                <h5>
+                    <span class="feed-count text-medium" ng-bind="feed.totalCount ? feed.totalCount : 0"></span>
+                    <span ng-bind="feed.label"></span>
+                </h5>
+                <div class="btn feed-btn" ng-show="feed.content && feed.content.length" ng-click="toggleFeed(feed);">
+                    <i class="fa" ng-class="{'fa-angle-up': feed.active, 'fa-angle-down': !feed.active}"></i>
+                </div>
+            </div>
+            <div class="feed-content row" ng-show="feed.active">
+                <div class="col-xs-12">
+                    <a ng-repeat="item in feed.content track by $index" ng-href="{{item.link}}" target="_blank" title="Click to read more" class="feed-item">
+                        <div class="feed-image" ng-style="{'background-image': 'url('+item.image+')'}"></div>
+                        <h6>
+                            <span ng-bind="item.label"></span> <br />
+                            <small class="feed-description" ng-bind="item.description"></small>
+                        </h6>
+                    </a>
+                </div>
+                <div class="form-group col-xs-12">
+                    <div class="btn btn-danger" ng-click="toggleFeed(feed);">
+                        <i class="fa fa-close"></i>
+                        <span>close content</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

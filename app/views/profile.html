@@ -17,20 +17,20 @@
                     <i class="fa fa-plus-circle"></i>
                 </div>
             </div>
+            <div ng-hide="page.profile.plugins.length">
+                <h5>No plugins installed</h5>
+            </div>
             <div class="profile-settings" ng-class="{'disabled': page.busy}">
-                <div ng-hide="page.profile.plugins.length">
-                    <h5>No plugins installed</h5>
-                </div>
                 <div class="profile-plugins-wrapper" ng-repeat="plugin in page.profile.plugins track by $index">
                     <div class="profile-plugin clearfix">
                         <div class="plugin-image" ng-style="{'background-image': 'url('+plugin.image+')'}"></div>
                         <div class="plugin-details col-xs-12">
                             <div class="col-xs-12">
-                                <h5>
+                                <h5 class="cutted-text">
                                     <span class="text-bold" ng-bind="plugin.label"></span>
                                     <small ng-bind="plugin.status"></small>
                                 </h5>
-                                <p ng-bind="plugin.description"></p>
+                                <p class="cutted-text" ng-bind="plugin.description"></p>
                             </div>
                         </div>
                         <div class="plugin-btn pointer" ng-click="removePlugin($index);" title="Delete plugin">

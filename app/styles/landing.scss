@@ -53,3 +53,71 @@
     background-position: center;
   }
 }
+
+$feedImageWidth: 150px;
+$feedImageMargin: 10px;
+$feedItemPadding: 5px;
+
+.feed {
+  position: relative;
+  padding: 25px 15px;
+
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+
+  .feed-btn {
+    position: absolute;
+    top: 30px; right: 10px;
+
+    font-size: 2em;
+  }
+
+  .feed-header {
+    padding-right: 40px;
+
+    .feed-count {
+      display: inline-block;
+      margin-right: 10px;
+
+      color: #D87A25;
+      font-size: 1.2em;
+    }
+  }
+
+  .feed-content {
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: -25px;
+
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .feed-item {
+    display: block;
+    margin: 10px 0;
+    padding: $feedItemPadding $feedItemPadding $feedItemPadding ($feedImageWidth + $feedImageMargin);
+    position: relative;
+
+    text-decoration: none;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .feed-image {
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      width: $feedImageWidth;
+
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .feed-description {}
+
+    background-color: rgba(255,255,255,0.5);
+
+    a {
+      font-size: 0.9em;
+    }
+  }
+}

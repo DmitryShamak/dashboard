@@ -4,6 +4,7 @@ var db = require("./db.js");
 
 var user = require("./routes/userRoutes.js")(db);
 var plugin = require("./routes/pluginRoutes.js")(db);
+var feed = require("./routes/feedRoutes.js")(db);
 
 var passport = require("./passport.js");
 
@@ -33,6 +34,9 @@ var router = function(app) {
     app.get('/api/store', plugin.store);
     app.post('/api/plugin', plugin.save);
     app.put('/api/plugin', plugin.update);
+
+    //Feed
+    app.get('/api/feed', feed.get);
 
     app.all("/logout", function(req, res, next) {
         res.cookie("user", "", { expires: new Date(), path: '/'});
