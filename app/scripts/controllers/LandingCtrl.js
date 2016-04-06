@@ -1,12 +1,15 @@
 angular.module("app")
 .controller("LandingCtrl", function($rootScope, $scope, api) {
 		$scope.now = $scope.today().format("DD.MM.YYYY");
-		$scope.page = {
-			busy: true
-		};
+		$scope.page = {};
+		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
+
+		$scope.feeds = $scope.feedsBacklog || null;
 
 		$scope.getFeeds = function() {
-			$scope.feeds = {};
+			$scope.feeds = {
+				lastUpdate: moment().format("hh:mm a")
+			};
 
 			var feeds = _.filter($scope.user.plugins, {category: "scrappers"});
 			var providers = feeds && feeds.map(function(feed) {
@@ -21,6 +24,8 @@ angular.module("app")
 				}, function(res) {
 					$scope.feeds.data = res.feeds;
 					$scope.feeds.busy = false;
+
+					$scope.feedContol.setData($scope.feeds);
 				});
 			}
 		};
@@ -33,13 +38,13 @@ angular.module("app")
 			$scope.page.busy = false;
 			$scope.page.offline = false;
 
-			if($scope.user) {
+			if($scope.user && !$scope.feeds) {
 				$scope.getFeeds();
 			}
 		};
 
 		$scope.$watch("user", function() {
-			if($scope.user) {
+			if($scope.user && !$scope.feeds) {
 				$scope.getFeeds();
 			}
 		});

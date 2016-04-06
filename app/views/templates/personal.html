@@ -4,6 +4,12 @@
             <span>Your feeds for</span>
             <span class="text-bigger text-marked" ng-bind="now"></span>
         </h5>
+        <h5 ng-show="feeds">
+            <small>last update: </small>
+            <small ng-bind="feeds.lastUpdate"></small>
+
+            <small class="text-marked pointer" ng-click="getFeeds();">refresh</small>
+        </h5>
     </div>
     <div class="page-group-wrapper text-center" ng-hide="feeds">
         <h5>Sems like you don`t have any news today, please check your plugins.</h5>
@@ -27,7 +33,7 @@
             <div class="feed-content row" ng-show="feed.active">
                 <div class="col-xs-12">
                     <a ng-repeat="item in feed.content track by $index" ng-href="{{item.link}}" target="_blank" title="Click to read more" class="feed-item">
-                        <div class="feed-image" ng-style="{'background-image': 'url('+item.image+')'}"></div>
+                        <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
                         <h6>
                             <span ng-bind="item.label"></span> <br />
                             <small class="feed-description" ng-bind="item.description"></small>

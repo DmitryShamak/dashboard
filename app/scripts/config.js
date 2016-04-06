@@ -1,7 +1,7 @@
 function config($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise("/404");
+    //$urlRouterProvider.otherwise("/404");
 
     jQuery.ajaxSetup({cache: true});
 
@@ -107,6 +107,14 @@ angular
 
     $rootScope.redirectToMainPage = function() {
         $state.go("landing");
+    };
+
+    //Feeds
+    $rootScope.feedsBacklog = null;
+    $rootScope.feedContol = {
+        setData: function(data) {
+            $rootScope.feedsBacklog = data;
+        }
     };
 
     $rootScope.$on('$stateChangeStart', function() {
