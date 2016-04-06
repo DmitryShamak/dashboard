@@ -19,9 +19,9 @@ angular.module("app")
 				api.feed.get({
 					providers: providers
 				}, function(res) {
-					$scope.feeds.data = res;
+					$scope.feeds.data = res.feeds;
 					$scope.feeds.busy = false;
-				})
+				});
 			}
 		};
 

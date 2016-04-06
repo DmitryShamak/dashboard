@@ -6,31 +6,31 @@ var Q = require("q");
 module.exports = function() {
     var deferred = Q.defer();
 
-    var url = "http://tech.onliner.by/";
+    var url = "https://habrahabr.ru/";
     var parser = function(query, body) {
         var $ = cheerio.load(body);
         var content = [];
 
-        $(".g-middle .b-posts-1-item").each(function(elem) {
-            var title = $(this).find("h3").text().trim();
-            var image = $(this).find("img").attr("src");
-            var textBlock = $(this).find("p");
-            var link = textBlock.find("a:last-of-type").attr("href");
-            textBlock.find("a").remove();
+        $(".posts.shortcuts_items .shortcuts_item").each(function(elem) {
+
+            var title = $(this).find(".post_title").text().trim();
+            var image = $(this).find(".content.html_format img").attr("src");
+            var link = $(this).find("a.post_title").attr("href");
+            var textBlock = $(".content.html_format");
+            textBlock.find("div").remove();
             var text = textBlock.text().trim();
-            var date = $(this).find("time").attr("datetime");
+            //var date = $(this).find("time").attr("datetime");
 
             content.push({
                 label: title,
                 link: link,
                 image: image,
-                description: text,
-                date: date
+                description: text
             });
         });
 
         return {
-            label: "Onliner",
+            label: "Habrahabr",
             content: content,
             totalCount: content.length
         };
