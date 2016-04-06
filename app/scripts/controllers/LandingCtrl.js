@@ -10,7 +10,7 @@ angular.module("app")
 
 			var feeds = _.filter($scope.user.plugins, {category: "scrappers"});
 			var providers = feeds && feeds.map(function(feed) {
-					return feed.label.toLowerCase()
+					return feed.label.toLowerCase().replace(/[\s\.]/g, "");
 				});
 
 			if(!$scope.feeds.busy) {
