@@ -27,6 +27,8 @@ module.exports = function(mongoose) {
         rate: Number,
         label: String,
         description: String,
+        useLink: Boolean,
+        sources: Object,
         date: String,
         link: String
     });

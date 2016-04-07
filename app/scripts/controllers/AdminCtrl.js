@@ -40,6 +40,8 @@ angular.module("app")
 					}, {
 						key: "description"
 					}, {
+						key: "useLink"
+					}, {
 						key: "rate"
 					}];
 
