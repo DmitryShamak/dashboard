@@ -46,6 +46,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             },
             controller: "ProfileCtrl"
         })
+        .state('calendar', {
+            url: "/calendar",
+            templateUrl: "/views/calendar.html",
+            data: {
+                pageTitle: 'Calendar'
+            },
+            controller: "CalendarCtrl"
+        })
         .state('blank_page', {
             url: "/blank_page",
             templateUrl: "/views/blank_page.html",

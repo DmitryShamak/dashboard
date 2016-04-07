@@ -20,6 +20,12 @@ angular.module("app")
 			icon: "fa-info",
 			hide: !$scope.user
 		};
+		leftLinks.calendar = {
+			title: "Calendar",
+			state: "calendar",
+			icon: "fa-calendar",
+			hide: !$scope.user
+		};
 		$scope.navigation.leftLinks = leftLinks;
 
 		var rightLinks = {};
@@ -59,6 +65,7 @@ angular.module("app")
 		$scope.$watch("user", function() {
 			leftLinks.connectaccount.hide = !!$scope.user;
 			leftLinks.profile.hide = !$scope.user;
+			leftLinks.calendar.hide = !$scope.user;
 			rightLinks.signout.hide = !$scope.user;
 
 			if($scope.user) {

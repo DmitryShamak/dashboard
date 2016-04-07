@@ -1,0 +1,16 @@
+<div class="page-wrapper calendar-page animated fadeIn clearfix">
+	<div class="row" ng-hide="page.busy">
+		<div class="col-xs-12 text-center" ng-hide="page.offline">
+			<div class="calendar" ng-show="calendar">
+				<h2 class="text-marked" ng-bind="calendar.title"></h2>
+				<div class="calendar-labels clearfix">
+					<div class="pull-left calendar-label" ng-repeat="label in calendar.labels track by $index" ng-bind="label.short"></div>
+				</div>
+				<div class="calendar-dates clearfix">
+					<div class="pull-left calendar-date" ng-repeat="date in calendar.dates track by $index" ng-bind="date.value"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p class="form-group alert alert-info" ng-hide="!page.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
+</div>

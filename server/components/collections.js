@@ -32,5 +32,12 @@ module.exports = function(mongoose) {
     });
     collections.plugin = mongoose.model('plugins', collections.PluginSchema);
 
+    collections.CalendarSchema = new Schema({
+        user: String,
+        date: Date,
+        text: String
+    });
+    collections.calendar = mongoose.model('calendar', collections.CalendarSchema);
+
     return collections;
 };

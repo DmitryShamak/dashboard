@@ -1,0 +1,19 @@
+@import "conf";
+
+.calendar-page {
+  .calendar {
+    width: 400px;
+
+    padding: 30px;
+    margin: 30px auto;
+
+    font-size: 1.3em;
+
+    .calendar-label,
+    .calendar-date {
+      width: 14.28%; //100/7
+
+      margin: 15px 0;
+    }
+  }
+}
