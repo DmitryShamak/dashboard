@@ -8,7 +8,7 @@ angular.module("app")
 
 		$scope.getFeeds = function() {
 			$scope.feeds = {
-				lastUpdate: moment().format("hh:mm a")
+				lastUpdate: moment().format("DD/MM hh:mm a")
 			};
 
 			var feeds = _.filter($scope.user.plugins, {category: "scrappers"});

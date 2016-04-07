@@ -5,17 +5,20 @@
 			<i class="profile-icon fa fa-modx"></i>
 		</div>
 		<div class="navbar clearfix">
-			<div class="navigation-group left-group pull-left clearfix">
+			<div class="navigation-group left-group col-xs-10 clearfix">
 				<div class="pull-left" ng-repeat="link in navigation.leftLinks track by $index">
 					<div ng-hide="link.hide" navigation-link="link"></div>
 				</div>
+				<div class="pull-left plugin-links" ng-repeat="link in [1,2] track by $index">
+					<!--<div ng-hide="shortcut.hide"></div>-->
+					<a class="navigation-link" ui-sref="plugin({pluginID: link })" ui-sref-active="active" ng-bind="'Plugin' + link"></a>
+				</div>
 			</div>
-
-			<div class="navigation-group right-group pull-right clearfix">
-				<div class="pull-left go-top animated pointer hidden" ng-click="goTop();" title="GO TOP">
+			<div class="navigation-group right-group text-right col-xs-2 clearfix">
+				<div class="go-top pointer animated hidden" ng-click="goTop();" title="GO TOP">
 					<i class="fa fa-arrow-circle-up"></i>
 				</div>
-				<div class="pull-left" ng-repeat="link in navigation.rightLinks track by $index">
+				<div ng-repeat="link in navigation.rightLinks track by $index">
 					<div ng-hide="link.hide" navigation-link="link"></div>
 				</div>
 			</div>

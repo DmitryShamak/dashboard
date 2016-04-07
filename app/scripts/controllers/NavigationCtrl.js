@@ -40,19 +40,20 @@ angular.module("app")
 			var scrollTop = $(this).scrollTop();
 			var minHeight = 500;
 			var delay = 2000;
+			var toggleClass = "text-marked";
 
 			if(scrollTop > minHeight) {
 				$(".go-top").removeClass("hidden");
 
 				if(!$scope.flashInterval) {
 					$scope.flashInterval = $interval(function() {
-						$(".go-top").toggleClass("flash");
+						$(".go-top").toggleClass(toggleClass);
 					}, delay);
 				}
 			} else {
 				$interval.cancel($scope.flashInterval);
 				$scope.flashInterval = null;
-				$(".go-top").removeClass("flash").addClass("hidden");
+				$(".go-top").removeClass(toggleClass).addClass("hidden");
 			}
 		});
 
@@ -71,6 +72,12 @@ angular.module("app")
 					};
 
 					$scope.apply($scope);
+				};
+
+				if($scope.user.plugins) {
+					var links = _.filter($scope.user.plugins, {useLink: true});
+
+					$scope.navigation.pluginLinks = links;
 				}
 			}
 		});

@@ -53,6 +53,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
                 pageTitle: 'Blank Page'
             },
             controller: "BlankPageCtrl"
+        })
+        .state('plugin', {
+            url: "/plugin/:pluginID",
+            templateUrl: "/views/plugin.html",
+            data: {
+                pageTitle: 'Plugin'
+            },
+            controller: "PluginCtrl"
         });
 }
 
