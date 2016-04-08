@@ -5,13 +5,21 @@ angular.module("app")
 			showMonth: false
 		};
 
+		$scope.findDatesBy = function(param, date) {
+			var result = $scope.calendar.notes.filter(function(item) {
+				return moment(date).isSame(moment(item.date), param);
+			});
+
+			return result;
+		};
+
 		$scope.getCalendar = function() {
 			$scope.calendar.busy = true;
 			api.calendar.get({
 				user: $scope.user._id
 			}, function(res) {
 				$scope.calendar.busy = false;
-				//res.data
+				$scope.calendar.notes = res.data;
 			});
 		};
 
