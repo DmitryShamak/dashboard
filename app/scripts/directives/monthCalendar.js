@@ -13,14 +13,14 @@ angular.module("app")
 					var month = {
 						title: moment(date).format("MMMM"),
 						labels: [],
-						dates: []
+						weeks: []
 					};
 
 					var daysInMonth = moment(date).daysInMonth();
 					var monthStart = moment(date).startOf("month");
 					var day = monthStart.day();
-
-
+					var dates = [];
+					var week = -1;
 
 					for(var i=1; i< 8; i++) {
 						month.labels.push({
@@ -29,17 +29,54 @@ angular.module("app")
 						});
 					}
 					for(i=1; i< day; i++) {
-						month.dates.push({
+						dates.push({
 							empty: true
 						});
 					}
 					for(i=1; i<= daysInMonth; i++) {
-						month.dates.push({
-							value: i
+						var newDate = moment(date).date(i);
+						dates.push({
+							value: newDate.toDate(),
+							text: newDate.format("D")
 						});
 					}
 
+					_.forEach(dates, function(date, index) {
+						if(index%7 === 0) {
+							month.weeks.push([]);
+							week++;
+						}
+
+						month.weeks[week].push(date);
+					});
+
 					return month;
+				};
+
+				scope.closeForm = function() {
+					scope.activeDate.source.active = false;
+					scope.activeDate = null;
+				};
+
+				scope.onSubmit = function(date) {
+					//TODO: save to db
+					date.source.note = date.note;
+					scope.closeForm();
+				};
+
+				scope.selectDate = function(ev, date) {
+					if(scope.activeDate) {
+						scope.closeForm();
+					}
+
+					var elem = $('.form-wrapper');
+					var container = $(ev.target).closest(".week");
+
+					elem.appendTo(container);
+
+					date.active = true;
+					scope.activeDate = angular.copy(date);
+					scope.activeDate.source = date;
 				};
 
 				scope.$watch("date", function(date) {

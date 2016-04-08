@@ -62,5 +62,71 @@
 
       margin: 15px 0;
     }
+
+    .calendar-date {
+      line-height: 2em;
+
+      &:hover {
+        background: rgba(0,0,0,0.1);
+      }
+
+      &.active {
+        color: $activeColor;
+      }
+    }
+
+    .form-wrapper {
+      position: relative;
+      padding: 15px;
+      margin: 0 -30px;
+
+      background: $bgMainColor;
+      color: #FFF;
+
+      form {
+        margin-right: 20px;
+      }
+
+      .btn {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 5px;
+
+        line-height: 2.5;
+        font-size: 1em;
+      }
+
+      input {
+        border-radius: 0;
+        border: 0;
+
+        color: #FFF;
+        font-size: 1em;
+
+        background: transparent;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .reserved {
+    position: relative;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+
+      width: 5px;
+      height: 5px;
+      margin-left: -2.5px;
+
+      border-radius: 5px;
+      background: $activeColor;
+
+      overflow: hidden;
+    }
   }
 }
