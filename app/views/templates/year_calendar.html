@@ -1,0 +1,7 @@
+<div class="year">
+    <div class="year-months clearfix">
+        <div class="col-xs-3 month" ng-repeat="month in year.months track by $index">
+            <div class="btn" ng-click="onSelect(month.date);" ng-bind="month.long"></div>
+        </div>
+    </div>
+</div>
