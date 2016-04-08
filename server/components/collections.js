@@ -35,7 +35,7 @@ module.exports = function(mongoose) {
     collections.CalendarSchema = new Schema({
         user: String,
         date: Date,
-        text: String
+        note: String
     });
     collections.calendar = mongoose.model('calendar', collections.CalendarSchema);
 

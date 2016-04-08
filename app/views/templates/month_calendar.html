@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="form-wrapper animated fadeIn" ng-show="activeDate">
-            <form ng-submit="onSubmit(activeDate);">
+            <form ng-submit="saveNote(activeDate);">
                 <input type="text" class="form-control" placeholder="What to do?" ng-model="activeDate.note" />
             </form>
             <i class="btn fa fa-close" ng-click="closeForm();"></i>

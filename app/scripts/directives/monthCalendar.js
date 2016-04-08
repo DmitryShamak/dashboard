@@ -1,5 +1,5 @@
 angular.module("app")
-	.directive("monthCalendar", function() {
+	.directive("monthCalendar", function(api) {
 		return {
 			templateUrl: "/views/templates/month_calendar.html",
 			replace: true,
@@ -58,15 +58,31 @@ angular.module("app")
 					scope.activeDate = null;
 				};
 
-				scope.onSubmit = function(date) {
+				scope.saveNote = function(date) {
 					//TODO: save to db
+					api.calendar.update({
+						query: {
+							user: scope.$parent.user._id,
+							date: date.value
+						},
+						data: {
+							user: scope.$parent.user._id,
+							date: date.value,
+							note: date.note
+						}
+					}, function(res) {
+						console.log(res);
+					});
 					date.source.note = date.note;
 					scope.closeForm();
 				};
 
 				scope.selectDate = function(ev, date) {
 					if(scope.activeDate) {
-						scope.closeForm();
+						if(moment(scope.activeDate.value).isSame(date.value, "day")) {
+							return;
+						}
+						scope.saveNote(scope.activeDate);
 					}
 
 					var elem = $('.form-wrapper');

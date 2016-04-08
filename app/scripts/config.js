@@ -87,6 +87,12 @@ angular
         });
     };
 
+    var authOnly = function(state) {
+        var states = ["profile", "calendar"];
+
+        return (~states.indexOf(state));
+    };
+
     $rootScope.checkAuthentication = function() {
         if($rootScope.user || $rootScope.pending) {
             return true;
@@ -98,7 +104,7 @@ angular
             var state = $state.current.name || $location.path().replace(/^\//, "");
 
             if(err) {
-                return (state === "profile" ? $state.go("landing") : true);
+                return (authOnly(state) ? $state.go("landing") : true);
             }
 
             $rootScope.user = data;

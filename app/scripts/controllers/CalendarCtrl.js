@@ -1,8 +1,18 @@
 angular.module("app")
-	.controller("CalendarCtrl", function($rootScope, $scope) {
+	.controller("CalendarCtrl", function($rootScope, $scope, api) {
 		$scope.page = {};
 		$scope.calendar = {
 			showMonth: false
+		};
+
+		$scope.getCalendar = function() {
+			$scope.calendar.busy = true;
+			api.calendar.get({
+				user: $scope.user._id
+			}, function(res) {
+				$scope.calendar.busy = false;
+				//res.data
+			});
 		};
 
 		$scope.toggleMonth = function(date) {
@@ -34,15 +44,22 @@ angular.module("app")
 			$scope.changeDate(1, scale);
 		};
 
-		$scope.$watch("[calendar.date,calendar.showMonth]", function() {
-			var format = $scope.calendar.showMonth ? "MMMM YYYY" : "YYYY";
-			$scope.calendar.title = moment($scope.calendar.date).format(format);
-		});
-
 		$scope.init = function() {
 			$scope.page.busy = false;
 			$scope.page.offline = false;
+
+
+			$scope.getCalendar();
+
+			$scope.$watch("[calendar.date, calendar.showMonth]", function() {
+				var format = $scope.calendar.showMonth ? "MMMM YYYY" : "YYYY";
+				$scope.calendar.title = moment($scope.calendar.date).format(format);
+			});
 		};
 
-		$scope.init();
+		$scope.$watch("user", function() {
+			if($scope.user) {
+				$scope.init();
+			}
+		});
 	});

@@ -2,7 +2,7 @@ module.exports = function(collections) {
     var db = {};
     db.find = function(collection, query, cb) {
         if(!query) {
-            cb(true, null);
+            return cb(true, null);
         }
 
         collections[collection].find(query, cb);
@@ -10,7 +10,7 @@ module.exports = function(collections) {
 
     db.findOne = function(collection, query, cb) {
         if(!query) {
-            cb(true, null);
+            return cb(true, null);
         }
 
         collections[collection].findOne(query, cb);
