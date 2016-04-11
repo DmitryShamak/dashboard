@@ -6,7 +6,9 @@ angular.module("app")
 				template: '/views/templates/dayDetailsModal.html',
 				className: 'ngdialog-theme-default day-details-modal',
 				controller: function($scope, api) {
-					$scope.newNoteText = null;
+					$scope.modal = {
+						newNoteText: null
+					};
 					$scope.dayDetails = dayDetails;
 					$scope.addNote = function(text) {
 						var note = {
@@ -20,19 +22,37 @@ angular.module("app")
 
 						$scope.dayDetails.notes.push(note);
 						$scope.saveDetails(note);
-						$scope.newNoteText = null;
+						$scope.modal.newNoteText = null;
+					};
+
+					$scope.removeNote = function(note) {
+						if(!$scope.modal.busy) {
+							$scope.modal.busy = true;
+							api.notes.delete({
+								_id: note._id
+							}, function(res) {
+								$scope.modal.busy = false;
+
+								var index = _.findIndex($scope.dayDetails.notes, {_id: note._id});
+								$scope.dayDetails.notes.splice(index, 1);
+							});
+						}
 					};
 
 					$scope.saveDetails = function(details) {
-						api.notes.save({
-							data: {
-								user: $scope.user._id,
-								date: details.date,
-								text: details.text
-							}
-						}, function(res) {
-							console.log(res);
-						});
+						if(!$scope.modal.busy) {
+							$scope.modal.busy = true;
+
+							api.notes.save({
+								data: {
+									user: $scope.user._id,
+									date: details.date,
+									text: details.text
+								}
+							}, function(res) {
+								$scope.modal.busy = false;
+							});
+						}
 					};
 
 					$scope.init = function() {

@@ -35,10 +35,16 @@ angular.module("app")
 					}
 					for(i=1; i<= daysInMonth; i++) {
 						var newDate = moment(date).date(i);
-						dates.push({
+						var newDay = {
 							value: newDate.toDate(),
 							num: newDate.format("D")
-						});
+						};
+
+						if(moment().isSame(newDate, "day")) {
+							newDay.current = true;
+						}
+
+						dates.push(newDay);
 					}
 
 					_.forEach(dates, function(date, index) {
@@ -65,6 +71,7 @@ angular.module("app")
 							if(dayNotes.length) {
 								day.notes = dayNotes.map(function(item) {
 									return {
+										_id: item._id,
 										date: item.date,
 										text: item.text
 									}

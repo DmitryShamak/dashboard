@@ -14,13 +14,28 @@ module.exports = function(db) {
             }
 
             res.send(JSON.stringify({
-                data: data.map(function(item) {
-                    return {
-                        date: item.date,
-                        text: item.text
-                    }
-                })
+                data: data
             }));
+        });
+    };
+
+    routes.delete = function(req, res) {
+        var query = req.query;
+
+        if(!query) {
+            res.statusCode = 404;
+            res.statusMessage = 'Bad Data';
+            return res.send();
+        }
+
+        db.delete("note", query, function(err, note) {
+            if(err || !note) {
+                res.statusCode = 404;
+                res.statusMessage = 'Bad Data';
+                return res.send();
+            }
+
+            res.send("done");
         });
     };
 
@@ -32,14 +47,14 @@ module.exports = function(db) {
             res.statusMessage = 'Bad Data';
             return res.send();
         }
-        db.save("note", body.data, function(err, calendar) {
-            if(err || !calendar) {
+        db.save("note", body.data, function(err, notes) {
+            if(err || !notes) {
                 res.statusCode = 404;
                 res.statusMessage = 'Bad Data';
                 return res.send();
             }
 
-            res.send(JSON.stringify(calendar));
+            res.send(JSON.stringify(notes));
         });
     };
 

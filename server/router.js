@@ -42,6 +42,7 @@ var router = function(app) {
     //Notes
     app.get('/api/notes', notes.get);
     app.post('/api/notes', notes.save);
+    app.delete('/api/notes', notes.delete);
 
     app.all("/logout", function(req, res, next) {
         res.cookie("user", "", { expires: new Date(), path: '/'});

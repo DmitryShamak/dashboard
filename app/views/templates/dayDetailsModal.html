@@ -1,5 +1,7 @@
 <div class="clearfix">
-	<div class="form-wrapper animated fadeIn" ng-show="dayDetails">
+	<div class="animated fadeIn" ng-show="dayDetails" ng-class="{'disabled': modal.busy, 'pending-wrapper': modal.busy}">
+		<div class="pending-icon" ng-show="modal.busy"><i class="fa fa-refresh fa-pulse"></i></div>
+
 		<h4 class="text-center" ng-bind="dayDetails.title"></h4>
 		<ul class="no-list-style">
 			<li ng-repeat="note in dayDetails.notes track by $index">
@@ -8,9 +10,9 @@
 			</li>
 			<li ng-hide="dayDetails.notes">None notes.</li>
 		</ul>
-		<form class="row" ng-submit="addNote(newNoteText);">
+		<form class="row" ng-submit="addNote(modal.newNoteText);">
 			<div class="col-xs-10">
-				<input type="text" class="form-control" placeholder="What to do?" ng-model="newNoteText" />
+				<input type="text" class="form-control" placeholder="What to do?" ng-model="modal.newNoteText" />
 			</div>
 			<div class="col-xs-2">
 				<button class="btn btn-primary">Add</button>

@@ -80,7 +80,7 @@ $calendarHeaderHeight: 65px;
 
     background-color: rgba(0, 0, 0, 0.1);
 
-    &.current {
+    &.current-month {
       background-color: #F9E1BD;
     }
   }
@@ -107,6 +107,11 @@ $calendarHeaderHeight: 65px;
 
       &.active {
         color: $activeColor;
+      }
+
+      &.current-day {
+        outline: 1px solid $bgMainColor;
+        font-weight: 500;
       }
     }
 

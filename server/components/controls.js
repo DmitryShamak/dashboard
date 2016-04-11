@@ -31,6 +31,14 @@ module.exports = function(collections) {
         model.save(cb);
     };
 
+    db.delete = function(collection, query, cb) {
+        if(!query) {
+            return cb(true, null);
+        }
+
+        collections[collection].remove(query, cb);
+    };
+
     db.update = function(collection, query, data, cb) {
         collections[collection].update(query, data, {upsert: true}, cb);
     };
