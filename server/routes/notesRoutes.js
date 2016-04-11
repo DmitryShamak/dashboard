@@ -6,7 +6,7 @@ module.exports = function(db) {
     routes.get = function (req, res) {
         var query = req.query;
 
-        db.find("calendar", query, function (err, data) {
+        db.find("note", query, function (err, data) {
             if (err && !data) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
@@ -17,22 +17,22 @@ module.exports = function(db) {
                 data: data.map(function(item) {
                     return {
                         date: item.date,
-                        note: item.note
+                        text: item.text
                     }
                 })
             }));
         });
     };
 
-    routes.update = function(req, res) {
+    routes.save = function(req, res) {
         var body = req.body;
 
-        if(!body.query) {
+        if(!body.data) {
             res.statusCode = 404;
             res.statusMessage = 'Bad Data';
             return res.send();
         }
-        db.update("calendar", body.query, body.data, function(err, calendar) {
+        db.save("note", body.data, function(err, calendar) {
             if(err || !calendar) {
                 res.statusCode = 404;
                 res.statusMessage = 'Bad Data';

@@ -29,7 +29,20 @@ angular.module("app")
 				};
 
 				scope.$watch("date", function(date) {
-					scope.year = scope.getFullYear(date);
+					date = date || moment().toDate();
+					var year = scope.getFullYear(date);
+
+					var yearNotes = scope.$parent.findDatesBy("year", date);
+
+					_.forEach(year.months, function(month, ind) {
+						var monthNotes = scope.$parent.findDatesBy("month", month.date, yearNotes);
+
+						if(monthNotes.length) {
+							month.reserved = true;
+						}
+					});
+
+					scope.year = year;
 				});
 			}
 		}

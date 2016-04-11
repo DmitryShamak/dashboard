@@ -5,7 +5,7 @@ var db = require("./db.js");
 var user = require("./routes/userRoutes.js")(db);
 var plugin = require("./routes/pluginRoutes.js")(db);
 var feed = require("./routes/feedRoutes.js")(db);
-var calendar = require("./routes/calendarRoutes.js")(db);
+var notes = require("./routes/notesRoutes.js")(db);
 
 var passport = require("./passport.js");
 
@@ -39,9 +39,9 @@ var router = function(app) {
     //Feed
     app.get('/api/feed', feed.get);
 
-    //Calendar
-    app.get('/api/calendar', calendar.get);
-    app.put('/api/calendar', calendar.update);
+    //Notes
+    app.get('/api/notes', notes.get);
+    app.post('/api/notes', notes.save);
 
     app.all("/logout", function(req, res, next) {
         res.cookie("user", "", { expires: new Date(), path: '/'});

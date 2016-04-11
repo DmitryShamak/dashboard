@@ -1,5 +1,7 @@
 @import "conf";
 
+$calendarHeaderHeight: 65px;
+
 .calendar-page {
   .btn {
     &:hover {
@@ -10,6 +12,9 @@
 
   .calendar-header {
     padding: 20px 0;
+    height: $calendarHeaderHeight;
+
+    overflow: hidden;
 
     h2 {
       margin: 0;
@@ -24,6 +29,27 @@
       padding: 0;
       font-size: 1em;
       line-height: 1;
+    }
+  }
+
+  .calendar-content {
+    position: absolute;
+    top: $navigationHeight+$calendarHeaderHeight;
+    bottom: $footerHeight;
+
+    overflow-y: auto;
+
+    .busy {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+
+      background-color: #EDE9DF;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: url(https://s-media-cache-ak0.pinimg.com/originals/8f/ef/08/8fef0805113e56aa6a7d44e3289a680e.gif);
+
+      z-index: 1;
     }
   }
 
@@ -48,19 +74,28 @@
     }
   }
 
-  .calendar {
-    width: 400px;
+  .month-wrapper {
+    margin: 10px 0;
+    padding: 10px;
 
-    padding: 0 30px;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    &.current {
+      background-color: #F9E1BD;
+    }
+  }
+
+  .calendar {
+    padding: 0 20px;
     margin: 0 auto;
 
-    font-size: 1.3em;
+    font-size: 1em;
 
     .calendar-label,
     .calendar-date {
       width: 14.28%; //100/7
 
-      margin: 15px 0;
+      margin: 10px 0;
     }
 
     .calendar-date {
@@ -78,7 +113,7 @@
     .form-wrapper {
       position: relative;
       padding: 15px;
-      margin: 0 -30px;
+      margin: 0 -20px;
 
       background: $bgMainColor;
       color: #FFF;
@@ -110,7 +145,12 @@
     }
   }
 
-  .reserved {
+  .reserved-day {
+    background-color: $activeColor;
+    color: #FFF;
+  }
+
+  .reserved-month {
     position: relative;
 
     &:before {

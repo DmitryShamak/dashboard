@@ -1,4 +1,5 @@
 <div class="calendar">
+    <h3 ng-bind="month.title"></h3>
     <div class="calendar-labels clearfix">
         <h3 class="pull-left calendar-label" ng-repeat="label in month.labels track by $index">
             <small ng-bind="label.short"></small>
@@ -8,14 +9,8 @@
         <div class="week" ng-repeat="week in month.weeks track by $index">
             <div class="clearfix">
                 <div class="pull-left calendar-date pointer" ng-repeat="date in week track by $index"
-                     ng-click="selectDate($event, date)" ng-class="{'active': date.active, 'text-marked': date.note}" ng-bind="date.text"></div>
+                     ng-click="selectDate($event, date)" ng-class="{'active': date.active, 'reserved-day': date.notes}" ng-bind="date.num"></div>
             </div>
-        </div>
-        <div class="form-wrapper animated fadeIn" ng-show="activeDate">
-            <form ng-submit="saveNote(activeDate);">
-                <input type="text" class="form-control" placeholder="What to do?" ng-model="activeDate.note" />
-            </form>
-            <i class="btn fa fa-close" ng-click="closeForm();"></i>
         </div>
     </div>
 </div>

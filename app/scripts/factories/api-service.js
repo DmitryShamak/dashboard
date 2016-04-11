@@ -49,7 +49,7 @@ angular.module("app")
 
         api.feed = $resource(api.serverUrl + "/api/feed");
 
-        api.calendar = $resource(api.serverUrl + "/api/calendar", null, {
+        api.notes = $resource(api.serverUrl + "/api/notes", null, {
             'update': { method:'PUT' }
         });
 
