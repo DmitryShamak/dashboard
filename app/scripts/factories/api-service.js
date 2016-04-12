@@ -1,11 +1,10 @@
+var dev = true;
+var url = "http://dashboard-61580.onmodulus.net";
+
 angular.module("app")
-    //.config(['$resourceProvider', function($resourceProvider) {
-    //    // Don't strip trailing slashes from calculated URLs
-    //    $resourceProvider.defaults.stripTrailingSlashes = false;
-    //}])
     .factory("api", function($resource, $window, $http) {
         var api = {};
-        api.serverUrl = "http://localhost:3337";
+        api.serverUrl = dev ? "http://localhost:3337" : url;
         /*
         * User [add, get, find, update]
         * scoreboard [add, get, update, delete]

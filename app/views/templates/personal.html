@@ -11,7 +11,7 @@
             <small class="text-marked pointer" ng-click="getFeeds();">refresh</small>
         </h5>
     </div>
-    <div class="page-group-wrapper text-center" ng-hide="feeds">
+    <div class="page-group-wrapper text-center" ng-hide="feeds.busy || feeds.data && feeds.data.length">
         <h5>Sems like you don`t have any news today, please check your plugins.</h5>
         <a ui-sref="profile">Go to profile page</a>
     </div>
@@ -20,13 +20,13 @@
         <span>in progress..</span>
     </p>
     <div class="feeds-wrapper" ng-class="{'disabled': feeds && feeds.busy}">
-        <div class="feed" ng-repeat="feed in feeds.data track by $index">
+        <div class="feed pointer" ng-repeat="feed in feeds.data track by $index" ng-click="toggleFeed(feed);">
             <div class="feed-header">
                 <h5>
                     <span class="feed-count text-medium" ng-bind="feed.totalCount ? feed.totalCount : 0"></span>
                     <span ng-bind="feed.label"></span>
                 </h5>
-                <div class="btn feed-btn" ng-show="feed.content && feed.content.length" ng-click="toggleFeed(feed);">
+                <div class="btn feed-btn" ng-show="feed.content && feed.content.length">
                     <i class="fa" ng-class="{'fa-angle-up': feed.active, 'fa-angle-down': !feed.active}"></i>
                 </div>
             </div>

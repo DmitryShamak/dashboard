@@ -38,7 +38,7 @@ angular.module("app")
 			$scope.page.busy = false;
 			$scope.page.offline = false;
 
-			if($scope.user && !$scope.feeds) {
+			if($scope.user) {
 				$scope.getFeeds();
 			}
 		};

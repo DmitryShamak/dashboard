@@ -1,7 +1,10 @@
 var config = {};
 
-config.port = 3337;
-config.clientUrl = "http://localhost:" + config.port;
-config.serverUrl = "http://localhost:" + config.port;
+var dev = true;
+var url = "http://dashboard-61580.onmodulus.net";
+
+config.port = dev ? 3337 : process.env.PORT;
+config.clientUrl = dev ? ("http://localhost:" + config.port) : url;
+config.serverUrl = dev ? ("http://localhost:" + config.port) : url;
 
 module.exports = config;
