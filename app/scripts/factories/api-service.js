@@ -4,7 +4,7 @@ var url = "http://dashboard-61580.onmodulus.net";
 angular.module("app")
     .factory("api", function($resource, $window, $http) {
         var api = {};
-        api.serverUrl = dev ? "http://localhost:3337" : url;
+        api.serverUrl = "http://localhost:3337";
         /*
         * User [add, get, find, update]
         * scoreboard [add, get, update, delete]

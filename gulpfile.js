@@ -13,6 +13,11 @@ var sass = require('gulp-sass');
 var util = require("gulp-util");
 
 var stylesSrc = [
+    './bower_components/font-awesome/scss/font-awesome.scss',
+    './bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss',
+    './bower_components/animate.css/animate.min.css',
+    './bower_components/ng-dialog/css/ngDialog-theme-default.min.css',
+    './bower_components/ng-dialog/css/ngDialog.min.css',
     'app/styles/*.scss'
 ];
 gulp.task('styles', function () {
@@ -42,6 +47,29 @@ gulp.task("scripts", function() {
         .pipe(notify({ message: 'Scripts task complete' }));
 });
 
+var bowerFiles = [
+    './bower_components/jquery/dist/jquery.min.js',
+    './bower_components/jquery.cookie/jquery.cookie.js',
+    './bower_components/bootstrap/dist/js/bootstrap.min.js',
+    './bower_components/numeral/min/numeral.min.js',
+    './bower_components/moment/min/moment.min.js',
+    './bower_components/lodash/dist/lodash.min.js',
+    './bower_components/angular/angular.min.js',
+    './bower_components/angular-ui-router/release/angular-ui-router.min.js',
+    './bower_components/angular-resource/angular-resource.min.js',
+    './bower_components/ng-dialog/js/ngDialog.min.js'
+];
+gulp.task("bower", function() {
+    return gulp.src(bowerFiles)
+        .pipe(concat('bower_components.js'))
+        .pipe(gulp.dest('dist/js'))
+        .on('error', util.log)
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/js'))
+        .pipe(notify({ message: 'Bower task complete' }));
+});
+
 gulp.task('clean', function() {
     return del(['dist/**']);
 });
@@ -51,8 +79,11 @@ gulp.task('serve',function() {
         .pipe(webserver({open: true, livereload: true, host:"0.1.1.0"}));
 });
 
-gulp.task('move_files',function() {
-    gulp.start('move_views', 'move_imgs');
+gulp.task('move_fonts',function() {
+    return gulp.src([
+            './bower_components/font-awesome/fonts/*'
+        ])
+        .pipe(gulp.dest("./dist/fonts"));
 });
 gulp.task('move_views',function() {
     return gulp.src('./app/views/**/*')
@@ -62,6 +93,10 @@ gulp.task('move_views',function() {
 gulp.task('move_imgs',function() {
     return gulp.src('./app/imgs/**/*')
         .pipe(gulp.dest("./dist/imgs"));
+});
+
+gulp.task('move_files',function() {
+    gulp.start('move_fonts', 'move_views', 'move_imgs');
 });
 
 var cleanUrls = function() {
@@ -82,7 +117,7 @@ gulp.task("clean_js",  function() {
         .pipe(gulp.dest("./dist/js"));
 });
 gulp.task("clean_styles",  function() {
-    return gulp.src(["./dist/css/*.css"])
+    return gulp.src("./dist/css/*.css")
         .pipe(change(function (content, done) {
             var newContent = content.replace(/(\/)?(imgs\/.*)/g, "/dist/$2");
             done(null, newContent);
@@ -105,8 +140,23 @@ gulp.task('watch', function() {
     //gulp.watch('src/images/**/*', ['images']);
 });
 
+//DEPLOY
+var deployUrl = "dashboard-61580.onmodulus.net";
+
+gulp.task('move_deploy_files', [], function() {
+    return gulp.src('./dist/**/*')
+        .pipe(change(function(content, done) {
+            var newContent = content.replace(/localhost:3337/g, deployUrl);
+            done(null, newContent);
+        }))
+        .pipe(gulp.dest("./deploy"));
+});
+gulp.task('deploy', ['move_deploy_files'], function() {
+    return gulp.src(['./index.html', 'app.js', 'package.json'])
+        .pipe(gulp.dest("./deploy"));
+});
 
 // Default task
 gulp.task('build', ['clean'], function() {
-    gulp.start('scripts', 'styles', "move_files");
+    gulp.start('bower', 'scripts', 'styles', "move_files");
 });
