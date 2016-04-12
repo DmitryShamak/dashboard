@@ -23,7 +23,7 @@ angular.module("app")
 
 			var monthsInYear = 12;
 
-			for(var i=1; i<monthsInYear; i++) {
+			for(var i=0; i<monthsInYear; i++) {
 				var date = moment(date).month(i);
 				var month = {
 					date: date,

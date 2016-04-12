@@ -13,7 +13,6 @@ var sass = require('gulp-sass');
 var util = require("gulp-util");
 
 var stylesSrc = [
-    './bower_components/font-awesome/scss/font-awesome.scss',
     './bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss',
     './bower_components/animate.css/animate.min.css',
     './bower_components/ng-dialog/css/ngDialog-theme-default.min.css',
@@ -75,10 +74,16 @@ gulp.task('clean', function() {
 });
 
 gulp.task('serve',function() {
-    return gulp.src('build')
-        .pipe(webserver({open: true, livereload: true, host:"0.1.1.0"}));
+    return gulp.src('./server/**/*')
+        .pipe(gulp.dest("./dist/server"));
 });
 
+gulp.task('move_favicons',function() {
+    return gulp.src([
+        './favicon/*'
+    ])
+        .pipe(gulp.dest("./dist/favicon"));
+});
 gulp.task('move_fonts',function() {
     return gulp.src([
             './bower_components/font-awesome/fonts/*'
@@ -96,7 +101,7 @@ gulp.task('move_imgs',function() {
 });
 
 gulp.task('move_files',function() {
-    gulp.start('move_fonts', 'move_views', 'move_imgs');
+    gulp.start('move_favicons', 'move_views', 'move_imgs');
 });
 
 var cleanUrls = function() {
@@ -147,16 +152,21 @@ gulp.task('move_deploy_files', [], function() {
     return gulp.src('./dist/**/*')
         .pipe(change(function(content, done) {
             var newContent = content.replace(/localhost:3337/g, deployUrl);
+            newContent = newContent.replace(/\/dist/g, "");
             done(null, newContent);
         }))
         .pipe(gulp.dest("./deploy"));
 });
 gulp.task('deploy', ['move_deploy_files'], function() {
-    return gulp.src(['./index.html', 'app.js', 'package.json'])
+    return gulp.src(['./index.html', 'app.js', 'package.json',])
+        .pipe(change(function(content, done) {
+            var newContent = content.replace(/\/dist/g, "");
+            done(null, newContent);
+        }))
         .pipe(gulp.dest("./deploy"));
 });
 
 // Default task
 gulp.task('build', ['clean'], function() {
-    gulp.start('bower', 'scripts', 'styles', "move_files");
+    gulp.start('bower', 'serve', 'scripts', 'styles', "move_files");
 });
