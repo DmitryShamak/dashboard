@@ -44,12 +44,21 @@ $calendarHeaderHeight: 65px;
       top: 0; bottom: 0;
       left: 0; right: 0;
 
-      background-color: #EDE9DF;
+      background-color: #FFF;
       background-repeat: no-repeat;
       background-position: center;
-      background-image: url(https://s-media-cache-ak0.pinimg.com/originals/8f/ef/08/8fef0805113e56aa6a7d44e3289a680e.gif);
+      background-image: url('https://s-media-cache-ak0.pinimg.com/originals/8d/bf/b2/8dbfb26da5136352045a32b1abe772b5.gif');
 
+      transition: opacity 1s ease;
+      -webkit-transition: opacity 1s ease;
+      -moz-transition: opacity 1s ease;
+
+      opacity: 0;
       z-index: 1;
+
+      &.active {
+        opacity: 1;
+      }
     }
   }
 
@@ -74,11 +83,17 @@ $calendarHeaderHeight: 65px;
     }
   }
 
+  $monthBlockHeight: 415px;
+
   .month-wrapper {
+    height: $monthBlockHeight;
+
     margin: 10px 0;
     padding: 10px;
 
     background-color: rgba(0, 0, 0, 0.1);
+
+    overflow: hidden;
 
     &.current-month {
       background-color: #F9E1BD;
@@ -110,8 +125,8 @@ $calendarHeaderHeight: 65px;
       }
 
       &.current-day {
-        outline: 1px solid $bgMainColor;
-        font-weight: 500;
+        font-weight: 700;
+        text-decoration: underline;
       }
     }
 
