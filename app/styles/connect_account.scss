@@ -1,5 +1,19 @@
 @import "conf";
 
+.sign-page {
+  .container {
+    margin-top: 200px;
+    padding: 40px 0;
+
+    background: $bgLightColor;
+
+    h1 {
+      margin-bottom: 40px;
+      color: $activeColor;
+    }
+  }
+}
+
 .connect-account-wrapper {
   padding: 20px;
   margin-top: 20px;

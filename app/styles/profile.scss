@@ -35,15 +35,13 @@ $pluginItemWidth: 50px;
         margin-right: 10px;
       }
 
-      background: #fff;
-
       .profile-plugin {
         position: relative;
 
         padding: $pluginItemPadding;
         padding-left: $pluginItemWidth;
 
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: $bgLightColor;
 
         overflow: hidden;
 

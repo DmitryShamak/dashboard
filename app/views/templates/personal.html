@@ -20,8 +20,8 @@
         <span>in progress..</span>
     </p>
     <div class="feeds-wrapper" ng-class="{'disabled': feeds && feeds.busy}">
-        <div class="feed pointer" ng-repeat="feed in feeds.data track by $index" ng-click="toggleFeed(feed);">
-            <div class="feed-header">
+        <div class="feed" ng-repeat="feed in feeds.data track by $index">
+            <div class="feed-header pointer" ng-click="toggleFeed(feed);">
                 <h5>
                     <span class="feed-count text-medium" ng-bind="feed.totalCount ? feed.totalCount : 0"></span>
                     <span ng-bind="feed.label"></span>
@@ -32,13 +32,15 @@
             </div>
             <div class="feed-content row" ng-show="feed.active">
                 <div class="col-xs-12">
-                    <a ng-repeat="item in feed.content track by $index" ng-href="{{item.link}}" target="_blank" title="Click to read more" class="feed-item">
-                        <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
-                        <h6>
-                            <span ng-bind="item.label"></span> <br />
-                            <small class="feed-description" ng-bind="item.description"></small>
-                        </h6>
-                    </a>
+                    <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="item in feed.content track by $index">
+                        <a class="feed-item" ng-href="{{item.link}}" target="_blank" title="Click to read more">
+                            <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
+                            <h6>
+                                <span ng-bind="item.label"></span> <br />
+                                <!--<small class="feed-description" ng-bind="item.description"></small>-->
+                            </h6>
+                        </a>
+                    </div>
                 </div>
                 <div class="form-group col-xs-12">
                     <div class="btn btn-danger" ng-click="toggleFeed(feed);">

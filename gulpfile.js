@@ -13,7 +13,6 @@ var sass = require('gulp-sass');
 var util = require("gulp-util");
 
 var stylesSrc = [
-    './bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss',
     './bower_components/animate.css/animate.min.css',
     './bower_components/ng-dialog/css/ngDialog-theme-default.min.css',
     './bower_components/ng-dialog/css/ngDialog.min.css',

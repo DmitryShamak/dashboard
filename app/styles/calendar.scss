@@ -37,6 +37,7 @@ $calendarHeaderHeight: 65px;
     top: $navigationHeight+$calendarHeaderHeight;
     bottom: $footerHeight;
 
+    background-color: $bgLightColor;
     overflow-y: auto;
 
     .busy {
