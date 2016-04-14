@@ -38,6 +38,7 @@ var router = function(app) {
 
     //Feed
     app.get('/api/feed', feed.get);
+    app.post('/api/feed', feed.find);
 
     //Notes
     app.get('/api/notes', notes.get);

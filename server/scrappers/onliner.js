@@ -3,7 +3,29 @@ var request = require("request");
 var _ = require('lodash');
 var Q = require("q");
 
-module.exports = function() {
+module.exports.find = function(props, cb) {
+    request({
+        uri: props.url
+    }, function(error, response, body) {
+        var $ = cheerio.load(body);
+        var data = {};
+
+        data.image = $(".b-posts-1-item__image img").attr("src");
+        data.description = [];
+        $(".b-posts-1-item__text p").each(function(index, element) {
+            $(element).children().remove();
+            var text = ($(element).text() || "").trim();
+
+            if(text) {
+                data.description.push(text);
+            }
+        });
+
+        cb(error, data);
+    });
+};
+
+module.exports.feeds = function(provider) {
     var deferred = Q.defer();
 
     var url = "http://tech.onliner.by/";
@@ -32,6 +54,7 @@ module.exports = function() {
         return {
             label: "Onliner",
             content: content,
+            provider: provider,
             totalCount: content.length
         };
     };

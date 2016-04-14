@@ -7,6 +7,34 @@ var textCutter = require("../components/textCutter");
 module.exports = function(db) {
     var routes = {};
 
+    routes.find = function (req, res) {
+        var body = req.body;
+
+        if(!body) {
+            res.statusCode = 404;
+            res.statusMessage = 'Bad Data';
+            return res.send();
+        }
+
+        if(scrapper[body.provider]) {
+            scrapper[body.provider].find({
+                url: body.url
+            }, function(err, data) {
+                if(err) {
+                    res.statusCode = 404;
+                    res.statusMessage = 'Request error.';
+                    return res.send();
+                }
+
+                data.description = data.description.map(function(text) {
+                    return textCutter(text);
+                });
+
+                res.send(JSON.stringify({data: data}));
+            });
+        }
+    };
+
     routes.get = function (req, res) {
         var query = req.query;
         var providers = req.query.providers;
@@ -18,17 +46,11 @@ module.exports = function(db) {
         var promises = [];
         _.forEach(providers, function(provider) {
             if(scrapper[provider]) {
-                promises.push(scrapper[provider]())
+                promises.push(scrapper[provider].feeds(provider));
             }
         });
 
         Q.all(promises).then(function(result) {
-            _.forEach(result, function(feed) {
-                _.forEach(feed.content, function(item) {
-                    item.description = textCutter(item.description);
-                });
-            });
-
             res.send(JSON.stringify({feeds: result}));
         });
     };

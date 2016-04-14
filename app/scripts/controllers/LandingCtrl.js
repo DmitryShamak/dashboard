@@ -1,5 +1,5 @@
 angular.module("app")
-.controller("LandingCtrl", function($rootScope, $scope, api) {
+.controller("LandingCtrl", function($rootScope, $scope, api, feedDetailsModal) {
 		$scope.now = $scope.today().format("DD.MM.YYYY");
 		$scope.page = {};
 		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
@@ -33,6 +33,8 @@ angular.module("app")
 		$scope.toggleFeed = function(feed) {
 			feed.active = !feed.active;
 		};
+
+		$scope.openFeed = feedDetailsModal.show;
 
 		$scope.init = function() {
 			$scope.page.busy = false;

@@ -60,7 +60,6 @@ $feedItemHeight: 100px;
 
 .feed {
   position: relative;
-  padding: 25px 15px;
 
   border-bottom: 1px solid rgba(0,0,0,0.1);
 
@@ -74,10 +73,9 @@ $feedItemHeight: 100px;
   }
 
   .feed-header {
-    margin: -20px 0;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-right: 40px;
+    padding: 25px 40px 25px 15px;
+
+    background: #FFF;
 
     .feed-count {
       display: inline-block;
@@ -89,13 +87,10 @@ $feedItemHeight: 100px;
   }
 
   .feed-content {
-    margin-top: 30px;
-    margin-bottom: -25px;
-
     background: rgba(0, 0, 0, 0.1);
 
     .close-feed-block {
-      padding: 10px;
+      padding: 10px 25px;
       background-color: $bgMainColor;
       color: #FFF;
     }
@@ -138,6 +133,40 @@ $feedItemHeight: 100px;
 
     a {
       font-size: 0.9em;
+    }
+  }
+}
+
+$descriptionMaxHeight: 400px;
+
+.feed-details-modal {
+  padding-bottom: 0 !important;
+
+  .ngdialog-content {
+    width: 800px !important;
+
+    .feed-details-header {
+      .btn,
+      a {
+        font-size: 1em;
+      }
+    }
+
+    .error-wrapper {
+      margin-top: 30px;
+      width: 100%;
+    }
+
+    .feed-details-content {
+      .feed-image {
+        max-height: $descriptionMaxHeight;
+      }
+
+      .feed-description-wrapper {
+        max-height: $descriptionMaxHeight;
+
+        overflow-y: auto;
+      }
     }
   }
 }
