@@ -112,6 +112,14 @@ $feedItemHeight: 100px;
       background-color: rgba(255, 255, 255, 0.8);
     }
 
+    .feed-item-content {
+      height: 100%;
+
+      .feed-label {
+        margin: 0;
+      }
+    }
+
     .feed-link {
       position: absolute;
       right: 5px;
@@ -126,8 +134,6 @@ $feedItemHeight: 100px;
       background-size: cover;
       background-repeat: no-repeat;
     }
-
-    .feed-description {}
 
     background-color: rgba(255,255,255,0.5);
 

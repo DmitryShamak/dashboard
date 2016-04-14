@@ -33,12 +33,14 @@
             <div class="feed-content clearfix" ng-show="feed.active">
                 <div class="col-xs-12">
                     <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="item in feed.content track by $index">
-                        <div class="feed-item pointer" ng-click="openFeed(feed.provider, feed.content, $index);">
+                        <div class="feed-item">
                             <a class="feed-link" ng-href="{{item.link}}" target="_blank" title="Go to source">
                                 <i class="fa fa-external-link-square"></i>
                             </a>
-                            <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
-                            <h6 class="text-bold" ng-bind="item.label"></h6>
+                            <div class="feed-item-content pointer" ng-click="openFeed(feed.provider, feed.content, $index);">
+                                <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
+                                <h6 class="feed-label text-bold" ng-bind="item.label"></h6>
+                            </div>
                         </div>
                     </div>
                 </div>
