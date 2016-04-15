@@ -112,11 +112,29 @@ $feedItemHeight: 100px;
       background-color: rgba(255, 255, 255, 0.8);
     }
 
+    &.visited {
+      .feed-item-content {
+        opacity: 0.5 !important;
+      }
+    }
+
     .feed-item-content {
       height: 100%;
 
       .feed-label {
         margin: 0;
+      }
+    }
+
+    .feed-status {
+      position: absolute;
+      left: 10px;
+      font-size: 1.2em;
+
+      z-index: 1;
+
+      .visited {
+        color: #000;
       }
     }
 
@@ -150,6 +168,10 @@ $descriptionMaxHeight: 400px;
 
   .ngdialog-content {
     width: 800px !important;
+
+    .bookmark-wrapper {
+      font-size: 1.3em;
+    }
 
     .feed-details-header {
       .btn,

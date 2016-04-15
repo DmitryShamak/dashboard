@@ -1,7 +1,8 @@
 var cheerio = require("cheerio");
-var request = require("request");
 var _ = require('lodash');
 var Q = require("q");
+var request = require("request");
+var feedMethods = require("../components/feedMethods");
 
 module.exports.find = function(props, cb) {
     request({
@@ -25,7 +26,7 @@ module.exports.find = function(props, cb) {
     });
 };
 
-module.exports.feeds = function(provider) {
+module.exports.feeds = function(userId, provider) {
     var deferred = Q.defer();
 
     var url = "http://tech.onliner.by/";
@@ -51,22 +52,17 @@ module.exports.feeds = function(provider) {
             });
         });
 
-        return {
+
+        var feed = {
             label: "Onliner",
-            content: content,
             provider: provider,
             totalCount: content.length
         };
+
+        return feedMethods.compareContent(userId, feed, content);
     };
 
-    request({
-        uri: url
-    }, function(error, response, body) {
-        var query = {};
-        var data = parser(query, body);
-
-        deferred.resolve(data);
-    });
+    feedMethods.callback(url, parser, deferred);
 
     return deferred.promise;
 };

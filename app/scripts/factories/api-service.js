@@ -48,6 +48,10 @@ angular.module("app")
 
         api.feed = $resource(api.serverUrl + "/api/feed");
 
+        api.bookmarks = $resource(api.serverUrl + "/api/bookmarks");
+
+        api.history = $resource(api.serverUrl + "/api/history");
+
         api.notes = $resource(api.serverUrl + "/api/notes", null, {
             'update': { method:'PUT' }
         });

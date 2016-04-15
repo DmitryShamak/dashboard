@@ -39,5 +39,20 @@ module.exports = function(mongoose) {
     });
     collections.note = mongoose.model('notes', collections.NoteSchema);
 
+    collections.BookmarkSchema = new Schema({
+        user: String,
+        provider: String,
+        label: String,
+        image: String,
+        link: String
+    });
+    collections.bookmark = mongoose.model('bookmarks', collections.BookmarkSchema);
+
+    collections.HistorySchema = new Schema({
+        user: String,
+        link: String
+    });
+    collections.history = mongoose.model('history', collections.HistorySchema);
+
     return collections;
 };

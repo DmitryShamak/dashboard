@@ -1,0 +1,49 @@
+@import "conf";
+
+$bookmarkImageWidth: 150px;
+$bookmarkImageMargin: 10px;
+$bookmarkItemPadding: 5px;
+$bookmarkItemHeight: 100px;
+
+.bookmarks-wrapper {
+  .bookmark {
+    display: block;
+
+    height: $bookmarkItemHeight;
+    margin: 10px 0;
+    padding: $bookmarkItemPadding 25px $bookmarkItemPadding ($bookmarkImageWidth + $bookmarkImageMargin);
+    position: relative;
+
+    text-decoration: none;
+    background-color: $bgLightColor;
+
+    overflow: hidden;
+
+    .bookmark-content {
+      height: 100%;
+
+      .feed-label {
+        margin: 0;
+      }
+    }
+
+    .bookmark-btn {
+      position: absolute;
+      right: 5px;
+      font-size: 1.2em;
+    }
+
+    .bookmark-image {
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      width: $bookmarkImageWidth;
+
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    a {
+      font-size: 0.9em;
+    }
+  }
+}

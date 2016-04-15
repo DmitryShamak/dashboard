@@ -1,8 +1,6 @@
 var cheerio = require("cheerio");
-var moment = require("moment");
 var _ = require('lodash');
 var Q = require("q");
-var request = require("request");
 var feedMethods = require("../components/feedMethods");
 
 module.exports.find = function(props, cb) {
@@ -12,15 +10,8 @@ module.exports.find = function(props, cb) {
         var $ = cheerio.load(body);
         var data = {};
 
-        data.image = $(".main_image").attr("src");
-        data.description = [];
-        var description = $("#event-description");
-        description.find("br, iframe, script, .note, .b-prmplace-media").remove();
-        var text = (description.text() || "").trim();
-
-        if(text) {
-            data.description.push(text);
-        }
+        //data.image;
+        //data.description;
 
         cb(error, data);
     });
@@ -28,30 +19,31 @@ module.exports.find = function(props, cb) {
 
 module.exports.feeds = function(userId, provider) {
     var deferred = Q.defer();
-    var date = moment().format("YYYY/MM/DD"); //2016/04/06
 
-    var url = "http://afisha.tut.by/day/" + date;
+    var url = "address to web page";
     var parser = function(query, body) {
         var $ = cheerio.load(body);
+        var selector = "";
         var content = [];
 
-        $("ul.b-lists.list_afisha .lists__li").each(function(elem) {
-
-            var title = $(this).find(".name span").text().trim();
-            var image = $(this).find(".media img").attr("src");
-            var link = $(this).find("a.media").attr("href");
-            var text = $(this).find(".txt p").text().trim();
+        $(selector).each(function() {
+            //$(this).find(element)
+            var title = "";
+            var image = "";
+            var link = "";
+            var description = "";
 
             content.push({
                 label: title,
                 link: link,
                 image: image,
-                description: text
+                description: description
             });
         });
 
-        var feed =  {
-            label: "TUT.BY",
+
+        var feed = {
+            label: "Blank",
             provider: provider,
             totalCount: content.length
         };

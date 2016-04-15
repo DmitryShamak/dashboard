@@ -6,6 +6,8 @@ var user = require("./routes/userRoutes.js")(db);
 var plugin = require("./routes/pluginRoutes.js")(db);
 var feed = require("./routes/feedRoutes.js")(db);
 var notes = require("./routes/notesRoutes.js")(db);
+var bookmarks = require("./routes/bookmarksRoutes.js")(db);
+var history = require("./routes/historyRoutes.js")(db);
 
 var passport = require("./passport.js");
 
@@ -44,6 +46,14 @@ var router = function(app) {
     app.get('/api/notes', notes.get);
     app.post('/api/notes', notes.save);
     app.delete('/api/notes', notes.delete);
+
+    //Bookmarks
+    app.get('/api/bookmarks', bookmarks.get);
+    app.post('/api/bookmarks', bookmarks.save);
+    app.delete('/api/bookmarks', bookmarks.delete);
+
+    //History
+    app.post('/api/history', history.save);
 
     app.all("/logout", function(req, res, next) {
         res.cookie("user", "", { expires: new Date(), path: '/'});

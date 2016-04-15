@@ -1,0 +1,5 @@
+<div class="bookmark">
+    <i ng-show="bookmark.busy" class="fa fa-refresh fa-pulse"></i>
+    <i ng-hide="bookmark.busy" class="pointer fa" ng-class="{'fa-bookmark text-marked': bookmark.exists, 'fa-bookmark-o': !bookmark.exists}"
+       ng-click="toggleBookmark();"></i>
+</div>

@@ -33,7 +33,10 @@
             <div class="feed-content clearfix" ng-show="feed.active">
                 <div class="col-xs-12">
                     <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="item in feed.content track by $index">
-                        <div class="feed-item">
+                        <div class="feed-item" ng-class="{'visited': item.visited}">
+                            <div class="feed-status">
+                                <i class="visited fa fa-eye" title="visited" ng-show="item.visited"></i>
+                            </div>
                             <a class="feed-link" ng-href="{{item.link}}" target="_blank" title="Go to source">
                                 <i class="fa fa-external-link-square"></i>
                             </a>

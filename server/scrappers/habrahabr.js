@@ -1,7 +1,8 @@
 var cheerio = require("cheerio");
-var request = require("request");
 var _ = require('lodash');
+var request = require("request");
 var Q = require("q");
+var feedMethods = require("../components/feedMethods");
 
 module.exports.find = function(props, cb) {
     request({
@@ -27,7 +28,7 @@ module.exports.find = function(props, cb) {
     });
 };
 
-module.exports.feeds = function(provider) {
+module.exports.feeds = function(userId, provider) {
     var deferred = Q.defer();
 
     var url = "https://habrahabr.ru/";
@@ -61,22 +62,16 @@ module.exports.feeds = function(provider) {
             });
         });
 
-        return {
+        var feed = {
             label: "Habrahabr",
             provider: provider,
-            content: content,
             totalCount: content.length
         };
+
+        return feedMethods.compareContent(userId, feed, content);
     };
 
-    request({
-        uri: url
-    }, function(error, response, body) {
-        var query = {};
-        var data = parser(query, body);
-
-        deferred.resolve(data);
-    });
+    feedMethods.callback(url, parser, deferred);
 
     return deferred.promise;
 };

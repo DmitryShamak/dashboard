@@ -43,6 +43,15 @@ angular.module("app")
 						}
 					};
 
+					$scope.addToHistory = function(feed) {
+						api.history.save({
+							user: $scope.getUserId(),
+							link: feed.link
+						}, function() {
+							feed.visited = true;
+						});
+					};
+
 					$scope.getFeedDescription = function() {
 						$scope.modal.busy = true;
 						$scope.modal.offline = false;
@@ -53,6 +62,10 @@ angular.module("app")
 						}, function(res) {
 							$scope.feed.details = res.data;
 							$scope.modal.busy = false;
+
+							if(!$scope.feed.visited) {
+								$scope.addToHistory($scope.feed);
+							}
 						}, function(err) {
 							$scope.modal.busy = false;
 							$scope.modal.offline = true;

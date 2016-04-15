@@ -20,6 +20,12 @@ angular.module("app")
 			icon: "fa-info",
 			hide: !$scope.user
 		};
+		leftLinks.bookmarks = {
+			title: "Bookmarks",
+			state: "bookmarks",
+			icon: "fa-bookmark",
+			hide: !$scope.user
+		};
 		leftLinks.calendar = {
 			title: "Calendar",
 			state: "calendar",
@@ -66,6 +72,7 @@ angular.module("app")
 			leftLinks.connectaccount.hide = !!$scope.user;
 			leftLinks.profile.hide = !$scope.user;
 			leftLinks.calendar.hide = !$scope.user;
+			leftLinks.bookmarks.hide = !$scope.user;
 			rightLinks.signout.hide = !$scope.user;
 
 			if($scope.user) {

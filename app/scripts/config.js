@@ -54,6 +54,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             },
             controller: "CalendarCtrl"
         })
+        .state('bookmarks', {
+            url: "/bookmarks",
+            templateUrl: "/views/bookmarks.html",
+            data: {
+                pageTitle: 'Bookmarks'
+            },
+            controller: "BookmarksCtrl"
+        })
         .state('blank_page', {
             url: "/blank_page",
             templateUrl: "/views/blank_page.html",
@@ -77,6 +85,10 @@ angular
         if (scope.$root.$$phase != '$apply' && scope.$root.$$phase != '$digest') {
             scope.$apply();
         }
+    };
+
+    $rootScope.getUserId = function() {
+      return $rootScope.user._id;
     };
 
     $rootScope.signout = function() {

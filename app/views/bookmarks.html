@@ -1,0 +1,16 @@
+<div class="page-wrapper animated fadeIn clearfix">
+	<div class="bookmarks-wrapper row" ng-hide="page.busy || page.offline">
+		<div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="bookmark in bookmarks track by $index">
+			<div class="bookmark" ng-class="{'disabled': bookmark.busy}">
+				<div class="bookmark-btn pointer" title="Delete bookmark" ng-click="deleteBookmark(bookmark, $index);">
+					<i class="text-danger fa fa-close"></i>
+				</div>
+				<a class="bookmark-content pointer" ng-href="{{bookmark.link}}" target="_blank">
+					<div class="bookmark-image" ng-style="{'background-image': 'url('+ (bookmark.image || defaultImage) +')'}"></div>
+					<h6 class="bookmark-label text-bold" ng-bind="bookmark.label"></h6>
+				</a>
+			</div>
+		</div>
+	</div>
+	<p class="form-group alert alert-info" ng-hide="!page.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
+</div>

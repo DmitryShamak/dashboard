@@ -39,6 +39,8 @@ module.exports = function(db) {
         var query = req.query;
         var providers = req.query.providers;
 
+        var userId = query.userId;
+
         if(!_.isArray(providers)) {
             providers = [providers];
         }
@@ -46,7 +48,7 @@ module.exports = function(db) {
         var promises = [];
         _.forEach(providers, function(provider) {
             if(scrapper[provider]) {
-                promises.push(scrapper[provider].feeds(provider));
+                promises.push(scrapper[provider].feeds(userId, provider));
             }
         });
 

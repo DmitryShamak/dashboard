@@ -20,6 +20,7 @@ angular.module("app")
 				$scope.feeds.busy = true;
 
 				api.feed.get({
+					userId: $scope.getUserId(),
 					providers: providers
 				}, function(res) {
 					$scope.feeds.data = res.feeds;
