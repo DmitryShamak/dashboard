@@ -2,6 +2,8 @@ var cheerio = require("cheerio");
 var _ = require('lodash');
 var Q = require("q");
 var request = require("request");
+var xml2js = require('xml2js');
+
 var feedMethods = require("../components/feedMethods");
 
 module.exports.find = function(props, cb) {
@@ -29,29 +31,23 @@ module.exports.find = function(props, cb) {
 module.exports.feeds = function(userId, provider) {
     var deferred = Q.defer();
 
-    var url = "http://tech.onliner.by/";
-    var parser = function(query, body) {
-        var $ = cheerio.load(body);
+    var url = "http://tech.onliner.by/feed";
+
+    var parser = function(query, xml) {
+        var parseString = xml2js.parseString;
         var content = [];
 
-        $(".g-middle .b-posts-1-item").each(function(elem) {
-            var title = $(this).find("h3").text().trim();
-            var image = $(this).find("img").attr("src");
-            var textBlock = $(this).find("p");
-            var link = textBlock.find("a:last-of-type").attr("href");
-            textBlock.find("a").remove();
-            var text = textBlock.text().trim();
-            var date = $(this).find("time").attr("datetime");
+        parseString(xml, function (err, result) {
+            var json = result;
 
-            content.push({
-                label: title,
-                link: link,
-                image: image,
-                description: text,
-                date: date
+            content = json.rss.channel[0].item.map(function(item) {
+                return {
+                    label: item.title[0],
+                    image: item['media:thumbnail'][0].$.url,
+                    link: item.link[0].replace(/\/$/, "")
+                };
             });
         });
-
 
         var feed = {
             label: "Onliner",
