@@ -1,7 +1,7 @@
 @import "conf";
 
-$pluginItemPadding: 5px;
-$pluginItemWidth: 50px;
+$providerItemPadding: 5px;
+$providerItemWidth: 50px;
 
 .profile-wrapper {
   .profile-image {
@@ -26,36 +26,38 @@ $pluginItemWidth: 50px;
   .profile-settings {
     padding: 15px;
 
-    .profile-plugins-wrapper {
+    .profile-providers-wrapper {
       display: inline-block;
-      max-width: 250px;
       margin: 10px 0;
 
       &:not(:last-child) {
         margin-right: 10px;
       }
 
-      .profile-plugin {
+      .profile-provider {
         position: relative;
 
-        padding: $pluginItemPadding;
-        padding-left: $pluginItemWidth;
+        padding: $providerItemPadding;
+        padding-left: $providerItemWidth;
 
         background-color: $bgLightColor;
 
         overflow: hidden;
 
-        .plugin-image {
+        .provider-image {
           position: absolute;
-          left: $pluginItemPadding; top: $pluginItemPadding; bottom: $pluginItemPadding;
-          width: $pluginItemWidth;
+          left: $providerItemPadding; top: $providerItemPadding; bottom: $providerItemPadding;
+          width: $providerItemWidth;
 
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center;
         }
 
-        .plugin-details {
+        .provider-details {
+          padding: 0 20px;
+          width: 150px;
+
           font-size: 0.8em;
 
           h5,
@@ -64,7 +66,7 @@ $pluginItemWidth: 50px;
           }
         }
 
-        .plugin-btn {
+        .provider-btn {
           position: absolute;
           top: 50%; right: 10px;
           margin-top: -0.6em;

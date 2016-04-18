@@ -26,7 +26,7 @@ module.exports.find = function(props, cb) {
     });
 };
 
-module.exports.feeds = function(userId, provider) {
+module.exports.feeds = function(provider) {
     var deferred = Q.defer();
     var date = moment().format("YYYY/MM/DD"); //2016/04/06
 
@@ -53,10 +53,13 @@ module.exports.feeds = function(userId, provider) {
         var feed =  {
             label: "TUT.BY",
             provider: provider,
+            content: content,
             totalCount: content.length
         };
 
-        return feedMethods.compareContent(userId, feed, content);
+        return Q.promise(function(res, rej) {
+            res(feed);
+        });
     };
 
     feedMethods.callback(url, parser, deferred);

@@ -46,7 +46,7 @@ angular.module("app")
 					$scope.addToHistory = function(feed) {
 						api.history.save({
 							user: $scope.getUserId(),
-							link: feed.link
+							feed: feed._id
 						}, function() {
 							feed.visited = true;
 						});

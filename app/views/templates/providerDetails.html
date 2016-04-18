@@ -1,0 +1,17 @@
+<div class="clearfix">
+	<div class="item-image" ng-style="{'background-image': 'url('+provider.image+')'}"></div>
+	<div class="col-xs-12 item-group">
+		<h5 class="item-label cutted-text text-bold">
+			<span ng-bind="provider.name"></span>
+			<small ng-show="provider.owned" class="alert-success">Owned</small>
+		</h5>
+		<div class="item-text cutted-text" ng-bind="provider.description"></div>
+	</div>
+	<div class="col-xs-12 item-group" ng-hide="provider.owned">
+		<div class="btn btn-primary" ng-class="{'disabled': pending}" ng-click="addProvider();">
+			<i class="fa fa-plus" ng-hide="pending"></i>
+			<i class="pending-icon fa fa-refresh fa-spin" ng-show="pending"></i>
+			<span>Add provider</span>
+		</div>
+	</div>
+</div>

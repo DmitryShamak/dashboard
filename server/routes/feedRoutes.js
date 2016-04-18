@@ -1,7 +1,7 @@
 var _ = require("lodash");
 var Q = require("q");
 
-var scrapper = require("../scrapper");
+var scraper = require("../scraper");
 var textCutter = require("../components/textCutter");
 
 module.exports = function(db) {
@@ -16,8 +16,8 @@ module.exports = function(db) {
             return res.send();
         }
 
-        if(scrapper[body.provider]) {
-            scrapper[body.provider].find({
+        if(scraper.providers[body.provider]) {
+            scraper.providers[body.provider].find({
                 url: body.url
             }, function(err, data) {
                 if(err) {
@@ -37,23 +37,45 @@ module.exports = function(db) {
 
     routes.get = function (req, res) {
         var query = req.query;
-        var providers = req.query.providers;
 
-        var userId = query.userId;
-
-        if(!_.isArray(providers)) {
-            providers = [providers];
-        }
-
-        var promises = [];
-        _.forEach(providers, function(provider) {
-            if(scrapper[provider]) {
-                promises.push(scrapper[provider].feeds(userId, provider));
+        db.find("feed", {
+            provider: { $in: query.providers }
+        }, function (err, feeds) {
+            if (err) {
+                res.statusCode = 404;
+                res.statusMessage = 'Not found';
+                return res.send();
             }
-        });
 
-        Q.all(promises).then(function(result) {
-            res.send(JSON.stringify({feeds: result}));
+            var promises = feeds.map(function(item) {
+                var feedQuery = {
+                    user: query.userId,
+                    feed: item._id.toString()
+                };
+
+                return Q.promise(function(resolve, reject) {
+                    db.findOne("history", feedQuery, function(err, success) {
+                        //problems with overriding root item
+                        var params = ["date", "link", "label", "image", "_id", "provider"];
+                        var feed = {};
+                        _.forEach(params, function(param) {
+                            feed[param] = item[param]
+                        });
+
+                        if(success) {
+                            feed.visited = true;
+                        }
+
+                        resolve(feed);
+                    })
+                });
+            });
+
+            Q.all(promises).then(function(result) {
+                res.send(JSON.stringify({
+                    feeds: result
+                }));
+            });
         });
     };
 

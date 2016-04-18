@@ -6,12 +6,17 @@ angular.module("app")
 
 		$scope.setPluginsUpdate = function(onError) {
 			$scope.page.pending = true;
+			var data = $scope.profile.providers.map(function(item) {
+				return item._id
+			});
+
 			api.user.update({
 				query: {email: $scope.user.email},
 				data: {
-					plugins: $scope.page.profile.plugins
+					providers: data
 				}
 			}, function() {
+				$scope.user.providers = data;
 				$scope.page.busy = false;
 			}, function(err) {
 				$scope.page.busy = false;
@@ -19,16 +24,17 @@ angular.module("app")
 			});
 		};
 
-		$scope.setPlugin = function(plugin) {
-			//TODO: check that this plugin is not installed
-			$scope.page.profile.plugins.push(plugin);
+		$scope.appendProvider = function(provider) {
+			$scope.profile.providers.push(provider);
 			$scope.setPluginsUpdate();
 		};
 
-		$scope.removePlugin = function(index) {
-			var backup = $scope.page.profile.plugins.splice(index, 1);
+		$scope.removeProvider = function(index) {
+			var backup = $scope.profile.providers.splice(index, 1);
+
+			//on error
 			$scope.setPluginsUpdate(function() {
-				$scope.page.profile.plugins.splice(index, 0, backup[0]);
+				$scope.profile.providers.splice(index, 0, backup[0]);
 			});
 		};
 
@@ -37,12 +43,18 @@ angular.module("app")
 		};
 
 		$scope.init = function() {
-			$scope.page.busy = false;
+			$scope.page.busy = true;
 			$scope.page.offline = false;
 
-			$scope.page.profile = {
-				plugins: $scope.user.plugins
-			};
+			api.provider.get({
+				providers: $scope.user.providers
+			}, function(res) {
+				$scope.profile = {
+					providers: res.data
+				};
+
+				$scope.page.busy = false;
+			})
 		};
 
 		$scope.$watch("user", function() {

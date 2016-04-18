@@ -4,34 +4,44 @@ angular.module("app")
 		$scope.page = {};
 		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
 
-		$scope.feeds = $scope.feedsBacklog || null;
-
 		$scope.getFeeds = function() {
 			$scope.feeds = {
 				lastUpdate: moment().format("DD.MM.YY hh:mm a")
 			};
 
-			var feeds = _.filter($scope.user.plugins, {category: "scrappers"});
-			var providers = feeds && feeds.map(function(feed) {
-					return feed.label.toLowerCase().replace(/[\s\.]/g, "");
-				});
-
 			if(!$scope.feeds.busy) {
 				$scope.feeds.busy = true;
 
-				api.feed.get({
-					userId: $scope.getUserId(),
-					providers: providers
-				}, function(res) {
-					$scope.feeds.data = res.feeds;
-					$scope.feeds.busy = false;
+				api.provider.get({
+					providers: $scope.user.providers
+				}, function(providers) {
+					api.feed.get({
+						userId: $scope.getUserId(),
+						providers: providers.data.map(function(item) {return item.name})
+					}, function(res) {
+						var groups = [];
 
-					$scope.feedContol.setData($scope.feeds);
-				});
+						_.forEach(res.feeds, function(feed) {
+							var group = _.find(groups, {provider: feed.provider});
+							if(!group) {
+								return groups.push({
+									provider: feed.provider,
+									label: feed.provider,
+									content: [feed]
+								})
+							}
+
+							group.content.push(feed);
+						});
+
+						$scope.feeds.data = groups;
+						$scope.feeds.busy = false;
+					});
+				})
 			}
 		};
 
-		$scope.toggleFeed = function(feed) {
+		$scope.toggleGroup = function(feed) {
 			feed.active = !feed.active;
 		};
 

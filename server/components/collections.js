@@ -16,21 +16,19 @@ module.exports = function(mongoose) {
         password: String,
         token: String,
         history: Array,
-        plugins: Array
+        providers: Array
     });
     collections.user = mongoose.model('users', collections.userSchema);
 
-    collections.PluginSchema = new Schema({
+    collections.ProviderSchema = new Schema({
         category: String,
         keywords: Array,
         image: String,
         rate: Number,
-        label: String,
-        description: String,
-        date: String,
-        link: String
+        name: String,
+        description: String
     });
-    collections.plugin = mongoose.model('plugins', collections.PluginSchema);
+    collections.provider = mongoose.model('providers', collections.ProviderSchema);
 
     collections.NoteSchema = new Schema({
         user: String,
@@ -41,18 +39,27 @@ module.exports = function(mongoose) {
 
     collections.BookmarkSchema = new Schema({
         user: String,
-        provider: String,
-        label: String,
-        image: String,
-        link: String
+        feed: String
     });
     collections.bookmark = mongoose.model('bookmarks', collections.BookmarkSchema);
 
     collections.HistorySchema = new Schema({
         user: String,
-        link: String
+        feed: String
     });
     collections.history = mongoose.model('history', collections.HistorySchema);
+
+    collections.FeedSchema = new Schema({
+        provider: String,
+        label: String,
+        image: String,
+        link: String,
+        date:  {
+            type: Date,
+            default: Date.now
+        }
+    });
+    collections.feed = mongoose.model('feeds', collections.FeedSchema);
 
     return collections;
 };

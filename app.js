@@ -5,6 +5,8 @@ var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var path = require("path");
 
+var collector = require("./server/collector");
+
 var app = express();
 var _conf = require("./server/_conf.js");
 var rootPath = __dirname;
@@ -36,6 +38,9 @@ app.all('/*', function(req, res) {
     res.sendfile('./index.html');
 });
 
+//todo: add collector actions
+
 var server = app.listen(_conf.port, function() {
+    collector.start();
 	console.log("Server available on [%s] port", _conf.port);
 });

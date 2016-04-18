@@ -41,7 +41,7 @@ angular.module("app")
         });
         api.authenticate = $resource(api.serverUrl + "/api/authenticate");
 
-        api.plugin = $resource(api.serverUrl + "/api/plugin", null, {
+        api.provider = $resource(api.serverUrl + "/api/provider", null, {
             'update': { method:'PUT' }
         });
         api.store = $resource(api.serverUrl + "/api/store");

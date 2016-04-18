@@ -135,14 +135,6 @@ angular
         $state.go("landing");
     };
 
-    //Feeds
-    $rootScope.feedsBacklog = null;
-    $rootScope.feedContol = {
-        setData: function(data) {
-            $rootScope.feedsBacklog = data;
-        }
-    };
-
     $rootScope.$on('$stateChangeStart', function() {
         $rootScope.checkAuthentication();
     });

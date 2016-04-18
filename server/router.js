@@ -3,7 +3,7 @@ var _conf = require("./_conf.js");
 var db = require("./db.js");
 
 var user = require("./routes/userRoutes.js")(db);
-var plugin = require("./routes/pluginRoutes.js")(db);
+var provider = require("./routes/providerRoutes.js")(db);
 var feed = require("./routes/feedRoutes.js")(db);
 var notes = require("./routes/notesRoutes.js")(db);
 var bookmarks = require("./routes/bookmarksRoutes.js")(db);
@@ -32,11 +32,11 @@ var router = function(app) {
     app.post('/api/authenticate', user.authenticate);
     app.put('/api/user', user.update);
 
-    //Plugin
-    app.get('/api/plugin', plugin.get);
-    app.get('/api/store', plugin.store);
-    app.post('/api/plugin', plugin.save);
-    app.put('/api/plugin', plugin.update);
+    //Provider
+    app.get('/api/provider', provider.get);
+    app.get('/api/store', provider.store);
+    app.post('/api/provider', provider.save);
+    app.put('/api/provider', provider.update);
 
     //Feed
     app.get('/api/feed', feed.get);

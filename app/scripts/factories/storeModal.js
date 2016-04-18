@@ -4,8 +4,8 @@ angular.module("app")
         dialog.show = function(scope) {
             ngDialog.open({
                 template: '/views/templates/storeModal.html',
-                className: 'ngdialog-theme-default plagin-modal',
-                controller: function($scope, pluginDetails) {
+                className: 'ngdialog-theme-default store-modal',
+                controller: function($scope, providerDetails) {
                     $scope.store = {
                         categories: [],
                         data: []
@@ -16,6 +16,15 @@ angular.module("app")
                         api.store.get({}, function(res) {
                             $scope.store.categories = res.categories;
                             $scope.store.data = res.data;
+
+                            //check owned providers
+                            _.forEach($scope.user.providers, function(id) {
+                                var provider = _.find($scope.store.data, {_id: id});
+
+                                if(provider) {
+                                    provider.owned = true;
+                                }
+                            });
 
                             $scope.store.busy = false;
                             $scope.store.offline = false;
@@ -29,32 +38,12 @@ angular.module("app")
                             $scope.store.offline = true;
                         });
                     };
-                    /*$scope.store.categories = [{
-                     header: "Featured",
-                     items: [{
-                     label: "Top plugins"
-                     }, {
-                     label: "New & Noteworthy"
-                     }, {
-                     label: "Free"
-                     }]
-                     }, {
-                     header: "Categories",
-                     items: [{
-                     label: "News"
-                     }, {
-                     label: "Messages"
-                     }, {
-                     label: "Weather"
-                     }, {
-                     label: "Economic"
-                     }]
-                     }];*/
+
                     var defaultCategory = null;
                     var selectedItem = null;
 
-                    $scope.openPlugin = function(plugin) {
-                        pluginDetails.show(plugin, scope)
+                    $scope.openProvider = function(provider) {
+                        providerDetails.show(provider, scope)
                     };
 
                     $scope.selectCategory = function(category) {

@@ -6,7 +6,7 @@ module.exports = function(db) {
     routes.save = function(req, res) {
         var body = req.body;
 
-        db.save("plugin", body, function(err, data) {
+        db.save("provider", body, function(err, data) {
             if(err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
@@ -18,17 +18,16 @@ module.exports = function(db) {
     };
 
     routes.store = function (req, res) {
-        db.find("plugin", {}, function (err, plugin) {
+        db.find("provider", {}, function (err, providers) {
             if (err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
                 return res.send();
             }
 
-            var plugins = plugin ? plugin : [];
             //TODO: featured list
             var categories = [];
-            _.forEach(plugins, function(plugin, key) {
+            _.forEach(providers, function(plugin, key) {
                 var exists = _.find(categories, {'label': plugin.category});
                 if(!exists) {
                     categories.push({
@@ -39,21 +38,26 @@ module.exports = function(db) {
 
             res.send(JSON.stringify({
                 categories: categories,
-                data: plugins
+                data: providers
             }));
         });
     };
 
     routes.get = function (req, res) {
-        var query = req.query;
-        db.find("plugin", query, function (err, plugin) {
+        var query = req.query.providers ? {
+            _id: {$in: req.query.providers}
+        } : req.query;
+
+        db.find("provider", query, function (err, providers) {
             if (err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
                 return res.send();
             }
 
-            res.send(JSON.stringify(plugin.toJSON()));
+            res.send(JSON.stringify({
+                data: providers
+            }));
         });
     };
 
@@ -64,14 +68,14 @@ module.exports = function(db) {
             res.statusMessage = 'Bad Data';
             return res.send();
         }
-        db.update("plugin", body.query, body.data, function(err, plugin) {
+        db.update("provider", body.query, body.data, function(err, provider) {
             if(err || !user) {
                 res.statusCode = 404;
                 res.statusMessage = 'Bad Data';
                 return res.send();
             }
 
-            res.send(JSON.stringify(plugin));
+            res.send(JSON.stringify(provider));
         });
     };
 

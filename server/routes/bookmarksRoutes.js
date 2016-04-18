@@ -1,22 +1,35 @@
 var _ = require("lodash");
+var Q = require("q");
 
 module.exports = function(db) {
     var routes = {};
 
     routes.get = function (req, res) {
-        var query = req.query;
+        Q.promise(function(resolve, reject) {
+            db.find("bookmark", req.query, function (err, data) {
+                if (err || !data) {
+                    res.statusCode = 404;
+                    res.statusMessage = 'Not found';
+                    return res.send();
+                }
 
-        db.find("bookmark", query, function (err, data) {
-            console.log(data);
-            if (err || !data) {
-                res.statusCode = 404;
-                res.statusMessage = 'Not found';
-                return res.send();
-            }
+                resolve(data);
+            });
+        }).then(function(result) {
+            var query = {
+              _id: {$in: result.map(function(item) {return item.feed})}
+            };
+            db.find("feed", query, function (err, data) {
+                if (err || !data) {
+                    res.statusCode = 404;
+                    res.statusMessage = 'Not found';
+                    return res.send();
+                }
 
-            res.send(JSON.stringify({
-                data: data
-            }));
+                res.send(JSON.stringify({
+                    data: data
+                }));
+            });
         });
     };
 

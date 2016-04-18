@@ -20,19 +20,19 @@
         <span>in progress..</span>
     </p>
     <div class="feeds-wrapper" ng-class="{'disabled': feeds && feeds.busy}">
-        <div class="feed" ng-repeat="feed in feeds.data track by $index">
-            <div class="feed-header pointer" ng-click="toggleFeed(feed);">
+        <div class="feed" ng-repeat="group in feeds.data track by $index">
+            <div class="feed-header pointer" ng-click="toggleGroup(group);">
                 <h5>
-                    <span class="feed-count text-medium" ng-bind="feed.totalCount ? feed.totalCount : 0"></span>
-                    <span ng-bind="feed.label"></span>
+                    <span class="feed-count text-medium" ng-bind="group.content.length"></span>
+                    <span ng-bind="group.label"></span>
                 </h5>
-                <div class="btn feed-btn" ng-show="feed.content && feed.content.length">
-                    <i class="fa" ng-class="{'fa-angle-up': feed.active, 'fa-angle-down': !feed.active}"></i>
+                <div class="btn feed-btn">
+                    <i class="fa" ng-class="{'fa-angle-up': group.active, 'fa-angle-down': !group.active}"></i>
                 </div>
             </div>
-            <div class="feed-content clearfix" ng-show="feed.active">
+            <div class="feed-content clearfix" ng-show="group.active">
                 <div class="col-xs-12">
-                    <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="item in feed.content track by $index">
+                    <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="item in group.content track by $index">
                         <div class="feed-item" ng-class="{'visited': item.visited}">
                             <div class="feed-status">
                                 <i class="visited fa fa-eye" title="visited" ng-show="item.visited"></i>
@@ -40,16 +40,16 @@
                             <a class="feed-link" ng-href="{{item.link}}" target="_blank" title="Go to source">
                                 <i class="fa fa-external-link-square"></i>
                             </a>
-                            <div class="feed-item-content pointer" ng-click="openFeed(feed.provider, feed.content, $index);">
+                            <div class="feed-item-content pointer" ng-click="openFeed(group.provider, group.content, $index);">
                                 <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
                                 <h6 class="feed-label text-bold" ng-bind="item.label"></h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 close-feed-block pointer" ng-click="toggleFeed(feed);">
+                <div class="col-xs-12 close-feed-block pointer" ng-click="toggleGroup(group);">
                     <i class="fa fa-angle-up"></i>
-                    <span>close content</span>
+                    <span>close group</span>
                 </div>
             </div>
         </div>

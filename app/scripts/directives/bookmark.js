@@ -5,6 +5,8 @@ angular.module("app")
 			replace: true,
 			scope: {bookmark: "="}, //@ string, = model, & method
 			link: function(scope) {
+				scope.userId = scope.$parent.getUserId();
+
 				scope.toggleBookmark = function() {
 					if(scope.bookmark.busy) {
 						return;
@@ -13,8 +15,8 @@ angular.module("app")
 					scope.bookmark.busy = true;
 					if(scope.bookmark.exists) {
 						api.bookmarks.delete({
-							user: scope.$parent.user._id,
-							link: scope.bookmark.link
+							user: scope.userId,
+							feed: scope.bookmark._id
 						}, function() {
 							scope.bookmark.exists = false;
 							scope.bookmark.busy = false;
@@ -22,11 +24,8 @@ angular.module("app")
 					} else {
 						api.bookmarks.save({
 							data: {
-								user: scope.$parent.user._id,
-								label: scope.bookmark.label,
-								link: scope.bookmark.link,
-								image: scope.bookmark.image,
-								provider: scope.$parent.provider
+								user: scope.userId,
+								feed: scope.bookmark._id
 							}
 						}, function() {
 							scope.bookmark.exists = true;
@@ -40,8 +39,8 @@ angular.module("app")
 					scope.bookmark.exists = false;
 
 					api.bookmarks.get({
-						user: scope.$parent.user._id,
-						link: scope.bookmark.link
+						user: scope.userId,
+						feed: scope.bookmark._id
 					}, function(res) {
 						if(res.data.length) {
 							scope.bookmark.exists = true;
