@@ -5,6 +5,10 @@ angular.module("app")
 		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
 
 		$scope.getFeeds = function() {
+			if(!$scope.user.providers.length) {
+				return;
+			}
+
 			$scope.feeds = {
 				lastUpdate: moment().format("DD.MM.YY hh:mm a")
 			};
@@ -17,7 +21,8 @@ angular.module("app")
 				}, function(providers) {
 					api.feed.get({
 						userId: $scope.getUserId(),
-						providers: providers.data.map(function(item) {return item.name})
+						providers: providers.data.map(function(item) {return item.name}),
+						date: moment().toDate()
 					}, function(res) {
 						var groups = [];
 

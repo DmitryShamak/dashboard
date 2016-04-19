@@ -1,4 +1,5 @@
 var _ = require("lodash");
+var moment = require("moment");
 var Q = require("q");
 
 var scraper = require("../scraper");
@@ -45,6 +46,12 @@ module.exports = function(db) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
                 return res.send();
+            }
+
+            if(query.date) {
+                feeds = feeds.filter(function(item) {
+                    return (moment(query.date).isSame(moment(item.date), "day"));
+                });
             }
 
             var promises = feeds.map(function(item) {

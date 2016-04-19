@@ -1,5 +1,8 @@
 <div class="page-wrapper animated fadeIn clearfix">
 	<div class="bookmarks-wrapper row" ng-hide="page.busy || page.offline">
+		<div class="form-group col-xs-12" ng-hide="bookmarks.length">
+			<h5>There is no bookmarks</h5>
+		</div>
 		<div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="bookmark in bookmarks track by $index">
 			<div class="bookmark" ng-class="{'disabled': bookmark.busy}">
 				<div class="bookmark-btn pointer" title="Delete bookmark" ng-click="deleteBookmark(bookmark, $index);">

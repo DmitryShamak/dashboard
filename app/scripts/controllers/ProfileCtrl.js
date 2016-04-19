@@ -4,6 +4,10 @@ angular.module("app")
 			busy: true
 		};
 
+		$scope.profile = {
+			providers: []
+		};
+
 		$scope.setPluginsUpdate = function(onError) {
 			$scope.page.pending = true;
 			var data = $scope.profile.providers.map(function(item) {
@@ -42,19 +46,28 @@ angular.module("app")
 			storeModal.show($scope);
 		};
 
-		$scope.init = function() {
+		$scope.getProfileData = function() {
+			if(!$scope.user.providers.length) {
+				return;
+			}
+
 			$scope.page.busy = true;
 			$scope.page.offline = false;
 
 			api.provider.get({
 				providers: $scope.user.providers
 			}, function(res) {
-				$scope.profile = {
-					providers: res.data
-				};
+				$scope.profile.providers = res.data;
 
 				$scope.page.busy = false;
 			})
+		};
+
+		$scope.init = function() {
+			$scope.page.busy = false;
+			$scope.page.offline = false;
+
+			$scope.getProfileData();
 		};
 
 		$scope.$watch("user", function() {

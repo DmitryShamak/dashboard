@@ -100,7 +100,7 @@ angular
     };
 
     var authOnly = function(state) {
-        var states = ["profile", "calendar"];
+        var states = ["profile", "calendar", "bookmarks"];
 
         return (~states.indexOf(state));
     };
