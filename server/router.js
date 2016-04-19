@@ -5,6 +5,7 @@ var db = require("./db.js");
 var user = require("./routes/userRoutes.js")(db);
 var provider = require("./routes/providerRoutes.js")(db);
 var feed = require("./routes/feedRoutes.js")(db);
+var update = require("./routes/updateRoutes.js")(db);
 var notes = require("./routes/notesRoutes.js")(db);
 var bookmarks = require("./routes/bookmarksRoutes.js")(db);
 var history = require("./routes/historyRoutes.js")(db);
@@ -37,6 +38,9 @@ var router = function(app) {
     app.get('/api/store', provider.store);
     app.post('/api/provider', provider.save);
     app.put('/api/provider', provider.update);
+
+    //Updates
+    app.get('/api/updates', update.get);
 
     //Feed
     app.get('/api/feed', feed.get);

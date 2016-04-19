@@ -46,6 +46,8 @@ angular.module("app")
         });
         api.store = $resource(api.serverUrl + "/api/store");
 
+        api.updates = $resource(api.serverUrl + "/api/updates");
+
         api.feed = $resource(api.serverUrl + "/api/feed");
 
         api.bookmarks = $resource(api.serverUrl + "/api/bookmarks");

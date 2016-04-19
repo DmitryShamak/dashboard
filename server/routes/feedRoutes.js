@@ -49,9 +49,12 @@ module.exports = function(db) {
             }
 
             if(query.date) {
-                feeds = feeds.filter(function(item) {
-                    return (moment(query.date).isSame(moment(item.date), "day"));
-                });
+                feeds = _(feeds)
+                    .filter(function(item) {
+                        return (moment(query.date).isSame(moment(item.date), "day"));
+                    })
+                    .orderBy(["date"], ["desc"])
+                    .value();
             }
 
             var promises = feeds.map(function(item) {

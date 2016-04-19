@@ -73,7 +73,16 @@ collector.onTick = function() {
         .then(collector.collectFeeds)
         .then(collector.saveFeeds)
         .then(function(result) {
-            console.log("Success, feeds collected");
+            db.update("update", {target: "feed"}, {
+                target: "feed",
+                date: new Date()
+            }, function(err, data) {
+                if(err) {
+                    return console.log("Error, on save update status");
+                }
+
+                console.log("Success, feeds collected!");
+            })
         })
         .catch(function(err) {
             console.error("Error", err);

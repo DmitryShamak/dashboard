@@ -4,11 +4,11 @@
             <span>Your feeds for</span>
             <span class="text-bigger text-marked" ng-bind="now"></span>
         </h5>
-        <h5 ng-show="feeds">
+        <h5 ng-show="feeds && feeds.lastUpdate">
             <small>last update: </small>
-            <small ng-bind="feeds.lastUpdate"></small>
+            <small ng-bind="feeds.lastUpdate.label"></small>
 
-            <small class="text-marked pointer" ng-click="getFeeds();">refresh</small>
+            <small class="text-marked pointer" ng-click="checkUpdates();">refresh</small>
         </h5>
     </div>
     <div class="page-group-wrapper text-center" ng-hide="feeds.busy || feeds.data && feeds.data.length">
@@ -37,7 +37,7 @@
                             <div class="feed-status">
                                 <i class="visited fa fa-eye" title="visited" ng-show="item.visited"></i>
                             </div>
-                            <a class="feed-link" ng-href="{{item.link}}" target="_blank" title="Go to source">
+                            <a class="feed-link" ng-click="addToHistory(item);" ng-href="{{item.link}}" target="_blank" title="Go to source">
                                 <i class="fa fa-external-link-square"></i>
                             </a>
                             <div class="feed-item-content pointer" ng-click="openFeed(group.provider, group.content, $index);">

@@ -49,6 +49,15 @@ module.exports = function(mongoose) {
     });
     collections.history = mongoose.model('history', collections.HistorySchema);
 
+    collections.UpdateSchema = new Schema({
+        target: String,
+        date: {
+            type: Date,
+            default: Date.now
+        }
+    });
+    collections.update = mongoose.model('updates', collections.UpdateSchema);
+
     collections.FeedSchema = new Schema({
         provider: String,
         label: String,

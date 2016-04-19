@@ -44,7 +44,8 @@ module.exports.feeds = function(provider) {
                 return {
                     label: item.title[0],
                     image: item['media:thumbnail'][0].$.url,
-                    link: item.link[0].replace(/\/$/, "")
+                    link: item.link[0].replace(/\/$/, ""),
+                    date: new Date(item.pubDate)
                 };
             });
         });

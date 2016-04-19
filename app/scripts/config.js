@@ -122,6 +122,8 @@ angular
             $rootScope.user = data;
             $rootScope.pending = false;
 
+            $rootScope.feeds = {};
+
             if(!state) {
                 $state.go("profile");
             } else {
