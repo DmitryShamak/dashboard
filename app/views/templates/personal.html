@@ -23,7 +23,8 @@
         <div class="feed" ng-repeat="group in feeds.data track by $index">
             <div class="feed-header pointer" ng-click="toggleGroup(group);">
                 <h5>
-                    <span class="feed-count text-medium" ng-bind="group.content.length"></span>
+                    <span class="feed-count text-medium"  ng-bind="group.unreadCount"></span>
+                    <small>new for</small>
                     <span ng-bind="group.label"></span>
                 </h5>
                 <div class="btn feed-btn">
@@ -37,10 +38,10 @@
                             <div class="feed-status">
                                 <i class="visited fa fa-eye" title="visited" ng-show="item.visited"></i>
                             </div>
-                            <a class="feed-link" ng-click="addToHistory(item);" ng-href="{{item.link}}" target="_blank" title="Go to source">
+                            <a class="feed-link" ng-click="addToHistory(group, item);" ng-href="{{item.link}}" target="_blank" title="Go to source">
                                 <i class="fa fa-external-link-square"></i>
                             </a>
-                            <div class="feed-item-content pointer" ng-click="openFeed(group.provider, group.content, $index);">
+                            <div class="feed-item-content pointer" ng-click="openFeed(group, $index);">
                                 <div class="feed-image" ng-style="{'background-image': 'url('+ (item.image || defaultImage) +')'}"></div>
                                 <h6 class="feed-label text-bold" ng-bind="item.label"></h6>
                             </div>

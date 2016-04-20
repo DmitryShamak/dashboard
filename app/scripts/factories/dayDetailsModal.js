@@ -21,6 +21,7 @@ angular.module("app")
 						}
 
 						$scope.dayDetails.notes.push(note);
+						$scope.dayDetails.reserved = true;
 						$scope.saveDetails(note);
 						$scope.modal.newNoteText = null;
 					};
@@ -35,6 +36,8 @@ angular.module("app")
 
 								var index = _.findIndex($scope.dayDetails.notes, {_id: note._id});
 								$scope.dayDetails.notes.splice(index, 1);
+
+								$scope.dayDetails.reserved = !!$scope.dayDetails.notes.length;
 							});
 						}
 					};

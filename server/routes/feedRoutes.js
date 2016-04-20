@@ -49,9 +49,19 @@ module.exports = function(db) {
             }
 
             if(query.date) {
+                var once = false;
                 feeds = _(feeds)
                     .filter(function(item) {
-                        return (moment(query.date).isSame(moment(item.date), "day"));
+                        var queryDate = moment(query.date);
+                        var itemDate = moment(item.date);
+                        var format = "DD/MM/YYYY hh:mm a";
+
+                        if(!once) {
+                            console.log(queryDate.format(format), " compare with " ,itemDate.format(format));
+                            once = true;
+                        }
+
+                        return (queryDate.isSame(itemDate, "day"));
                     })
                     .orderBy(["date"], ["desc"])
                     .value();

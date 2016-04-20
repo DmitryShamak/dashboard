@@ -112,22 +112,35 @@ $calendarHeaderHeight: 65px;
       width: 14.28%; //100/7
 
       margin: 10px 0;
+      box-sizing: border-box;
     }
 
     .calendar-date {
-      line-height: 2em;
+      position: relative;
+      color: #AFA0A0;
 
-      &:hover {
-        background: rgba(0,0,0,0.1);
-      }
+      .day {
+        line-height: 2em;
 
-      &.active {
-        color: $activeColor;
-      }
+        &.current-day {
+          color: #000;
 
-      &.current-day {
-        font-weight: 700;
-        text-decoration: underline;
+          &.reserved-day {
+            background-color: $activeColor;
+          }
+
+          font-weight: 700;
+          text-decoration: underline;
+        }
+
+        &.reserved-day {
+          background-color: rgba(0, 0, 0, 0.3);
+          color: #FFF !important;
+        }
+
+        &:hover {
+          background-color: rgba(0,0,0, 0.2);
+        }
       }
     }
 
@@ -164,11 +177,6 @@ $calendarHeaderHeight: 65px;
         box-shadow: none;
       }
     }
-  }
-
-  .reserved-day {
-    background-color: $activeColor;
-    color: #FFF;
   }
 
   .reserved-month {

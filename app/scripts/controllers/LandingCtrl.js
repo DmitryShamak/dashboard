@@ -18,7 +18,7 @@ angular.module("app")
 				return $scope.setUpdateDate();
 			}
 
-			if(!$scope.feeds || !$scope.feeds.lastUpdate) {
+			if(!$scope.feeds || !$scope.feeds.data || !$scope.feeds.lastUpdate) {
 				return $scope.getFeeds();
 			}
 
@@ -33,7 +33,7 @@ angular.module("app")
 			})
 		};
 
-		$scope.addToHistory = function(feed) {
+		$scope.addToHistory = function(group, feed) {
 			if(feed.visited) {
 				return;
 			}
@@ -43,6 +43,7 @@ angular.module("app")
 				feed: feed._id
 			}, function() {
 				feed.visited = true;
+				group.unreadCount--;
 			});
 		};
 
@@ -67,7 +68,8 @@ angular.module("app")
 								return groups.push({
 									provider: feed.provider,
 									label: feed.provider,
-									content: [feed]
+									content: [feed],
+									unreadCount: (res.feeds.filter(function(item) {return (feed.provider === item.provider && !item.visited)})).length
 								})
 							}
 
@@ -86,9 +88,9 @@ angular.module("app")
 			feed.active = !feed.active;
 		};
 
-		$scope.openFeed = function(provider, content, index) {
-			$scope.addToHistory(content[index]);
-			feedDetailsModal.show(provider, content, index);
+		$scope.openFeed = function(group, index) {
+			$scope.addToHistory(group, group.content[index]);
+			feedDetailsModal.show(group, index, $scope);
 		};
 
 		$scope.init = function() {

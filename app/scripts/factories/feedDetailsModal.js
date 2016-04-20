@@ -1,16 +1,16 @@
 angular.module("app")
 	.factory("feedDetailsModal", function(ngDialog) {
 		var dialog = {};
-		dialog.show = function(provider, feeds, index) {
+		dialog.show = function(group, index, parentScope) {
 			ngDialog.open({ 
 				template: '/views/templates/feedDetails.html',
 				className: 'ngdialog-theme-default feed-details-modal',
 				controller: function($scope, api) {
 					$scope.modal = {};
 					$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
-					$scope.feeds = feeds;
+					$scope.feeds = group.content;
 					$scope.feedIndex = index;
-					$scope.provider = provider;
+					$scope.provider = group.provider;
 
 					$scope.getCurrentFeed = function() {
 						$scope.modal.control = {
@@ -26,6 +26,8 @@ angular.module("app")
 						}
 
 						$scope.feed = $scope.feeds[$scope.feedIndex];
+
+						parentScope.addToHistory(group, $scope.feed);
 
 						$scope.getFeedDescription();
 					};

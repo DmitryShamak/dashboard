@@ -8,9 +8,11 @@
     <div class="calendar-dates">
         <div class="week" ng-repeat="week in month.weeks track by $index">
             <div class="clearfix">
-                <div class="pull-left calendar-date pointer" ng-repeat="date in week track by $index"
-                     ng-click="selectDate($event, date)" ng-class="{'current-day': date.current, 'reserved-day': date.notes && date.notes.length}"
-                     ng-bind="date.num"></div>
+                <div class="pull-left calendar-date pointer" ng-repeat="date in week track by $index" ng-class="{}">
+                    <div class="day" ng-class="{'current-day': date.current, 'reserved-day': date.reserved}" ng-click="selectDate($event, date)">
+                        <span ng-bind="date.num"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

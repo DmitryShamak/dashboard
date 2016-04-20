@@ -66,9 +66,14 @@ angular.module("app")
 
 					_.forEach(month.weeks, function(week, ind) {
 						_.forEach(week, function(day, ind) {
+							if(!day.value) {
+								return;
+							}
+
 							var dayNotes = scope.$parent.findDatesBy("day", day.value, monthNotes);
 
 							if(dayNotes.length) {
+								day.reserved = true;
 								day.notes = dayNotes.map(function(item) {
 									return {
 										_id: item._id,

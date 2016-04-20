@@ -8,38 +8,52 @@ angular.module("app")
 			providers: []
 		};
 
-		$scope.setPluginsUpdate = function(onError) {
+		$scope.setPluginsUpdate = function(resolve, reject) {
 			$scope.page.pending = true;
-			var data = $scope.profile.providers.map(function(item) {
+			var providers = $scope.profile.providers.map(function(item) {
 				return item._id
 			});
 
 			api.user.update({
 				query: {email: $scope.user.email},
 				data: {
-					providers: data
+					providers: providers
 				}
 			}, function() {
-				$scope.user.providers = data;
+				resolve && resolve();
+
+				$scope.user.providers = providers;
 				$scope.page.busy = false;
 			}, function(err) {
 				$scope.page.busy = false;
-				onError();
+
+				reject && reject();
 			});
 		};
 
 		$scope.appendProvider = function(provider) {
 			$scope.profile.providers.push(provider);
+			if($scope.feeds) {
+				$scope.feeds.data = null;
+			}
 			$scope.setPluginsUpdate();
 		};
 
-		$scope.removeProvider = function(index) {
+		$scope.removeProvider = function(name, index) {
 			var backup = $scope.profile.providers.splice(index, 1);
 
-			//on error
-			$scope.setPluginsUpdate(function() {
+			var resolve = function() {
+				if($scope.feeds && $scope.feeds.data) {
+					var groupIndex = _.findIndex($scope.feeds.data, {provider: name});
+
+					if(~groupIndex)
+						$scope.feeds.data.splice(groupIndex, 1);
+				}
+			};
+			var reject = function() {
 				$scope.profile.providers.splice(index, 0, backup[0]);
-			});
+			};
+			$scope.setPluginsUpdate(resolve, reject);
 		};
 
 		$scope.showStore = function() {

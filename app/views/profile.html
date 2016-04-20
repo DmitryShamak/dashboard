@@ -31,7 +31,7 @@
                             </h5>
                             <p class="cutted-text" ng-bind="provider.description"></p>
                         </div>
-                        <div class="provider-btn pointer" ng-click="removeProvider($index);" title="Delete provider">
+                        <div class="provider-btn pointer" ng-click="removeProvider(provider.name, $index);" title="Delete provider">
                             <i class="fa fa-close"></i>
                         </div>
                     </div>
