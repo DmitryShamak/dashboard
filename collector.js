@@ -1,11 +1,12 @@
-var scraper = require("./scraper");
-var db = require("./db.js");
+var scraper = require("./server/scraper");
+var db = require("./server/db.js");
 var moment = require("moment");
 var _ = require("lodash");
 var Q = require("q");
 
 var collector = {};
-var delay = moment.duration(4, "hours").asMilliseconds();
+var tickHours = 4;
+var delay = moment.duration(tickHours, "hours").asMilliseconds();
 
 collector.getProviders = function() {
     return Q.promise(function(res, rej) {
@@ -68,7 +69,7 @@ collector.saveFeeds = function(feeds) {
 
 collector.onTick = function() {
     //get providers
-    console.log("Collector tick", moment().format("DD/MM/YYY hh:mm a"));
+    console.log("Start collecting", moment().local().format("DD/MM/YYYY hh:mm:ss a"));
     collector.getProviders()
         .then(collector.collectFeeds)
         .then(collector.saveFeeds)
@@ -81,7 +82,8 @@ collector.onTick = function() {
                     return console.log("Error, on save update status");
                 }
 
-                console.log("Success, feeds collected!");
+                console.log("Success, feeds collected! ", moment().local().format("DD/MM/YYYY hh:mm:ss a"));
+                console.log("Next start on ", moment().local().add(tickHours, "hours").format("DD/MM/YYYY hh:mm:ss a"));
             })
         })
         .catch(function(err) {
@@ -100,4 +102,4 @@ collector.stop = function() {
     collector.interval = null;
 };
 
-module.exports = collector;
+collector.start();

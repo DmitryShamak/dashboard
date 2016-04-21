@@ -1,14 +1,17 @@
 <div class="feed-details">
-    <div class="bookmark-wrapper" bookmark="feed"></div>
+    <div class="clearfix">
+        <div class="pull-left details-control-btn bookmark-wrapper" bookmark="feed"></div>
+        <div class="pull-left details-control-btn" add-to-calendar="feed"></div>
+    </div>
     <h3 class="feed-details-header row" ng-class="{'disabled': modal.busy}">
         <div class="col-xs-1 text-right">
-            <i class="btn fa fa-angle-left" ng-show="modal.control.prev" ng-click="switchFeed(-1);" title="{{modal.prevFeedLable}}"></i>
+            <i class="pointer fa fa-angle-left" ng-show="modal.control.prev" ng-click="switchFeed(-1);" title="{{modal.prevFeedLable}}"></i>
         </div>
 
         <a class="col-xs-10 text-center text-bold" ng-href="{{feed.link}}" target="_blank"  ng-bind="feed.label"></a>
 
         <div class="col-xs-1 text-left">
-            <i class="btn fa fa-angle-right" ng-show="modal.control.next" ng-click="switchFeed(1);" title="{{modal.nextFeedLable}}"></i>
+            <i class="pointer fa fa-angle-right" ng-show="modal.control.next" ng-click="switchFeed(1);" title="{{modal.nextFeedLable}}"></i>
         </div>
     </h3>
     <div class="alert alert-info animated fadeIn" ng-show="modal.busy">

@@ -4,12 +4,30 @@
             <span>Your feeds for</span>
             <span class="text-bigger text-marked" ng-bind="now"></span>
         </h5>
-        <h5 ng-show="feeds && feeds.lastUpdate">
-            <small>last update: </small>
-            <small ng-bind="feeds.lastUpdate.label"></small>
 
-            <small class="text-marked pointer" ng-click="checkUpdates();">refresh</small>
-        </h5>
+        <div ng-if="feeds && feeds.lastUpdate">
+            <div class="feeds-filters">
+                <div class="filter-title pointer text-center" ng-class="{'disabled': feeds.busy}" ng-click="toggleFilterEdit();">
+                    <span class="text-marked" ng-bind="feedFilter.status.label"></span>
+                    <span><small>for</small></span>
+                    <span class="text-marked" ng-bind="feedFilter.range.label"></span>
+                </div>
+                <div class="filter-edit text-center" ng-if="feedFilter.edit">
+                    <i class="filter-edit-caret fa fa-caret-up"></i>
+                    <div class="filter-edit-content">
+                        <i class="filter-edit-close fa fa-times-circle pointer" ng-click="toggleFilterEdit();"></i>
+                        <!--<div class="disabled" filter-group="feedFilter.feedStatuses" filter-type="status" on-select="setFilter"></div>-->
+                        <div filter-group="feedFilter.dateRanges" filter-type="range" on-select="setFilter"></div>
+                    </div>
+                </div>
+            </div>
+            <h5>
+                <small>last update: </small>
+                <small ng-bind="feeds.lastUpdate.label"></small>
+
+                <small class="text-marked pointer" ng-click="checkUpdates();">refresh</small>
+            </h5>
+        </div>
     </div>
     <div class="page-group-wrapper text-center" ng-hide="feeds.busy || feeds.data && feeds.data.length">
         <h5>Sems like you don`t have any news today, please check your profile.</h5>

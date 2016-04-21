@@ -199,3 +199,42 @@ $calendarHeaderHeight: 65px;
     }
   }
 }
+
+.add-calendar-wrapper {
+  position: relative;
+
+  .note-data {
+    position: absolute;
+    top: 0;
+    left: 25px;
+
+    min-width: 300px;
+
+    padding: 10px;
+
+    background-color: #FFF;
+
+    z-index: 1;
+
+    .note-content {
+      position: relative;
+
+      padding-right: 30px;
+
+      .note-btn-wrapper {
+        position: absolute;
+        top: 0; bottom: 0; right: 0;
+
+        width: 30px;
+
+        .note-btn {
+          position: absolute;
+          top: 50%; right: 50%;
+
+          width: 15px; height: 15px;
+          margin: -7px;
+        }
+      }
+    }
+  }
+}

@@ -74,13 +74,7 @@ angular.module("app")
 
 							if(dayNotes.length) {
 								day.reserved = true;
-								day.notes = dayNotes.map(function(item) {
-									return {
-										_id: item._id,
-										date: item.date,
-										text: item.text
-									}
-								});
+								day.notes = dayNotes;
 							}
 						});
 					});

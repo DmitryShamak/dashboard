@@ -3,9 +3,10 @@
 		<div class="pending-icon" ng-show="modal.busy"><i class="fa fa-refresh fa-pulse"></i></div>
 
 		<h4 class="text-center" ng-bind="dayDetails.title"></h4>
-		<ul class="no-list-style">
+		<ul>
 			<li ng-repeat="note in dayDetails.notes track by $index">
-				<span ng-bind="note.text"></span>
+				<a ng-href="{{note.link}}" target="_blank" ng-if="note.link" ng-bind="note.text"></a>
+				<span ng-if="!note.link" ng-bind="note.text"></span>
 				<i class="btn fa fa-close" ng-click="removeNote(note);"></i>
 			</li>
 			<li ng-hide="dayDetails.notes">None notes.</li>

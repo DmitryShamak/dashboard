@@ -69,7 +69,7 @@ gulp.task("bower", function() {
 });
 
 gulp.task('clean', function() {
-    return del(['dist/**']);
+    return del(['./dist/**', './deploy/**/*']);
 });
 
 gulp.task('serve',function() {

@@ -1,0 +1,4 @@
+<div class="filter-group text-center">
+    <span class="filter pointer" ng-class="{'active': filter.active}" ng-repeat="filter in filterGroup"
+          ng-bind="filter.label" ng-click="onSelect($index, filterType);"></span>
+</div>

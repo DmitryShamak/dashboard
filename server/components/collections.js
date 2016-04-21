@@ -33,6 +33,7 @@ module.exports = function(mongoose) {
     collections.NoteSchema = new Schema({
         user: String,
         date: Date,
+        link: String,
         text: String
     });
     collections.note = mongoose.model('notes', collections.NoteSchema);

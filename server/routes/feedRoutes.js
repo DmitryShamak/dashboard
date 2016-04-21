@@ -38,6 +38,7 @@ module.exports = function(db) {
 
     routes.get = function (req, res) {
         var query = req.query;
+        var range = query.range || "day";
 
         db.find("feed", {
             provider: { $in: query.providers }
@@ -49,19 +50,14 @@ module.exports = function(db) {
             }
 
             if(query.date) {
-                var once = false;
                 feeds = _(feeds)
                     .filter(function(item) {
                         var queryDate = moment(query.date);
-                        var itemDate = moment(item.date);
+                        var utcOffset = queryDate.utcOffset();
+                        var itemDate = moment(item.date).utcOffset(utcOffset);
                         var format = "DD/MM/YYYY hh:mm a";
 
-                        if(!once) {
-                            console.log(queryDate.format(format), " compare with " ,itemDate.format(format));
-                            once = true;
-                        }
-
-                        return (queryDate.isSame(itemDate, "day"));
+                        return (queryDate.isSame(itemDate, range));
                     })
                     .orderBy(["date"], ["desc"])
                     .value();

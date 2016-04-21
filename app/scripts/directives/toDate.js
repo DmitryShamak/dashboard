@@ -4,7 +4,7 @@ angular.module("app")
 			scope: { date: "=" },
 			link: function (scope, element) {
 				scope.$watch(scope.date, function() {
-					var format = "DD.MM.YY hh:mm a";
+					var format = "DD.MM.YYYY";
 					element.text(moment(scope.date).format(format));
 				});
 			}

@@ -1,0 +1,30 @@
+<div class="add-calendar-wrapper">
+    <i ng-show="note.busy" class="fa fa-refresh fa-pulse"></i>
+    <i ng-hide="note.busy" class="pointer fa fa-calendar" ng-class="{'text-marked': note.exists}"
+       ng-click="toggleNote();"></i>
+
+    <div class="note-data" ng-show="note.edit" ng-class="{'disabled': note.busy}">
+        <form ng-hide="note.exists">
+            <div>
+                <input type="date" class="form-control" ng-model="note.date" placeholder="Date" />
+            </div>
+            <div>
+                <textarea class="form-control" ng-model="note.text"></textarea>
+            </div>
+            <div class="clearfix text-center">
+                <div class="btn"  ng-click="addNote(note);" title="Add note">
+                    <i class="alert-success fa fa-plus"></i>
+                </div>
+            </div>
+        </form>
+        <div ng-show="note.exists" class="note-content clearfix">
+            <h5>
+                <small to-date="note.date"></small> <br />
+                <span ng-bind="note.text"></span>
+            </h5>
+            <div class="note-btn-wrapper">
+                <i class="note-btn pointer alert-danger fa fa-trash" ng-click="deleteNote(note);" title="Delete note"></i>
+            </div>
+        </div>
+    </div>
+</div>

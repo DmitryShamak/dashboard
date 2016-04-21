@@ -97,6 +97,10 @@ body {
   }
 }
 
+ul {
+  margin-left: 10px;
+}
+
 .page-pending {
   position: fixed;
   top: $navigationHeight;  bottom: 0; left: 0; right: 0;
@@ -130,12 +134,15 @@ body {
 }
 
 .disabled {
-  -webkit-user-select: none;
-  user-select: none;
-
-  pointer-events: none;
   cursor: not-allowed;
   opacity: 0.6 !important;
+
+  & > * {
+    -webkit-user-select: none;
+    user-select: none;
+
+    pointer-events: none;
+  }
 }
 
 .hidden-content {

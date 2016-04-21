@@ -42,13 +42,15 @@ module.exports.feeds = function(userId, provider) {
         });
 
 
-        var feed = {
-            label: "Blank",
+        var feed =  {
+            label: "BLANK",
             provider: provider,
-            totalCount: content.length
+            content: content
         };
 
-        return feedMethods.compareContent(userId, feed, content);
+        return Q.promise(function(res, rej) {
+            res(feed);
+        });
     };
 
     feedMethods.callback(url, parser, deferred);

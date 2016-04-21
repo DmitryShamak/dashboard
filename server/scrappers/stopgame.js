@@ -1,6 +1,5 @@
 var cheerio = require("cheerio");
 var moment = require("moment");
-var _ = require('lodash');
 var Q = require("q");
 var request = require("request");
 var feedMethods = require("../components/feedMethods");
@@ -12,11 +11,12 @@ module.exports.find = function(props, cb) {
         var $ = cheerio.load(body);
         var data = {};
 
-        data.image = $(".main_image").attr("src");
+        var container = $(".main_text");
+        data.image = $(".main_text img, .game-image img").attr("src");
+
         data.description = [];
-        var description = $("#event-description");
-        description.find("br, iframe, script, .note, .b-prmplace-media").remove();
-        var text = (description.text() || "").trim();
+        container.find("div, style").remove();
+        var text = (container.text() || "").trim();
 
         if(text) {
             data.description.push(text);
@@ -28,33 +28,33 @@ module.exports.find = function(props, cb) {
 
 module.exports.feeds = function(provider) {
     var deferred = Q.defer();
-    var date = moment().format("YYYY/MM/DD"); //2016/04/06
+    var date = moment().format("MM/YYYY"); //04/2016
 
-    var url = "http://afisha.tut.by/day/" + date;
+    var url = "http://stopgame.ru/news";
     var parser = function(query, body) {
         var $ = cheerio.load(body);
         var content = [];
 
-        $("ul.b-lists.list_afisha .lists__li").each(function(elem) {
+        $(".news-lent").each(function() {
+            var title = $(this).find(".lent-title a").text().trim();
+            var image = $(this).find(".lent-image img").attr("src");
+            var link = "http://stopgame.ru" + $(this).find(".lent-title a").attr("href");
 
-            var title = $(this).find(".name span").text().trim();
-            var image = $(this).find(".media img").attr("src");
-            var link = $(this).find("a.media").attr("href");
-            var text = $(this).find(".txt p").text().trim();
+            var dateParts = $(this).find(".lent-date").text().split(".");
+            var date = moment().year(dateParts[2]).month(dateParts[1]-1).date(dateParts[0]).toDate();
 
             content.push({
                 label: title,
                 link: link,
                 image: image,
-                description: text
+                date: moment(date).toDate()
             });
         });
 
         var feed =  {
-            label: "TUT.BY",
+            label: "Stopgame",
             provider: provider,
-            content: content,
-            totalCount: content.length
+            content: content
         };
 
         return Q.promise(function(res, rej) {

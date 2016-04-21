@@ -1,8 +1,25 @@
 angular.module("app")
-.controller("LandingCtrl", function($rootScope, $scope, api, feedDetailsModal) {
+.controller("LandingCtrl", function($rootScope, $scope, api, dateRanges, feedStatuses, feedDetailsModal) {
 		$scope.now = $scope.today().format("DD.MM.YYYY");
 		$scope.page = {};
+		$scope.feedFilter = {
+			dateRanges: dateRanges,
+			feedStatuses: feedStatuses
+		};
 		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
+
+		$scope.toggleFilterEdit = function() {
+			$scope.feedFilter.edit = !$scope.feedFilter.edit;
+		};
+
+		$scope.setFilter = function(index, type) {
+			var activeList = type === "status" ? $scope.feedFilter.feedStatuses : $scope.feedFilter.dateRanges;
+			$scope.feedFilter[type] = activeList[index];
+
+			$scope.feedFilter.edit = false;
+
+			$scope.getFeeds();
+		};
 
 		$scope.setUpdateDate = function() {
 			var format = "DD.MM.YY hh:mm a";
@@ -19,6 +36,8 @@ angular.module("app")
 			}
 
 			if(!$scope.feeds || !$scope.feeds.data || !$scope.feeds.lastUpdate) {
+				$scope.setFilter(0, "status");
+				$scope.setFilter(0, "range");
 				return $scope.getFeeds();
 			}
 
@@ -58,7 +77,9 @@ angular.module("app")
 					api.feed.get({
 						userId: $scope.getUserId(),
 						providers: providers.data.map(function(item) {return item.name}),
-						date: moment().toDate()
+						date: moment().toDate(),
+						range: $scope.feedFilter.range.value,
+						status: $scope.feedFilter.status.value
 					}, function(res) {
 						var groups = [];
 
@@ -89,7 +110,6 @@ angular.module("app")
 		};
 
 		$scope.openFeed = function(group, index) {
-			$scope.addToHistory(group, group.content[index]);
 			feedDetailsModal.show(group, index, $scope);
 		};
 
