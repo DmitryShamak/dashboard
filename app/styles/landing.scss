@@ -156,10 +156,16 @@ $feedItemHeight: 100px;
   .feed-content {
     background: rgba(0, 0, 0, 0.1);
 
-    .close-feed-block {
+    .feed-footer {
       padding: 10px 25px;
       background-color: $bgMainColor;
       color: #FFF;
+
+      .btn {
+        &:hover {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
     }
   }
 

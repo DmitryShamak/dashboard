@@ -1,4 +1,5 @@
 var _ = require("lodash");
+var Q = require("q");
 
 module.exports = function(db) {
     var routes = {};
@@ -28,15 +29,35 @@ module.exports = function(db) {
             return res.send();
         }
 
-        db.save("history", body, function(err, item) {
-            if(err) {
-                res.statusCode = 404;
-                res.statusMessage = 'Bad Data';
-                return res.send();
-            }
+        if(body.list && _.isArray(body.list)) {
+            var promises = body.list.map(function(item) {
+                return Q.promise(function(resolve, reject) {
+                    db.save("history", item, function(err, result) {
+                        if(err) {
+                            return reject(err);
+                        }
 
-            res.send(JSON.stringify(item));
-        });
+                        resolve(result);
+                    });
+                })
+            });
+
+            Q.all(promises).then(function(results) {
+                res.send(JSON.stringify({
+                    list: results
+                }));
+            });
+        } else {
+            db.save("history", body, function(err, item) {
+                if(err) {
+                    res.statusCode = 404;
+                    res.statusMessage = 'Bad Data';
+                    return res.send();
+                }
+
+                res.send(JSON.stringify(item));
+            });
+        }
     };
 
     return routes;

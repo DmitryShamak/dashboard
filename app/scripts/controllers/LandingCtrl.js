@@ -69,6 +69,32 @@ angular.module("app")
 			});
 		};
 
+		$scope.markAllAsRead = function(group, data) {
+			if($scope.feeds.busy) {
+				return;
+			}
+
+			var list = data.filter(function(item){
+				return !item.visited;
+			}).map(function(item) {
+				return {
+					user: $scope.getUserId(),
+					feed: item._id
+				}
+			});
+
+			group.busy = true;
+			api.history.save({
+				list: list
+			}, function(result) {
+				group.busy = false;
+				_.forEach(data, function(feed) {
+					feed.visited = true;
+				});
+				group.unreadCount = 0;
+			});
+		};
+
 		$scope.getFeeds = function() {
 			if(!$scope.feeds.busy) {
 				$scope.feeds.data = null;
