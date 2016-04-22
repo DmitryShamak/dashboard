@@ -6,7 +6,7 @@
     <div class="note-data" ng-show="note.edit" ng-class="{'disabled': note.busy}">
         <form ng-hide="note.exists">
             <div>
-                <input type="date" class="form-control" ng-model="note.date" placeholder="Date" />
+                <input type="date" class="form-control" ng-model="note.date" placeholder="MM/DD/YYYY" />
             </div>
             <div>
                 <textarea class="form-control" ng-model="note.text"></textarea>

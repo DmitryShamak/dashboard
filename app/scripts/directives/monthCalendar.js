@@ -2,9 +2,10 @@ angular.module("app")
 	.directive("monthCalendar", function(api) {
 		return {
 			templateUrl: "/views/templates/month_calendar.html",
+			restrict: "A",
 			replace: false,
-			scope: {monthParams: "=monthCalendar", selectDate: "="},
-			link: function(scope) {
+			scope: {monthParams: "=monthCalendar", selectDate: "=", updated: "="},
+			link: function(scope, element, attrs) {
 				scope.getFullMonth = function(date) {
 					if(!date) {
 						date = moment().toDate();
@@ -59,10 +60,10 @@ angular.module("app")
 					return month;
 				};
 
-				scope.$watch("monthParams", function(monthParams) {
-					var month = scope.getFullMonth(monthParams.date);
+				scope.$watch("updated", function() {
+					var month = scope.getFullMonth(scope.monthParams.date);
 
-					var monthNotes = scope.$parent.findDatesBy("month", monthParams.date);
+					var monthNotes = scope.$parent.findDatesBy("month", scope.monthParams.date);
 
 					_.forEach(month.weeks, function(week, ind) {
 						_.forEach(week, function(day, ind) {
@@ -79,6 +80,7 @@ angular.module("app")
 						});
 					});
 
+					scope.updated = false;
 					scope.month = month;
 				});
 			}

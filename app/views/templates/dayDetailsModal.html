@@ -2,14 +2,23 @@
 	<div class="animated fadeIn" ng-show="dayDetails" ng-class="{'disabled': modal.busy, 'pending-wrapper': modal.busy}">
 		<div class="pending-icon" ng-show="modal.busy"><i class="fa fa-refresh fa-pulse"></i></div>
 
-		<h4 class="text-center" ng-bind="dayDetails.title"></h4>
+		<h4 class="row">
+			<div class="btn col-xs-2" ng-click="goBack();">
+				<i class="fa fa-angle-left"></i>
+			</div>
+			<div class="col-xs-8 text-center" ng-bind="dayDetails.title"></div>
+			<div class="btn col-xs-2" ng-click="goForward();">
+				<i class="fa fa-angle-right"></i>
+			</div>
+		</h4>
+
+		<div class="text-info" ng-hide="dayDetails.notes">no notes</div>
 		<ul>
 			<li ng-repeat="note in dayDetails.notes track by $index">
 				<a ng-href="{{note.link}}" target="_blank" ng-if="note.link" ng-bind="note.text"></a>
 				<span ng-if="!note.link" ng-bind="note.text"></span>
-				<i class="btn fa fa-close" ng-click="removeNote(note);"></i>
+				<i class="text-danger btn fa fa-close" ng-click="removeNote(note);"></i>
 			</li>
-			<li ng-hide="dayDetails.notes">None notes.</li>
 		</ul>
 		<form class="row" ng-submit="addNote(modal.newNoteText);">
 			<div class="col-xs-10">

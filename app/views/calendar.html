@@ -14,8 +14,9 @@
 				</h2>
 			</div>
 			<div class="col-xs-4 calendar-control text-left">
-				<div class="btn" ng-show="calendar.showMonth" ng-click="toggleMonth();">
-					<i class="fa fa-th-large"></i>
+				<div class="text-right" ng-class="{'disabled': calendar-busy}">
+					<i class="btn pointer fa fa-calendar" ng-hide="calendar.listMode" ng-click="toggleListMode();"></i>
+					<i class="btn pointer fa fa-th-list" ng-show="calendar.listMode" ng-click="toggleListMode();"></i>
 				</div>
 			</div>
 		</div>
@@ -23,7 +24,7 @@
 			<div class="busy animated fadeIn" ng-show="calendar.busy"></div>
 			<div ng-hide="calendar.busy">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="month in calendar.months track by $index">
-					<div class="month-wrapper animated fadeIn" ng-class="{'current-month': month.current}" month-calendar="month" select-date="selectDate"></div>
+					<div class="month-wrapper animated fadeIn" ng-class="{'current-month': month.current}" month-calendar="month" select-date="selectDate" updated="month.updated"></div>
 				</div>
 			</div>
 		</div>

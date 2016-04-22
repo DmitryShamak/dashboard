@@ -1,7 +1,7 @@
 angular.module("app")
 	.factory("dayDetailsModal", function(ngDialog) {
 		var dialog = {};
-		dialog.show = function(dayDetails) {
+		dialog.show = function(dayDetails, parentScope) {
 			ngDialog.open({ 
 				template: '/views/templates/dayDetailsModal.html',
 				className: 'ngdialog-theme-default day-details-modal',
@@ -9,7 +9,26 @@ angular.module("app")
 					$scope.modal = {
 						newNoteText: null
 					};
+
 					$scope.dayDetails = dayDetails;
+
+					$scope.getDetailsFor = function(date) {
+						$scope.dayDetails = parentScope.getDayDetails(date);
+
+						$scope.init();
+					};
+
+					$scope.goBack = function() {
+						var newDate = moment($scope.dayDetails.value).add(-1, "day").toDate();
+
+						$scope.getDetailsFor(newDate);
+					};
+					$scope.goForward = function() {
+						var newDate = moment($scope.dayDetails.value).add(1, "day").toDate();
+
+						$scope.getDetailsFor(newDate);
+					};
+
 					$scope.addNote = function(text) {
 						var note = {
 							date: $scope.dayDetails.value,
@@ -20,8 +39,6 @@ angular.module("app")
 							$scope.dayDetails.notes = [];
 						}
 
-						$scope.dayDetails.notes.push(note);
-						$scope.dayDetails.reserved = true;
 						$scope.saveDetails(note);
 						$scope.modal.newNoteText = null;
 					};
@@ -34,10 +51,9 @@ angular.module("app")
 							}, function(res) {
 								$scope.modal.busy = false;
 
+								parentScope.removeNote(res);
 								var index = _.findIndex($scope.dayDetails.notes, {_id: note._id});
 								$scope.dayDetails.notes.splice(index, 1);
-
-								$scope.dayDetails.reserved = !!$scope.dayDetails.notes.length;
 							});
 						}
 					};
@@ -53,6 +69,9 @@ angular.module("app")
 									text: details.text
 								}
 							}, function(res) {
+								parentScope.addNote(res);
+								$scope.dayDetails.reserved = true;
+								$scope.dayDetails.notes.push(res);
 								$scope.modal.busy = false;
 							});
 						}

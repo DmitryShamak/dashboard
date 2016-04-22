@@ -14,6 +14,34 @@ angular.module("app")
 			return result;
 		};
 
+		$scope.updateMonth = function(date) {
+			 _.forEach($scope.calendar.months, function(month) {
+				if(moment(month.date).isSame(moment(date), "month")) {
+					month.updated = true;
+				}
+			});
+		};
+
+		$scope.removeNote = function(note) {
+			var index = _.findIndex($scope.calendar.notes, {_id: note._id});
+			$scope.calendar.notes.splice(index, 1);
+			$scope.updateMonth(note.date);
+		};
+		$scope.addNote = function(note) {
+			$scope.calendar.notes.push(note);
+			$scope.updateMonth(note.date);
+		};
+
+		$scope.getDayDetails = function(date) {
+			var dayNotes = $scope.findDatesBy("day", date);
+
+			return {
+				value: date,
+				notes: dayNotes,
+				reserved: (dayNotes.length > 0)
+			}
+		};
+
 		$scope.getFullYear = function(date) {
 			if(!date) {
 				date = moment().toDate();
@@ -28,7 +56,8 @@ angular.module("app")
 				var month = {
 					date: date,
 					short: date.format("MMM"),
-					long: date.format("MMMM")
+					long: date.format("MMMM"),
+					updated: true
 				};
 
 				if(moment().isSame(date, "month")) {
@@ -41,11 +70,12 @@ angular.module("app")
 			return year;
 		};
 
-		$scope.selectDate = function(ev, date) {
-			//$scope.dayDetails = angular.copy(date);
-			//$scope.dayDetails.source = date;
+		$scope.toggleListMode = function() {
+			$scope.calendar.listMode = !$scope.calendar.listMode;
+		};
 
-			dayDetailsModal.show(date);
+		$scope.selectDate = function(ev, date) {
+			dayDetailsModal.show(date, $scope);
 		};
 
 		$scope.getCalendar = function(date) {
@@ -53,7 +83,6 @@ angular.module("app")
 				$scope.calendar.busy = true;
 
 				//todo: get date params from url
-
 				api.notes.get({
 					user: $scope.user._id
 				}, function(res) {
@@ -80,17 +109,11 @@ angular.module("app")
 
 		$scope.goBack = function() {
 			var scale = "year";
-			if($scope.calendar.showMonth) {
-				scale = "month";
-			}
 
 			$scope.changeDate(-1, scale);
 		};
 		$scope.goForward = function() {
 			var scale = "year";
-			if($scope.calendar.showMonth) {
-				scale = "month";
-			}
 
 			$scope.changeDate(1, scale);
 		};

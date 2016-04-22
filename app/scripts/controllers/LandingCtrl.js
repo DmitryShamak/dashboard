@@ -2,26 +2,31 @@ angular.module("app")
 .controller("LandingCtrl", function($rootScope, $scope, api, dateRanges, feedStatuses, feedDetailsModal) {
 		$scope.now = $scope.today().format("DD.MM.YYYY");
 		$scope.page = {};
-		$scope.feedFilter = {
-			dateRanges: dateRanges,
-			feedStatuses: feedStatuses
-		};
+		$scope.dateRanges = dateRanges;
+		$scope.feedStatuses = feedStatuses;
+
 		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
 
 		$scope.toggleFilterEdit = function() {
-			$scope.feedFilter.edit = !$scope.feedFilter.edit;
+			$scope.filterEdit = !$scope.filterEdit;
 		};
 
 		$scope.setFilter = function(index, type) {
-			var activeList = type === "status" ? $scope.feedFilter.feedStatuses : $scope.feedFilter.dateRanges;
-			$scope.feedFilter[type] = activeList[index];
+			var activeList = type === "status" ? $scope.feedStatuses : $scope.dateRanges;
 
-			$scope.feedFilter.edit = false;
+			if(!$scope.feeds.filter) {
+				$scope.feeds.filter = {};
+			}
+
+			$scope.feeds.filter[type] = activeList[index];
+			$scope.filterEdit = false;
 
 			$scope.getFeeds();
 		};
 
 		$scope.setUpdateDate = function() {
+			$scope.now = $scope.today().format("DD.MM.YYYY");
+
 			var format = "DD.MM.YY hh:mm a";
 			var date = moment();
 			$scope.feeds.lastUpdate = {
@@ -36,8 +41,6 @@ angular.module("app")
 			}
 
 			if(!$scope.feeds || !$scope.feeds.data || !$scope.feeds.lastUpdate) {
-				$scope.setFilter(0, "status");
-				$scope.setFilter(0, "range");
 				return $scope.getFeeds();
 			}
 
@@ -78,8 +81,8 @@ angular.module("app")
 						userId: $scope.getUserId(),
 						providers: providers.data.map(function(item) {return item.name}),
 						date: moment().toDate(),
-						range: $scope.feedFilter.range.value,
-						status: $scope.feedFilter.status.value
+						range: $scope.feeds.filter.range.value,
+						status: $scope.feeds.filter.status.value
 					}, function(res) {
 						var groups = [];
 
@@ -120,6 +123,14 @@ angular.module("app")
 			if($scope.user) {
 				if(!$scope.user.providers.length) {
 					return;
+				}
+
+				//todo: get user last range and status
+				$scope.feeds.busy = false;
+
+				if(!$scope.feeds.filter) {
+					$scope.setFilter(0, "status");
+					$scope.setFilter(0, "range");
 				}
 
 				$scope.checkUpdates();

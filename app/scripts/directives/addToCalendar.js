@@ -7,6 +7,7 @@ angular.module("app")
 			link: function(scope) {
 				scope.userId = scope.$parent.getUserId();
 				scope.note = {
+					date: moment().toDate(),
 					user: scope.userId,
 					link: scope.feed.link,
 					text: scope.feed.label
@@ -42,8 +43,8 @@ angular.module("app")
 
 					scope.note.busy = true;
 
-					if(!note.data) {
-						note.data = moment().toDate();
+					if(!note.date) {
+						note.date = moment().toDate();
 					}
 					api.notes.save({
 						data: note
