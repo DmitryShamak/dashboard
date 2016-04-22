@@ -22,10 +22,19 @@ angular.module("app")
 			});
 		};
 
-		$scope.removeNote = function(note) {
+		$scope.removeNote = function(note, useApi) {
 			var index = _.findIndex($scope.calendar.notes, {_id: note._id});
 			$scope.calendar.notes.splice(index, 1);
 			$scope.updateMonth(note.date);
+
+			if(useApi) {
+				$scope.calendar.busy = true;
+				api.notes.delete({
+					_id: note._id
+				}, function(res) {
+					$scope.calendar.busy = false;
+				});
+			}
 		};
 		$scope.addNote = function(note) {
 			$scope.calendar.notes.push(note);
@@ -84,7 +93,9 @@ angular.module("app")
 
 				//todo: get date params from url
 				api.notes.get({
-					user: $scope.user._id
+					user: $scope.user._id,
+					date: date,
+					range: "year"
 				}, function(res) {
 					$scope.calendar.busy = false;
 

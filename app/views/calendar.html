@@ -20,12 +20,31 @@
 				</div>
 			</div>
 		</div>
-		<div class="calendar-content col-xs-12 text-center clearfix" ng-hide="page.offline">
+		<div class="calendar-content col-xs-12 clearfix" ng-hide="page.offline">
 			<div class="busy animated fadeIn" ng-show="calendar.busy"></div>
-			<div ng-hide="calendar.busy">
+
+			<div class="row text-center" ng-class="{'disabled': calendar.busy}"  ng-if="!calendar.listMode">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="month in calendar.months track by $index">
 					<div class="month-wrapper animated fadeIn" ng-class="{'current-month': month.current}" month-calendar="month" select-date="selectDate" updated="month.updated"></div>
 				</div>
+			</div>
+			<div class="row" ng-class="{'disabled': calendar.busy}" ng-if="calendar.listMode">
+				<div class="alert alert-info" ng-hide="calendar.notes.length">No notes</div>
+				<table class="notes-list" ng-show="calendar.notes.length">
+					<tr class="clearfix note" ng-repeat="note in calendar.notes | orderBy:'date' track by $index">
+						<td width="40">
+							<i class="text-danger btn fa fa-close" ng-click="removeNote(note, true);"></i>
+						</td>
+						<td width="55" class="note-cell text-center">
+							<div class="text-bold text-mb text-marked" ng-bind="note.date | date : 'DD'"></div>
+							<small ng-bind="note.date | date : 'MMM'"></small>
+						</td>
+						<td class="note-cell text-left">
+							<a ng-href="{{note.link}}" target="_blank" ng-if="note.link" ng-bind="note.text"></a>
+							<span ng-if="!note.link" ng-bind="note.text"></span>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

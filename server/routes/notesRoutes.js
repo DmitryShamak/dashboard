@@ -1,4 +1,5 @@
 var _ = require("lodash");
+var moment = require("moment");
 
 module.exports = function(db) {
     var routes = {};
@@ -6,11 +7,17 @@ module.exports = function(db) {
     routes.get = function (req, res) {
         var query = req.query;
 
-        db.find("note", query, function (err, data) {
+        db.find("note", {user: query.user}, function (err, data) {
             if (err && !data) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
                 return res.send();
+            }
+
+            if(query.date && query.range) {
+                data = data.filter(function(item) {
+                    return moment(item.date).isSame(query.date, query.range);
+                });
             }
 
             res.send(JSON.stringify({
