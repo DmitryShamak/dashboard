@@ -93,6 +93,8 @@ angular.module("app")
 				});
 				group.unreadCount = 0;
 			});
+
+			$scope.toggleGroup(group);
 		};
 
 		$scope.getFeeds = function() {

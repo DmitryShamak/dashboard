@@ -41,8 +41,8 @@
         <div class="feed" ng-repeat="group in feeds.data track by $index">
             <div class="feed-header pointer" ng-click="toggleGroup(group);">
                 <h5>
-                    <span class="feed-count text-medium"  ng-bind="group.unreadCount"></span>
-                    <small>new for</small>
+                    <span class="feed-count text-marked text-medium"  ng-bind="group.unreadCount"></span>
+                    <small>/ {{group.content.length}}</small>
                     <span ng-bind="group.label"></span>
                 </h5>
                 <div class="btn feed-btn">
