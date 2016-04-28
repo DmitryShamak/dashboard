@@ -12,24 +12,50 @@ angular.module("app")
 			title: "Connect Account",
 			state: "connectaccount",
 			icon: "fa-plus",
+			authProtected: true,
+			authInvert: true,
 			hide: !!$scope.user
 		};
 		leftLinks.profile = {
 			title: "Profile",
 			state: "profile",
 			icon: "fa-info",
+			authProtected: true,
 			hide: !$scope.user
 		};
 		leftLinks.bookmarks = {
 			title: "Bookmarks",
 			state: "bookmarks",
 			icon: "fa-bookmark",
+			authProtected: true,
 			hide: !$scope.user
 		};
 		leftLinks.calendar = {
 			title: "Calendar",
 			state: "calendar",
 			icon: "fa-calendar",
+			authProtected: true,
+			hide: !$scope.user
+		};
+		leftLinks.notification = {
+			title: "Notifications",
+			state: false,
+			icon: "fa-bell",
+			iconMode: true,
+			action: function() {
+				leftLinks.notification.value++;
+			},
+			value: 0,
+			authProtected: true,
+			hide: !$scope.user
+		};
+		leftLinks.delay = {
+			title: "Delay Action",
+			state: false,
+			iconMode: true,
+			action: function() {},
+			icon: "fa-clock-o",
+			authProtected: true,
 			hide: !$scope.user
 		};
 		$scope.navigation.leftLinks = leftLinks;
@@ -39,7 +65,9 @@ angular.module("app")
 			title: "Sign Out",
 			state: false,
 			action: $scope.signout,
+			iconMode: true,
 			icon: "fa-sign-out",
+			authProtected: true,
 			hide: !$scope.user
 		};
 		$scope.navigation.rightLinks = rightLinks;
@@ -69,11 +97,12 @@ angular.module("app")
 		});
 
 		$scope.$watch("user", function() {
-			leftLinks.connectaccount.hide = !!$scope.user;
-			leftLinks.profile.hide = !$scope.user;
-			leftLinks.calendar.hide = !$scope.user;
-			leftLinks.bookmarks.hide = !$scope.user;
-			rightLinks.signout.hide = !$scope.user;
+			_.filter(leftLinks, {authProtected: true}).forEach(function(item) {
+				item.hide = item.authInvert ? !!$scope.user : !$scope.user;
+			});
+			_.filter(rightLinks, {authProtected: true}).forEach(function(item) {
+				item.hide = item.authInvert ? !!$scope.user : !$scope.user;
+			});
 
 			if($scope.user) {
 				var profileImage = $scope.user.photo ? $scope.user.photo.replace('?sz=50', "") : "/dist/imgs/gif/fun.gif";

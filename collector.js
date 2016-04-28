@@ -5,7 +5,7 @@ var _ = require("lodash");
 var Q = require("q");
 
 var collector = {};
-var tickHours = 4;
+var tickHours = 3;
 var delay = moment.duration(tickHours, "hours").asMilliseconds();
 
 collector.getProviders = function() {
