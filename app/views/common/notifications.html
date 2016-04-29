@@ -1,4 +1,6 @@
-<div navigation-link="notifications.link"></div>
-<div class="notifications-list">
-    <div ng-show="!notifications.data || !notifications.data.length">no notifications</div>
+<div class="notifications-wrapper">
+    <div navigation-link="notifications.link"></div>
+    <div ng-show="notifications.active" class="notifications-list">
+        <div ng-show="!notifications.data || !notifications.data.length" class="text-center">no notifications</div>
+    </div>
 </div>

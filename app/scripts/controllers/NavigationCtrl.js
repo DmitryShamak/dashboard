@@ -37,15 +37,6 @@ angular.module("app")
 			authProtected: true,
 			hide: !$scope.user
 		};
-		leftLinks.delay = {
-			title: "Delay Action",
-			state: false,
-			iconMode: true,
-			action: function() {},
-			icon: "fa-clock-o",
-			authProtected: true,
-			hide: !$scope.user
-		};
 		$scope.navigation.leftLinks = leftLinks;
 
 		var rightLinks = {};

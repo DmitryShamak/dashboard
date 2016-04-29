@@ -9,9 +9,11 @@
 				<div class="pull-left" ng-repeat="link in navigation.leftLinks track by $index">
 					<div ng-hide="link.hide" navigation-link="link"></div>
 				</div>
-
-				<div class="pull-left" notifications></div>
 			</div>
+
+			<div class="relative pull-left" notifications></div>
+
+			<div class="relative pull-left" deferred-actions></div>
 
 			<div class="navigation-group right-group pull-right clearfix">
 				<div class="pull-left go-top animated pointer hidden" ng-click="goTop();" title="GO TOP">

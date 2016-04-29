@@ -145,5 +145,9 @@ angular
 
     $(document).ready(function() {
         $rootScope.checkAuthentication();
+
+        $("body").click(function(event) {
+            $rootScope.$broadcast('clickEvent', event);
+        });
     });
   });

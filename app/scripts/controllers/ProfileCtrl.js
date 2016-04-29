@@ -84,6 +84,9 @@ angular.module("app")
 			$scope.getProfileData();
 		};
 
+		if($scope.user) {
+			return $scope.init();
+		}
 		$scope.$on('userConnected', function (event, data) {
 			$scope.init();
 		});

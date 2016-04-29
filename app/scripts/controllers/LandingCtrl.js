@@ -161,11 +161,13 @@ angular.module("app")
 					$scope.setFilter(0, "range");
 				}
 
-				$scope.checkUpdates();
+				return $scope.checkUpdates();
 			}
+
+			$scope.$on('userConnected', function () {
+				$scope.init();
+			});
 		};
 
-		$scope.$on('userConnected', function () {
-			$scope.init();
-		});
+		$scope.init();
 	});

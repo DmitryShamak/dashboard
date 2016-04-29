@@ -34,9 +34,10 @@ angular.module("app")
 			$scope.getBookmarks();
 		};
 
-		$scope.$watch("user", function() {
-			if($scope.user) {
-				$scope.init();
-			}
+		if($scope.user) {
+			return $scope.init();
+		}
+		$scope.$on('userConnected', function (event, data) {
+			$scope.init();
 		});
 	});
