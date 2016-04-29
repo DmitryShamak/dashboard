@@ -37,18 +37,6 @@ angular.module("app")
 			authProtected: true,
 			hide: !$scope.user
 		};
-		leftLinks.notification = {
-			title: "Notifications",
-			state: false,
-			icon: "fa-bell",
-			iconMode: true,
-			action: function() {
-				leftLinks.notification.value++;
-			},
-			value: 0,
-			authProtected: true,
-			hide: !$scope.user
-		};
 		leftLinks.delay = {
 			title: "Delay Action",
 			state: false,
@@ -79,20 +67,11 @@ angular.module("app")
 		$(document).on("scroll", function() {
 			var scrollTop = $(this).scrollTop();
 			var minHeight = 500;
-			var delay = 2000;
 
 			if(scrollTop > minHeight) {
 				$(".go-top").removeClass("hidden");
-
-				if(!$scope.flashInterval) {
-					$scope.flashInterval = $interval(function() {
-						$(".go-top").toggleClass("flash");
-					}, delay);
-				}
 			} else {
-				$interval.cancel($scope.flashInterval);
-				$scope.flashInterval = null;
-				$(".go-top").removeClass("flash").addClass("hidden");
+				$(".go-top").addClass("hidden");
 			}
 		});
 

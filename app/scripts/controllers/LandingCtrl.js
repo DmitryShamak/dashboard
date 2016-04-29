@@ -165,7 +165,7 @@ angular.module("app")
 			}
 		};
 
-		$scope.$watch("user", function() {
+		$scope.$on('userConnected', function () {
 			$scope.init();
 		});
 	});

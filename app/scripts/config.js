@@ -124,6 +124,8 @@ angular
 
             $rootScope.feeds = {};
 
+            $rootScope.$broadcast('userConnected');
+
             if(!state) {
                 $state.go("profile");
             } else {

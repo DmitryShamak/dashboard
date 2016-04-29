@@ -74,7 +74,6 @@ var router = function(app) {
 
     app.get('/auth/google', passport.authenticate("google", {scope: ['profile', 'email']}));
     app.use('/auth/*', function(req, res, next) {
-        console.log("USER", req.user);
         next();
     });
 

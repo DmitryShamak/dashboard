@@ -144,9 +144,7 @@ angular.module("app")
 			});
 		};
 
-		$scope.$watch("user", function() {
-			if($scope.user) {
-				$scope.init();
-			}
+		$scope.$on('userConnected', function (event, data) {
+			$scope.init();
 		});
 	});
