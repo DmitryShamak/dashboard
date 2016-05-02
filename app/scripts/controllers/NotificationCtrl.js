@@ -58,7 +58,7 @@ angular.module("app")
 			$scope.notifications.busy = false;
 
 			$scope.notifications.link = {
-				title: "Notifications",
+				title: "notifications",
 				state: false,
 				icon: "fa-bell",
 				iconMode: true,

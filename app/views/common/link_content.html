@@ -1,3 +1,3 @@
-<span ng-if="!content.iconMode" ng-bind="content.title"></span>
-<span ng-if="content.iconMode" class="fa {{content.icon}}" title="{{content.title}}"></span>
-<span ng-if="content.value" class="link-value" ng-bind="content.value"></span>
+<span ng-if="!content.iconMode" ng-bind="content.title | translate : lang"></span>
+<span ng-if="content.iconMode" class="fa {{content.icon}}"></span>
+<span ng-if="content.value" class="link-value" ng-bind="content.value | translate : lang"></span>

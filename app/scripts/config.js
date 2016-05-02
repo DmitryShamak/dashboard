@@ -81,6 +81,30 @@ angular
         return today;
     };
 
+    var defaultLang = "ru";
+    var lang = "ru";//navigator.language || navigator.userLanguage;
+    $rootScope.lang = (lang || defaultLang).slice(0, 2);
+
+    $rootScope.setLanguage = function(lang) {
+        var api = $injector.get('api');
+
+        $rootScope.lang = lang || defaultLang;
+        $rootScope.$broadcast('languageChange', $rootScope.lang);
+
+        if($rootScope.user) {
+            api.user.update({
+                query: {email: $rootScope.user.email},
+                data: {
+                    lang: lang || defaultLang
+                }
+            });
+        }
+    };
+
+    $rootScope.getLanguage = function() {
+        return $rootScope.lang || defaultLang;
+    };
+
     $rootScope.apply = function(scope) {
         if (scope.$root.$$phase != '$apply' && scope.$root.$$phase != '$digest') {
             scope.$apply();
@@ -121,6 +145,8 @@ angular
             }
 
             $rootScope.user = data;
+            $rootScope.lang = data.lang || $rootScope.lang;
+
             $rootScope.pending = false;
 
             $rootScope.feeds = {};

@@ -1,31 +1,30 @@
 <div class="clearfix">
     <div class="page-group-wrapper text-center">
         <h5>
-            <span>Your feeds for</span>
+            <span ng-bind=" 'your_feeds_for' | translate : lang"></span>
             <span class="text-bigger text-marked" ng-bind="now"></span>
         </h5>
 
         <div ng-if="feeds && feeds.lastUpdate">
             <div class="feeds-filters">
                 <div class="filter-title pointer text-center" ng-class="{'disabled': feeds.busy}" ng-click="toggleFilterEdit();">
-                    <span class="text-marked" ng-bind="feeds.filter.status.label"></span>
-                    <span><small>for</small></span>
-                    <span class="text-marked" ng-bind="feeds.filter.range.label"></span>
+                    <span class="text-marked" ng-bind="feeds.filter.status.label | translate : lang"></span>
+                    <span><small ng-bind="'for' | translate : lang"></small></span>
+                    <span class="text-marked" ng-bind="feeds.filter.range.label | translate : lang"></span>
                 </div>
                 <div class="filter-edit text-center" ng-if="filterEdit">
                     <i class="filter-edit-caret fa fa-caret-up"></i>
                     <div class="filter-edit-content">
                         <i class="filter-edit-close fa fa-times-circle pointer" ng-click="toggleFilterEdit();"></i>
-                        <!--<div class="disabled" filter-group="feedStatuses" filter-type="status" on-select="setFilter"></div>-->
                         <div filter-group="dateRanges" filter-type="range" on-select="setFilter"></div>
                     </div>
                 </div>
             </div>
             <h5>
-                <small>last update: </small>
+                <small>{{'last_update' | translate : lang}}: </small>
                 <small ng-bind="feeds.lastUpdate.label"></small>
 
-                <small class="text-marked pointer" ng-click="checkUpdates();">refresh</small>
+                <small class="text-marked pointer" ng-click="checkUpdates();" ng-bind="'refresh' | translate : lang"></small>
             </h5>
         </div>
     </div>
@@ -35,7 +34,7 @@
     </div>
     <p class="form-group alert alert-info" ng-show="feeds.busy">
         <i class="fa fa-refresh fa-pulse"></i>
-        <span>in progress..</span>
+        <span ng-bind=" 'in_progress' | translate : lang"></span>
     </p>
     <div class="feeds-wrapper" ng-class="{'disabled': feeds && feeds.busy}">
         <div class="feed" ng-repeat="group in feeds.data track by $index">

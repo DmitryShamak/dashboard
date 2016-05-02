@@ -1,5 +1,5 @@
 angular.module("app")
-    .directive("filterGroup", function() {
+    .directive("filterGroup", function($rootScope) {
         return {
             templateUrl: "/views/templates/filter_group.html",
             replace: true,
@@ -22,6 +22,14 @@ angular.module("app")
                 };
 
                 scope.init();
+
+                if(!scope.lang) {
+                    scope.lang = $rootScope.lang;
+                }
+
+                scope.$on('languageChange', function (ev, lang) {
+                    scope.lang = lang;
+                });
             }
         }
     });

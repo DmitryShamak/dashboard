@@ -16,7 +16,11 @@ module.exports = function(mongoose) {
         password: String,
         token: String,
         history: Array,
-        providers: Array
+        providers: Array,
+        lang: {
+            type: String,
+            default: "en"
+        }
     });
     collections.user = mongoose.model('users', collections.userSchema);
 

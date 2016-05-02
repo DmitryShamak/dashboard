@@ -4,12 +4,12 @@ angular.module("app")
 		$scope.navigation = {};
 		var leftLinks = {};
 		leftLinks.landing = {
-			title: "Landing",
+			title: "landing",
 			state: "landing",
 			icon: "fa-home"
 		};
 		leftLinks.connectaccount = {
-			title: "Connect Account",
+			title: "connect_account",
 			state: "connectaccount",
 			icon: "fa-plus",
 			authProtected: true,
@@ -17,21 +17,21 @@ angular.module("app")
 			hide: !!$scope.user
 		};
 		leftLinks.profile = {
-			title: "Profile",
+			title: "profile",
 			state: "profile",
 			icon: "fa-info",
 			authProtected: true,
 			hide: !$scope.user
 		};
 		leftLinks.bookmarks = {
-			title: "Bookmarks",
+			title: "bookmarks",
 			state: "bookmarks",
 			icon: "fa-bookmark",
 			authProtected: true,
 			hide: !$scope.user
 		};
 		leftLinks.calendar = {
-			title: "Calendar",
+			title: "calendar",
 			state: "calendar",
 			icon: "fa-calendar",
 			authProtected: true,
@@ -41,7 +41,7 @@ angular.module("app")
 
 		var rightLinks = {};
 		rightLinks.signout = {
-			title: "Sign Out",
+			title: "sign_out",
 			state: false,
 			action: $scope.signout,
 			iconMode: true,

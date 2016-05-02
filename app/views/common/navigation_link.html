@@ -1,2 +1,4 @@
-<a ng-if="link.state" class="navigation-link" link-content="link" ui-sref="{{link.state}}" ui-sref-active="active" title="{{link.title}}" ng-class="{disabled: link.disabled}"></a>
-<a ng-if="link.action" class="navigation-link" link-content="link" ng-click="link.action();" ui-sref-active="active" title="{{link.title}}" ng-class="{disabled: link.disabled}"></a>
+<a ng-if="link.state" class="navigation-link" link-content="link" ui-sref="{{link.state}}" ui-sref-active="active" title="{{link.title | translate : lang}}"
+   ng-class="{disabled: link.disabled}"></a>
+<a ng-if="link.action" class="navigation-link" link-content="link" ng-click="link.action();" ui-sref-active="active" title="{{link.title | translate : lang}}"
+   ng-class="{disabled: link.disabled}"></a>

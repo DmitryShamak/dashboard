@@ -13,7 +13,7 @@ angular.module("app")
 			$scope.deferred.offline = false;
 
 			$scope.deferred.link = {
-				title: "Deferred Actions",
+				title: "deferred_actions",
 				state: false,
 				icon: "fa-clock-o",
 				iconMode: true,

@@ -21,12 +21,11 @@ angular.module("app")
 			href: "https://www.instagram.com/"
 		}];
 
-		$scope.footer.locals = [{
-			type: "ru",
+		$scope.footer.langs = [{
+			lang: "ru",
 			text: "RU"
 		}, {
-			type: "en",
-			text: "EN",
-			active: true
+			lang: "en",
+			text: "EN"
 		}];
 	});
