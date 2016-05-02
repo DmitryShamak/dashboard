@@ -1,4 +1,4 @@
-<div class="notifications-wrapper">
+<div class="notifications-wrapper" ng-hide="notifications.hide">
     <div navigation-link="notifications.link"></div>
     <div ng-show="notifications.active" class="notifications-list">
         <div ng-show="!notifications.list || !notifications.list.length" class="alert alert-warning text-warning text-center">no notifications</div>

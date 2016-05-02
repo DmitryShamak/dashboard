@@ -22,8 +22,18 @@ angular.module("app")
 			};
 		};
 
-		$scope.$on('userConnected', function (event, data) {
+		if($scope.user) {
 			init();
+		} else {
+			$scope.$on('userConnect', function (event, data) {
+				init();
+			});
+		}
+
+		$scope.$on('userDisconnect', function (event, data) {
+			if($scope.deferred) {
+				$scope.deferred.hide = true;
+			}
 		});
 
 		$scope.$on('clickEvent', function (scopeEvent, $ev) {

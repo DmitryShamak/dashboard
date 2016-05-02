@@ -164,7 +164,10 @@ angular.module("app")
 				return $scope.checkUpdates();
 			}
 
-			$scope.$on('userConnected', function () {
+			if($scope.user) {
+				return $scope.init();
+			}
+			$scope.$on('userConnect', function () {
 				$scope.init();
 			});
 		};

@@ -94,6 +94,7 @@ angular
     $rootScope.signout = function() {
         var api = $injector.get('api');
         api.signout(function(res) {
+            $rootScope.$broadcast('userDisconnect');
             $rootScope.user = null;
             $rootScope.redirectToMainPage();
         });
@@ -124,7 +125,7 @@ angular
 
             $rootScope.feeds = {};
 
-            $rootScope.$broadcast('userConnected');
+            $rootScope.$broadcast('userConnect');
 
             if(!state) {
                 $state.go("profile");

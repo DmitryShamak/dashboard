@@ -87,7 +87,7 @@ angular.module("app")
 		if($scope.user) {
 			return $scope.init();
 		}
-		$scope.$on('userConnected', function (event, data) {
+		$scope.$on('userConnect', function (event, data) {
 			$scope.init();
 		});
 	});
