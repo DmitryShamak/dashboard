@@ -12,7 +12,7 @@
                 <textarea class="form-control" ng-model="note.text"></textarea>
             </div>
             <div class="clearfix text-center">
-                <div class="btn"  ng-click="addNote(note);" title="Add note">
+                <div class="btn"  ng-click="addNote(note);" title="{{'add' | translate : lang}}">
                     <i class="alert-success fa fa-plus"></i>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <span ng-bind="note.text"></span>
             </h5>
             <div class="note-btn-wrapper">
-                <i class="note-btn pointer alert-danger fa fa-trash" ng-click="deleteNote(note);" title="Delete note"></i>
+                <i class="note-btn pointer alert-danger fa fa-trash" ng-click="deleteNote(note);" title="{{'delete_note' | translate : lang}}"></i>
             </div>
         </div>
     </div>

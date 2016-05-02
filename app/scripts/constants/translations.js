@@ -19,7 +19,19 @@ angular.module('app')
             "this year": "this year",
             "for": "for",
             "last_update": "last update",
-            "refresh": "refresh"
+            "refresh": "refresh",
+            "add_provider": "add provider",
+            "categories": "categories",
+            "search": "search",
+            "find": "find",
+            "add": "add",
+            "text": "text",
+            "delete_note": "delete note",
+            "no_notes": "no notes",
+            "note": "note",
+            "no": "no",
+            "social": "social",
+            "games": "games"
         },
         ru: {
             "in_progress": "в процессе",
@@ -39,6 +51,18 @@ angular.module('app')
             "this year": "год",
             "for": "за",
             "last_update": "последнее обновление",
-            "refresh": "обновить"
+            "refresh": "обновить",
+            "add_provider": "добавить провайдер",
+            "categories": "категории",
+            "search": "поиск",
+            "find": "найти",
+            "add": "добавить",
+            "text": "текст",
+            "delete_note": "удалить запись",
+            "no_notes": "нет записей",
+            "note": "запись",
+            "no": "нет",
+            "social": "социальные",
+            "games": "игры"
         }
     });

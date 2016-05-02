@@ -1,5 +1,5 @@
 angular.module("app")
-	.directive("addToCalendar", function(api) {
+	.directive("addToCalendar", function($rootScope, api) {
 		return {
 			templateUrl: "/views/templates/add_to_calendar.html",
 			replace: false,
@@ -88,6 +88,14 @@ angular.module("app")
 				};
 
 				scope.init();
+
+				if(!scope.lang) {
+					scope.lang = $rootScope.lang;
+				}
+
+				scope.$on('languageChange', function (ev, lang) {
+					scope.lang = lang;
+				});
 			}
 		}
 	});

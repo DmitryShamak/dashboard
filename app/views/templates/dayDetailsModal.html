@@ -12,7 +12,7 @@
 			</div>
 		</h4>
 
-		<div class="text-info" ng-hide="dayDetails.notes">no notes</div>
+		<div class="text-info" ng-hide="dayDetails.notes && dayDetails.notes.length" ng-bind="'no_notes' | translate : lang"></div>
 		<ul>
 			<li ng-repeat="note in dayDetails.notes track by $index">
 				<a ng-href="{{note.link}}" target="_blank" ng-if="note.link" ng-bind="note.text"></a>
@@ -21,11 +21,11 @@
 			</li>
 		</ul>
 		<form class="row" ng-submit="addNote(modal.newNoteText);">
-			<div class="col-xs-10">
-				<input type="text" class="form-control" placeholder="What to do?" ng-model="modal.newNoteText" />
+			<div class="col-xs-9">
+				<input type="text" class="form-control" placeholder="{{'text' | translate : lang}}" ng-model="modal.newNoteText" />
 			</div>
-			<div class="col-xs-2">
-				<button class="btn btn-primary">Add</button>
+			<div class="col-xs-3">
+				<button class="btn btn-primary" ng-bind="'add' | translate : lang"></button>
 			</div>
 		</form>
 	</div>
