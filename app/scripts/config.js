@@ -10,7 +10,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/",
             templateUrl: "/views/landing.html",
             data: {
-                pageTitle: 'Landing'
+                pageTitle: 'landing'
             },
             controller: "LandingCtrl"
         })
@@ -18,7 +18,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
           url: "/landing",
           templateUrl: "/views/landing.html",
           data: {
-           pageTitle: 'Landing'
+           pageTitle: 'landing'
           },
           controller: "LandingCtrl"
         })
@@ -26,7 +26,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/connectaccount",
             templateUrl: "/views/connect_account.html",
             data: {
-                pageTitle: 'Connect Account'
+                pageTitle: 'connect_account'
             },
             controller: "ConnectAccountCtrl"
         })
@@ -34,7 +34,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/404",
             templateUrl: "/views/404.html",
             data: {
-                pageTitle: 'No Page'
+                pageTitle: 'no_page'
             },
             controller: "404Ctrl"
         })
@@ -42,7 +42,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/profile",
             templateUrl: "/views/profile.html",
             data: {
-                pageTitle: 'Profile'
+                pageTitle: 'profile'
             },
             controller: "ProfileCtrl"
         })
@@ -50,7 +50,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/calendar",
             templateUrl: "/views/calendar.html",
             data: {
-                pageTitle: 'Calendar'
+                pageTitle: 'calendar'
             },
             controller: "CalendarCtrl"
         })
@@ -58,7 +58,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/bookmarks",
             templateUrl: "/views/bookmarks.html",
             data: {
-                pageTitle: 'Bookmarks'
+                pageTitle: 'bookmarks'
             },
             controller: "BookmarksCtrl"
         })
@@ -66,7 +66,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/blank_page",
             templateUrl: "/views/blank_page.html",
             data: {
-                pageTitle: 'Blank Page'
+                pageTitle: 'blank_page'
             },
             controller: "BlankPageCtrl"
         });
@@ -166,7 +166,8 @@ angular
         $state.go("landing");
     };
 
-    $rootScope.$on('$stateChangeStart', function() {
+    $rootScope.$on('$stateChangeStart', function(event, toState) {
+        $rootScope.pageTitle = toState.data.pageTitle || "dashboard";
         $rootScope.checkAuthentication();
     });
 

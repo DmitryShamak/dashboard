@@ -36,6 +36,10 @@ angular.module('app')
             "provider": "provider",
             "providers": "providers",
             "no_notifications": "no notifications",
+            "no_bookmarks": "no bookmarks",
+            "delete_bookmark": "delete bookmark",
+            "sign_in": "sign in",
+            "with": "with",
 
             "welcome": "welcome",
             "thank_you_for_joining_us": "thank you for joining us",
@@ -46,7 +50,7 @@ angular.module('app')
         ru: {
             "in_progress": "в процессе",
             "landing": "главная",
-            "connect_account": "войти",
+            "connect_account": "подключить аккаунт",
             "profile": "профиль",
             "bookmarks": "закладки",
             "calendar": "календарь",
@@ -78,6 +82,10 @@ angular.module('app')
             "provider": "провайдер",
             "providers": "провайдеров",
             "no_notifications": "нет уведомлений",
+            "no_bookmarks": "нет закладок",
+            "delete_bookmark": "удалить закладку",
+            "sign_in": "войти в систему",
+            "with": "используя",
 
             "welcome": "добро пожаловать",
             "thank_you_for_joining_us": "спасибо что выбрали нас",

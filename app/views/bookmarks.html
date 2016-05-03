@@ -1,11 +1,11 @@
 <div class="page-wrapper animated fadeIn clearfix">
 	<div class="bookmarks-wrapper row" ng-hide="page.busy || page.offline">
 		<div class="form-group col-xs-12" ng-hide="bookmarks.length">
-			<h5>There is no bookmarks</h5>
+			<h5 ng-bind="'no_bookmarks' | translate : lang"></h5>
 		</div>
 		<div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="bookmark in bookmarks track by $index">
 			<div class="bookmark" ng-class="{'disabled': bookmark.busy}">
-				<div class="bookmark-btn pointer" title="Delete bookmark" ng-click="deleteBookmark(bookmark, $index);">
+				<div class="bookmark-btn pointer" title="{{'delete_bookmark' | translate : lang}}" ng-click="deleteBookmark(bookmark, $index);">
 					<i class="text-danger fa fa-close"></i>
 				</div>
 				<a class="bookmark-content pointer" ng-href="{{bookmark.link}}" target="_blank">
@@ -15,5 +15,8 @@
 			</div>
 		</div>
 	</div>
-	<p class="form-group alert alert-info" ng-hide="!page.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
+	<p class="form-group alert alert-info" ng-hide="!page.busy">
+		<i class="fa fa-refresh fa-pulse"></i>
+		<span ng-bind="'in_progress' | translate : lang"></span>
+	</p>
 </div>
