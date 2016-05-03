@@ -1,13 +1,13 @@
 <div class="store-wrapper">
 	<div class="header">
 		<div class="col-xs-12">
-			<h4>Find plugin</h4>
+			<h4>{{'find'| translate : lang}} {{'provider'| translate : lang}}</h4>
 			<div class="row">
 				<div class="col-xs-10 col-sm-11">
-					<input type="text" placeholder="Search.." class="form-control" />
+					<input type="text" placeholder="{{'search'| translate : lang}}" class="form-control" />
 				</div>
 				<div class="col-xs-2 col-sm-1">
-					<div class="btn btn-primary">GO!</div>
+					<div class="btn btn-primary" ng-bind="'search'| translate : lang"></div>
 				</div>
 			</div>
 		</div>
@@ -17,10 +17,10 @@
 			<div class="store-nav">
 				<div class="categories">
 					<div class="category-item">
-						<h5 class="text-bold text-capitalize">Categories</h5>
+						<h5 class="text-bold text-capitalize" ng-bind="'categories'| translate : lang"></h5>
 						<ul>
 							<li class="pointer text-capitalize" ng-repeat="category in store.categories track by $index"
-								ng-class="{selected: category.selected}" ng-click="selectCategory(category);" ng-bind="category.label"></li>
+								ng-class="{selected: category.selected}" ng-click="selectCategory(category);" ng-bind="category.label | translate : lang"></li>
 						</ul>
 					</div>
 				</div>
@@ -38,7 +38,7 @@
 								<div class="col-xs-12 item-content">
 									<h5 class="item-label cutted-text text-bold">
 										<span class="text-uppercase" ng-bind="item.name"></span>
-										<small ng-show="item.owned" class="alert-success">Owned</small>
+										<small ng-show="item.owned" class="alert-success" ng-bind="'owned' | translate : lang"></small>
 									</h5>
 									<div class="item-text cutted-text" ng-bind="item.description"></div>
 								</div>

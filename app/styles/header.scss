@@ -150,6 +150,7 @@ $listWidth: 240px;
   }
 
   .notification {
+    position: relative;
     padding: 5px;
     margin: 5px 0;
 
@@ -157,6 +158,12 @@ $listWidth: 240px;
 
     .content {
       margin: 0;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 0; right: 0;
+      padding: 5px;
     }
   }
 }

@@ -1,11 +1,11 @@
 <div class="notifications-wrapper" ng-hide="notifications.hide">
     <div navigation-link="notifications.link"></div>
-    <div ng-show="notifications.active" class="notifications-list">
-        <div ng-show="!notifications.list || !notifications.list.length" class="alert alert-warning text-warning text-center">{{ 'no' | translate : lang}} {{ 'notifications' | translate : lang}}</div>
+    <div ng-show="notifications.active && !notifications.link.disabled" class="notifications-list">
         <div class="notification" ng-repeat="item in notifications.list track by $index">
             <h6 class="content">
                 <span ng-bind="item.title"></span> <br />
                 <small ng-bind="item.body"></small>
+                <i class="delete-btn pointer text-danger fa fa-close" ng-click="deleteNotification(item);"></i>
             </h6>
         </div>
     </div>

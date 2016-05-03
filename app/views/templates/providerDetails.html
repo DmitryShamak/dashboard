@@ -3,7 +3,7 @@
 	<div class="col-xs-12 item-group">
 		<h5 class="item-label cutted-text text-bold">
 			<span class="text-uppercase" ng-bind="provider.name"></span>
-			<small ng-show="provider.owned" class="alert-success">Owned</small>
+			<small ng-show="provider.owned" class="alert-success" ng-bind="'owned' | translate : lang"></small>
 		</h5>
 		<div class="item-text cutted-text" ng-bind="provider.description"></div>
 	</div>
@@ -11,7 +11,7 @@
 		<div class="btn btn-primary" ng-class="{'disabled': pending}" ng-click="addProvider();">
 			<i class="fa fa-plus" ng-hide="pending"></i>
 			<i class="pending-icon fa fa-refresh fa-spin" ng-show="pending"></i>
-			<span>Add provider</span>
+			<span ng-bind="'add_provider': translate : lang"></span>
 		</div>
 	</div>
 </div>

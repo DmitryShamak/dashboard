@@ -13,12 +13,12 @@
         </div>
         <div class="col-xs-12" ng-hide="page.busy">
             <div class="profile-control-wrapper clearfix">
-                <div class="btn control-btn pull-right" ng-click="showStore();" title="Add new plugin">
+                <div class="btn control-btn pull-right" ng-click="showStore();" title="{{'add_provider' | translate : lang}}">
                     <i class="fa fa-plus-circle"></i>
                 </div>
             </div>
             <div ng-hide="profile.providers.length">
-                <h5>There is no providers connected</h5>
+                <h5 ng-bind="'there_is_no_providers_connected' | translate : lang"></h5>
             </div>
             <div class="profile-settings" ng-class="{'disabled': page.busy}">
                 <div class="profile-providers-wrapper" ng-repeat="provider in profile.providers track by $index">
@@ -31,7 +31,7 @@
                             </h5>
                             <p class="cutted-text" ng-bind="provider.description"></p>
                         </div>
-                        <div class="provider-btn pointer" ng-click="removeProvider(provider.name, $index);" title="Delete provider">
+                        <div class="provider-btn pointer" ng-click="removeProvider(provider.name, $index);" title="{{'delete_provider' | translate : lang}}">
                             <i class="fa fa-close"></i>
                         </div>
                     </div>
@@ -40,5 +40,8 @@
         </div>
         <div class="col-xs-12" ng-hide="page.offline"></div>
     </div>
-    <p class="form-group alert alert-info" ng-hide="!page.busy"><i class="fa fa-refresh fa-pulse"></i> in progress..</p>
+    <p class="form-group alert alert-info" ng-hide="!page.busy">
+        <i class="fa fa-refresh fa-pulse"></i>
+        <span ng-bind="'in_progress' | translate : lang"></span>
+    </p>
 </div>

@@ -29,8 +29,8 @@
         </div>
     </div>
     <div class="page-group-wrapper text-center" ng-hide="feeds.busy || feeds.data && feeds.data.length">
-        <h5>Sems like you don`t have any news today, please check your profile.</h5>
-        <a ui-sref="profile">Go to profile page</a>
+        <h5 ng-bind="'seems_like_you_do_not_have_any_feeds' | translate : lang"></h5>
+        <a ui-sref="profile" ng-bind="'go_to_profile_page' | translate : lang"></a>
     </div>
     <p class="form-group alert alert-info" ng-show="feeds.busy">
         <i class="fa fa-refresh fa-pulse"></i>

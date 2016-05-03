@@ -44,6 +44,11 @@ angular.module("app")
         api.provider = $resource(api.serverUrl + "/api/provider", null, {
             'update': { method:'PUT' }
         });
+
+        api.notifications = $resource(api.serverUrl + "/api/notifications", null, {
+            'update': { method:'PUT' }
+        });
+
         api.store = $resource(api.serverUrl + "/api/store");
 
         api.updates = $resource(api.serverUrl + "/api/updates");

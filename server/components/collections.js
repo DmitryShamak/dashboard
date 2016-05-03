@@ -17,10 +17,7 @@ module.exports = function(mongoose) {
         token: String,
         history: Array,
         providers: Array,
-        lang: {
-            type: String,
-            default: "en"
-        }
+        lang: String
     });
     collections.user = mongoose.model('users', collections.userSchema);
 
@@ -47,6 +44,23 @@ module.exports = function(mongoose) {
         feed: String
     });
     collections.bookmark = mongoose.model('bookmarks', collections.BookmarkSchema);
+
+    collections.NotificationSchema = new Schema({
+        user: String,
+        tag: String,
+        title: String,
+        text: String,
+        value: Number,
+        date: {
+            type: Date,
+            default: Date.now
+        },
+        read: {
+            type: Boolean,
+            default: false
+        }
+    });
+    collections.notification = mongoose.model('notifications', collections.NotificationSchema);
 
     collections.HistorySchema = new Schema({
         user: String,

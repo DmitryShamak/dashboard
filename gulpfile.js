@@ -55,6 +55,7 @@ var bowerFiles = [
     './bower_components/angular/angular.min.js',
     './bower_components/angular-ui-router/release/angular-ui-router.min.js',
     './bower_components/angular-resource/angular-resource.min.js',
+    './bower_components/q/q.js',
     './bower_components/ng-dialog/js/ngDialog.min.js'
 ];
 gulp.task("bower", function() {

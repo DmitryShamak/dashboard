@@ -31,7 +31,17 @@ angular.module('app')
             "note": "note",
             "no": "no",
             "social": "social",
-            "games": "games"
+            "games": "games",
+            "owned": "owned",
+            "provider": "provider",
+            "providers": "providers",
+            "no_notifications": "no notifications",
+
+            "welcome": "welcome",
+            "thank_you_for_joining_us": "thank you for joining us",
+            "seems_like_you_do_not_have_any_feeds": "seems like you don`t have any feeds, please check your profile",
+            "go_to_profile_page": "go to profile page",
+            "there_is_no_providers_connected": "there is no providers connected"
         },
         ru: {
             "in_progress": "в процессе",
@@ -63,6 +73,16 @@ angular.module('app')
             "note": "запись",
             "no": "нет",
             "social": "социальные",
-            "games": "игры"
+            "games": "игры",
+            "owned": "добавлен",
+            "provider": "провайдер",
+            "providers": "провайдеров",
+            "no_notifications": "нет уведомлений",
+
+            "welcome": "добро пожаловать",
+            "thank_you_for_joining_us": "спасибо что выбрали нас",
+            "seems_like_you_do_not_have_any_feeds": "нет новостей, проверьте настройки профиля",
+            "go_to_profile_page": "перейти к настройкам профиля",
+            "there_is_no_providers_connected": "нет подключенных провайдеров"
         }
     });
