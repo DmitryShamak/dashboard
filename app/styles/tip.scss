@@ -5,51 +5,62 @@ $tipHeight: 70px;
 
 $tipImageMargin: 5px;
 
-.tip-wrapper {
+.tips-wrapper {
   position: fixed;
-  top: 100px; right: 0;
+  top: $navigationHeight; right: 0;
 
-  width: $tipWidth;
+  z-index: 10;
 
-  background-color: #FFF;
-
-  opacity: 0.7;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  .tip-image {
-    position: absolute;
-    top: 0; bottom: 0; left: 0;
-    width: $tipHeight;
-
-    background-color: $activeColor;
-
-    .icon {
-      position: absolute;
-      top: 50%; left: 50%;
-
-      width: 40px; height: 40px;
-      margin: -20px;
-
-      font-size: 40px;
+  .tip-wrapper {
+    &:not(:last-child) {
+      margin-bottom: 10px;
     }
   }
 
-  .tip-btn {
-    position: absolute;
-    top: 2px; right: 5px;
-  }
+ .tip {
+   width: $tipWidth;
 
-  .tip-content {
-    margin-left: $tipHeight;
-    margin-right: 15px;
-    padding: 15px 5px;
+   background-color: #FFF;
 
-    .tip-title,
-    .tip-body {
-      margin: 0;
-    }
-  }
+   opacity: 0.7;
+
+   &:hover {
+     opacity: 1;
+   }
+
+   .tip-image {
+     position: absolute;
+     top: 0; bottom: 0; left: 0;
+     width: $tipHeight;
+
+     background-color: $activeColor;
+
+     .icon {
+       position: absolute;
+       top: 50%; left: 50%;
+
+       width: 40px; height: 40px;
+       margin: -20px;
+
+       font-size: 40px;
+       color: $bgMainColor;
+     }
+   }
+
+   .tip-btn {
+     position: absolute;
+     top: 2px; right: 5px;
+   }
+
+   .tip-content {
+     margin-left: $tipHeight;
+     margin-right: 15px;
+     padding: 15px 5px;
+
+     .tip-title,
+     .tip-body {
+       margin: 0;
+     }
+   }
+ }
 }

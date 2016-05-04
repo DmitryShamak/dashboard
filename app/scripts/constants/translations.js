@@ -48,6 +48,16 @@ angular.module('app')
             "go_to_profile_page": "go to profile page",
             "there_is_no_providers_connected": "there is no providers connected",
 
+            "close_tip": "close tip",
+            "feeds": "feeds",
+            "now_you_can_see_feeds_on_landing_page": "now you can see feeds on landing page",
+            "go_to_landing": "go to landing",
+            "provider_description": "provider description",
+            "select_provider_to_open_description": "select provider to open description",
+            "tips": "tips",
+            "you_can_switch_off_tips": "you can switch off tips",
+            "open_providers_library_to_add_some": "open providers library to add some",
+
             "show_tips": "show tips",
             "toggle_tips": "toggle tips",
             "yes": "yes",
@@ -99,6 +109,16 @@ angular.module('app')
             "seems_like_you_do_not_have_any_feeds": "нет новостей, проверьте настройки профиля",
             "go_to_profile_page": "перейти к настройкам профиля",
             "there_is_no_providers_connected": "нет подключенных провайдеров",
+
+            "close_tip": "закрыть совет",
+            "feeds": "новости",
+            "now_you_can_see_feeds_on_landing_page": "сейчас вы можете просмотреть новостную ленту на главной странице",
+            "go_to_landing": "на главную",
+            "provider_description": "описание провайдера",
+            "select_provider_to_open_description": "выберите провайдер для просмотра описания",
+            "tips": "советы",
+            "you_can_switch_off_tips": "вы можете отключить советы",
+            "open_providers_library_to_add_some": "откройте список провайдеров для добавления",
 
             "show_tips": "показывать советы",
             "toggle_tips": "переключить",

@@ -1,22 +1,26 @@
 angular.module("app")
-	.controller("TipsCtrl", function($rootScope, $scope) {
-		$scope.closeTip = function() {
-			$scope.tip.visible = false;
+	.controller("TipsCtrl", function($rootScope, $scope, $timeout) {
+		$scope.tips = {
+			active: false,
+			list: []
+		};
+
+		$rootScope.addTip = function(tip) {
+			if(!$scope.tips.active) {
+				return;
+			}
+
+			tip.visible = true;
+
+			$scope.tips.list.push(tip);
 		};
 
 		$scope.init = function() {
-			$scope.tip = {
-				visible: false
-			};
-
-			//tests
-			$scope.tip.visible = true;
-			$scope.tip.title = "test_title";
-			$scope.tip.body = "test_body";
+			$scope.tips.active = $scope.user.tips;
 
 			$scope.$watch("user.tips", function() {
-				$scope.tip.active = $scope.user.tips
-			})
+				$scope.tips.active = $scope.user.tips;
+			});
 		};
 
 		if($scope.user) {

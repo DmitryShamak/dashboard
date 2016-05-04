@@ -1,0 +1,12 @@
+<div class="tip {{tip.type}} pointer animated bounceInRight" ng-class="{'bounceOutRight': tip.hidden}" ng-if="tip.visible" ng-click="closeTip();">
+    <div class="tip-image">
+        <i class="icon text-center fa fa-lightbulb-o"></i>
+    </div>
+    <div class="tip-content">
+        <h5 class="text-bold tip-title" ng-bind="tip.title | translate : lang"></h5>
+        <h6  class="tip-body">
+            <small ng-bind="tip.body | translate : lang"></small>
+        </h6>
+        <a ng-if="tip.link" ui-sref="{{tip.link.state}}" ui-sref-active="hidden" ng-bind="tip.link.text | translate : lang"></a>
+    </div>
+</div>

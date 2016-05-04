@@ -24,12 +24,12 @@ angular.module("app")
 				}
 			}, function() {
 				$scope.page.pending = false;
-				$scope.user.tips = showTips;
+				$scope.user.tips = !$scope.user.tips;
 			});
 		};
 
 		$scope.setPluginsUpdate = function(resolve, reject) {
-			$scope.page.pending = true;
+			$scope.page.busy = true;
 			var providers = $scope.profile.providers.map(function(item) {
 				return item._id
 			});
@@ -52,6 +52,17 @@ angular.module("app")
 		};
 
 		$scope.appendProvider = function(provider) {
+			if(!$scope.profile.providers.length) {
+				$scope.addTip({
+					title: "feeds",
+					body: "now_you_can_see_feeds_on_landing_page",
+					link: {
+						state: "landing",
+						text: "go_to_landing"
+					}
+				});
+			}
+
 			$scope.profile.providers.push(provider);
 			if($scope.feeds) {
 				$scope.feeds.data = null;
@@ -77,6 +88,13 @@ angular.module("app")
 		};
 
 		$scope.showStore = function() {
+			if(!$scope.user.providers.length) {
+				$scope.addTip({
+					title: "provider_description",
+					body: "select_provider_to_open_description"
+				});
+			}
+
 			storeModal.show($scope);
 		};
 
@@ -100,6 +118,19 @@ angular.module("app")
 		$scope.init = function() {
 			$scope.page.busy = false;
 			$scope.page.offline = false;
+
+
+			$scope.addTip({
+				title: "tips",
+				body: "you_can_switch_off_tips"
+			});
+
+			if(!$scope.profile.providers && $scope.profile.providers.length) {
+				$scope.addTip({
+					title: "providers",
+					body: "open_providers_library_to_add_some"
+				});
+			}
 
 			$scope.getProfileData();
 		};
