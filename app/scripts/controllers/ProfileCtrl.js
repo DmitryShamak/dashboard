@@ -8,6 +8,26 @@ angular.module("app")
 			providers: []
 		};
 
+		$scope.toggleTips = function() {
+			if($scope.page.pending) {
+				return;
+			}
+			$scope.page.pending = true;
+			var showTips = !$scope.user.tips;
+
+			api.user.update({
+				query: {
+					email: $scope.user.email
+				},
+				data: {
+					tips: showTips
+				}
+			}, function() {
+				$scope.page.pending = false;
+				$scope.user.tips = showTips;
+			});
+		};
+
 		$scope.setPluginsUpdate = function(resolve, reject) {
 			$scope.page.pending = true;
 			var providers = $scope.profile.providers.map(function(item) {

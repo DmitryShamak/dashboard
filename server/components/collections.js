@@ -17,7 +17,11 @@ module.exports = function(mongoose) {
         token: String,
         history: Array,
         providers: Array,
-        lang: String
+        lang: String,
+        tips: {
+            type: Boolean,
+            default: true
+        }
     });
     collections.user = mongoose.model('users', collections.userSchema);
 

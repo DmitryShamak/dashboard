@@ -13,8 +13,14 @@
         </div>
         <div class="col-xs-12" ng-hide="page.busy">
             <div class="profile-control-wrapper clearfix">
-                <div class="btn control-btn pull-right" ng-click="showStore();" title="{{'add_provider' | translate : lang}}">
-                    <i class="fa fa-plus-circle"></i>
+                <div class="btn control-btn pull-left" ng-click="toggleTips();" title="{{'toggle_tips' | translate : lang}}">
+                    <span ng-bind="'show_tips' | translate : lang"></span>
+                    <span class="toggle-status text-sb" ng-class="{'text-success': user.tips, 'text-danger': !user.tips}">
+                        ({{(user.tips ? 'yes' : 'no') | translate : lang}})
+                    </span>
+                </div>
+                <div class="btn control-btn pull-right" ng-click="showStore();" title="{{'list_of_providers' | translate : lang}}">
+                    <i class="text-lb fa fa-list-alt"></i>
                 </div>
             </div>
             <div ng-hide="profile.providers.length">
@@ -31,7 +37,7 @@
                             </h5>
                             <p class="cutted-text" ng-bind="provider.description"></p>
                         </div>
-                        <div class="provider-btn pointer" ng-click="removeProvider(provider.name, $index);" title="{{'delete_provider' | translate : lang}}">
+                        <div class="provider-btn pointer" ng-click="removeProvider(provider.name, $index);" title="{{'remove_provider' | translate : lang}}">
                             <i class="fa fa-close"></i>
                         </div>
                     </div>
@@ -40,7 +46,7 @@
         </div>
         <div class="col-xs-12" ng-hide="page.offline"></div>
     </div>
-    <p class="form-group alert alert-info" ng-hide="!page.busy">
+    <p class="form-group alert alert-info" ng-show="page.busy">
         <i class="fa fa-refresh fa-pulse"></i>
         <span ng-bind="'in_progress' | translate : lang"></span>
     </p>

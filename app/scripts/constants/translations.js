@@ -21,6 +21,7 @@ angular.module('app')
             "last_update": "last update",
             "refresh": "refresh",
             "add_provider": "add provider",
+            "remove_provider": "remove provider",
             "categories": "categories",
             "search": "search",
             "find": "find",
@@ -45,7 +46,12 @@ angular.module('app')
             "thank_you_for_joining_us": "thank you for joining us",
             "seems_like_you_do_not_have_any_feeds": "seems like you don`t have any feeds, please check your profile",
             "go_to_profile_page": "go to profile page",
-            "there_is_no_providers_connected": "there is no providers connected"
+            "there_is_no_providers_connected": "there is no providers connected",
+
+            "show_tips": "show tips",
+            "toggle_tips": "toggle tips",
+            "yes": "yes",
+            "list_of_providers": "list of providers"
         },
         ru: {
             "in_progress": "в процессе",
@@ -67,6 +73,7 @@ angular.module('app')
             "last_update": "последнее обновление",
             "refresh": "обновить",
             "add_provider": "добавить провайдер",
+            "remove_provider": "удалить провайдер",
             "categories": "категории",
             "search": "поиск",
             "find": "найти",
@@ -91,6 +98,11 @@ angular.module('app')
             "thank_you_for_joining_us": "спасибо что выбрали нас",
             "seems_like_you_do_not_have_any_feeds": "нет новостей, проверьте настройки профиля",
             "go_to_profile_page": "перейти к настройкам профиля",
-            "there_is_no_providers_connected": "нет подключенных провайдеров"
+            "there_is_no_providers_connected": "нет подключенных провайдеров",
+
+            "show_tips": "показывать советы",
+            "toggle_tips": "переключить",
+            "yes": "да",
+            "list_of_providers": "список провайдеров"
         }
     });

@@ -1,0 +1,13 @@
+<div class="animated fadeIn" ng-if="tip && tip.active && tip.visible">
+    <div class="tip-wrapper pointer {{tip.type}}" ng-click="closeTip();" title="{{'close_tip' | translate : lang}}">
+        <div class="tip-image">
+            <i class="icon text-center fa fa-lightbulb-o"></i>
+        </div>
+        <div class="tip-content">
+            <h5 class="text-bold tip-title" ng-bind="tip.title | translate : lang"></h5>
+            <h6  class="tip-body">
+                <small ng-bind="tip.body | translate : lang"></small>
+            </h6>
+        </div>
+    </div>
+</div>
