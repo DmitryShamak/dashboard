@@ -125,9 +125,9 @@ angular.module("app")
 				body: "you_can_switch_off_tips"
 			});
 
-			if(!$scope.profile.providers && $scope.profile.providers.length) {
+			if($scope.user.providers && !$scope.user.providers.length) {
 				$scope.addTip({
-					title: "providers",
+					title: "provider",
 					body: "open_providers_library_to_add_some"
 				});
 			}

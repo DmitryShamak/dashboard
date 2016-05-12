@@ -7,7 +7,7 @@ angular.module("app")
 			bookmark.busy = true;
 			api.bookmarks.delete({
 				user: $scope.user._id,
-				link: bookmark.link
+				feed: bookmark._id
 			}, function() {
 				bookmark.busy = false;
 

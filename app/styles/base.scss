@@ -176,6 +176,22 @@ ul {
   overflow: hidden;
 }
 
+.bg-image-center {
+  background-position: center;
+}
+.bg-image-contain {
+  background-size: contain;
+}
+.bg-image-cover {
+  background-size: cover;
+}
+.bg-image-repeat {
+  background-repeat: repeat;
+}
+.bg-image-no-repeat {
+  background-repeat: no-repeat;
+}
+
 .page-wrapper {
 	padding: 0 15px;
 }

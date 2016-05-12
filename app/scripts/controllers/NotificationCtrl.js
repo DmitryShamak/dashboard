@@ -97,15 +97,17 @@ angular.module("app")
 		};
 
 		$scope.showNotification = function(notification) {
-			if (!window.Notification || Notification.permission != "granted") {
-				return $scope.notifications.offline = true;
+			if (Notification.permission != "granted") {
+				return Notification.requestPermission(function (status) {
+					if (status === "granted") {
+						Notification.permission = status;
+
+						new Notification(notification.title, notification);
+					}
+				});
 			}
 
 			new Notification(notification.title, notification);
-		};
-
-		$scope.closeNotificationsList = function() {
-			$scope.notifications.active = false;
 		};
 
 		var init = function() {
@@ -146,14 +148,5 @@ angular.module("app")
 			if($scope.notifications) {
 				$scope.notifications.hide = true;
 			}
-		});
-
-		$scope.$on('clickEvent', function (scopeEvent, $ev) {
-			if($($ev.target).closest(".notifications-wrapper").length) {
-				return;
-			}
-			$scope.closeNotificationsList();
-
-			$scope.apply($scope);
 		});
 	});

@@ -1,9 +1,10 @@
 angular.module("app")
-.controller("LandingCtrl", function($rootScope, $scope, api, dateRanges, feedStatuses, feedDetailsModal) {
+.controller("LandingCtrl", function($rootScope, $scope, api, dateRanges, feedStatuses, feedDetailsModal, landingContent) {
 		$scope.now = $scope.today().format("DD.MM.YYYY");
 		$scope.page = {};
 		$scope.dateRanges = dateRanges;
 		$scope.feedStatuses = feedStatuses;
+		$scope.landingContent = landingContent;
 
 		$scope.defaultImage = "https://s-media-cache-ak0.pinimg.com/564x/d1/82/7f/d1827fc0e2a7665e008fee66eebf7a56.jpg";
 

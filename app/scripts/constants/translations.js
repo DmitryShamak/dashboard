@@ -61,7 +61,19 @@ angular.module('app')
             "show_tips": "show tips",
             "toggle_tips": "toggle tips",
             "yes": "yes",
-            "list_of_providers": "list of providers"
+            "list_of_providers": "list of providers",
+
+            "choose_one_of_next_accounts" : "choose one of next accounts",
+
+            "a_single_place_to_organize_read_and_share_all_the_content_that_matters_to_you": "a single place to organize, read, and share all the content that matters to you.",
+            "welcome_to": "welcome to",
+            "news_feeds": "news feeds",
+            "choose_your_own_interests": "choose your own interests",
+            "an_extensive_library_of_providers": "an extensive library of providers",
+            "opportunity_to_mark_interesting_feeds": "opportunity to mark interesting feeds",
+            "add_notes_and_feeds_to_calendar_date": "add notes and feeds to calendar date",
+            "feedback": "feedback",
+            "you_can_contact_with_service_to_get_even_more_providers": "you can contact with service to get even more providers"
         },
         ru: {
             "in_progress": "в процессе",
@@ -104,6 +116,8 @@ angular.module('app')
             "sign_in": "войти в систему",
             "with": "используя",
 
+            "choose_one_of_next_accounts" : "выберите один из следующих профилей",
+
             "welcome": "добро пожаловать",
             "thank_you_for_joining_us": "спасибо что выбрали нас",
             "seems_like_you_do_not_have_any_feeds": "нет новостей, проверьте настройки профиля",
@@ -123,6 +137,16 @@ angular.module('app')
             "show_tips": "показывать советы",
             "toggle_tips": "переключить",
             "yes": "да",
-            "list_of_providers": "список провайдеров"
+            "list_of_providers": "список провайдеров",
+
+            "a_single_place_to_organize_read_and_share_all_the_content_that_matters_to_you": "единое место для организации, читать и делиться все содержание, которое имеет значение для вас.",
+            "welcome_to": "добро пожаловать на",
+            "news_feeds": "ленту новостей",
+            "choose_your_own_interests": "сами выбирайте свои предпочтения",
+            "an_extensive_library_of_providers": "богатая библиотека провайдеров",
+            "opportunity_to_mark_interesting_feeds": "сохраните лучшие статьи для легкого доступа",
+            "add_notes_and_feeds_to_calendar_date": "добавляйте события и заметки в календарь",
+            "feedback": "служба поддержки",
+            "you_can_contact_with_service_to_get_even_more_providers": "вы можете связаться с нами для расширения возможностей вашего профиля"
         }
     });

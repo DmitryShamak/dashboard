@@ -1,39 +1,19 @@
 <div class="clearfix">
     <div class="page-group-wrapper landing-item text-center">
         <div class="logo-image"><i class="fa fa-modx"></i></div>
-        <h1>HEADER</h1>
-        <h4>Subtitle</h4>
+        <h1>{{'welcome_to' | translate : lang}} <span class="text-marked">{{'news_feeds' | translate : lang}}</span></h1>
+        <h4>{{'a_single_place_to_organize_read_and_share_all_the_content_that_matters_to_you' | translate : lang}}</h4>
     </div>
-    <div class="page-group-wrapper landing-item text-center">
-        <h2>HEADER</h2>
+    <div class="page-group-wrapper landing-item text-center" ng-repeat="group in landingContent">
+        <h2 ng-bind="group.title | translate : lang"></h2>
+        <h2><small ng-bind="group.subtitle | translate : lang"></small></h2>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-4" ng-repeat="item in [1,2,3]">
-                <h4>Title</h4>
-                <p>Description text..</p>
-            </div>
-        </div>
-    </div>
-    <div class="page-group-wrapper landing-item text-center">
-        <h2>HEADER</h2>
+        <img nf-if="group.imageSrc" ng-src="{{group.imageSrc}}" />
 
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <div class="provider" ng-repeat="item in ['mixcloud', 'shopping-basket', 'reddit-alien', 'codiepie']">
-                    <i class="fa fa-{{item}}"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="page-group-wrapper landing-item text-center">
-        <h2>HEADER</h2>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <h5><small>description text</small></h5>
-                <h5>100500</h5>
-                <h5><small>description text</small></h5>
-            </div>
+        <div ng-if="group.icons && group.icons.length" class="text-center">
+            <span class="landing-icon" ng-repeat="icon in group.icons">
+                <i class="fa fa-{{icon.tag}}" title="{{icon.label | translate : lang}}"></i>
+            </span>
         </div>
     </div>
 </div>

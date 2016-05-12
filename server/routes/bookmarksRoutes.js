@@ -17,7 +17,7 @@ module.exports = function(db) {
             });
         }).then(function(result) {
             var query = {
-              _id: {$in: result.map(function(item) {return item.feed})}
+              _id: {$in: result.map(function(item) { return item.feed })}
             };
             db.find("feed", query, function (err, data) {
                 if (err || !data) {
@@ -42,14 +42,14 @@ module.exports = function(db) {
             return res.send();
         }
 
-        db.delete("bookmark", query, function(err, note) {
-            if(err || !note) {
+        db.delete("bookmark", query, function(err, bookmark) {
+            if(err || !bookmark) {
                 res.statusCode = 404;
                 res.statusMessage = 'Bad Data';
                 return res.send();
             }
 
-            res.send("done");
+            res.send("deleted" + query.feed);
         });
     };
 
@@ -61,14 +61,14 @@ module.exports = function(db) {
             res.statusMessage = 'Bad Data';
             return res.send();
         }
-        db.save("bookmark", body.data, function(err, notes) {
-            if(err || !notes) {
+        db.save("bookmark", body.data, function(err, bookmarks) {
+            if(err || !bookmarks) {
                 res.statusCode = 404;
                 res.statusMessage = 'Bad Data';
                 return res.send();
             }
 
-            res.send(JSON.stringify(notes));
+            res.send(JSON.stringify(bookmarks));
         });
     };
 

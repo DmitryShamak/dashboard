@@ -5,7 +5,7 @@
                 <div class="text-center">
                     <h1>
                         <span class="text-marked" ng-bind="'sign_in' | translate : lang"></span> <br />
-                        <small>awesome background image or ui in future!</small>
+                        <small ng-bind="'choose_one_of_next_accounts' | translate : lang"></small>
                     </h1>
                     <div class="row">
                         <div class="connect-provider" ng-repeat="provider in page.providers track by $index" ng-class="{'disabled': !provider.available}" ng-click="connectToProvider(provider);">
