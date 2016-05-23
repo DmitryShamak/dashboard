@@ -57,8 +57,7 @@ module.exports.feeds = function(provider) {
             content.push({
                 label: title,
                 link: link,
-                image: image,
-                description: text
+                image: image
             });
         });
 

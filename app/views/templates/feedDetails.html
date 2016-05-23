@@ -23,9 +23,10 @@
         <span ng-click="getFeedDescription();">Response error, please check your connection and try again.</span>
     </div>
     <div class="feed-details-content clearfix animated fadeIn" ng-hide="!feed.details || modal.busy">
-        <img class="feed-image col-xs-3" ng-src="{{feed.details.image || defaultImage}}" />
-
-        <div class="col-xs-9 feed-description-wrapper">
+        <div class="feed-description-wrapper">
+            <div class="text-center">
+                <img class="feed-image" ng-src="{{feed.details.image || defaultImage}}" />
+            </div>
             <p class="alert alert-warning" ng-hide="feed.details.description.length">No description provided.</p>
             <p class="feed-description" ng-repeat="paragraph in feed.details.description track by $index" ng-bind="paragraph"></p>
         </div>

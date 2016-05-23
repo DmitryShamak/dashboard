@@ -31,7 +31,11 @@ module.exports = function(mongoose) {
         image: String,
         rate: Number,
         name: String,
-        description: String
+        description: String,
+        available: {
+            type: Boolean,
+            default: false
+        }
     });
     collections.provider = mongoose.model('providers', collections.ProviderSchema);
 

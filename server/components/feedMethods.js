@@ -16,4 +16,10 @@ methods.callback = function(url, parser, deferred) {
     });
 };
 
+methods.parseString = function(text) {
+    var result = text.replace(/[\s\t\v]/g, " ");
+
+    return (result ? result.trim() : "");
+};
+
 module.exports = methods;

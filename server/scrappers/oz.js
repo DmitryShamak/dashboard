@@ -17,7 +17,7 @@ module.exports.find = function(props, cb) {
     });
 };
 
-module.exports.feeds = function(provider) {
+module.exports.feeds = function(userId, provider) {
     var deferred = Q.defer();
 
     var url = "address to web page";
@@ -31,11 +31,13 @@ module.exports.feeds = function(provider) {
             var title = "";
             var image = "";
             var link = "";
+            var description = "";
 
             content.push({
                 label: title,
                 link: link,
-                image: image
+                image: image,
+                description: description
             });
         });
 
@@ -43,8 +45,7 @@ module.exports.feeds = function(provider) {
         var feed =  {
             label: "BLANK",
             provider: provider,
-            content: content,
-            totalCount: content.length
+            content: content
         };
 
         return Q.promise(function(res, rej) {

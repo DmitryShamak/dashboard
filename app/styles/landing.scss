@@ -140,13 +140,13 @@ $feedItemHeight: 100px;
 
   .feed-btn {
     position: absolute;
-    top: 20px; right: 10px;
+    top: 10px; right: 10px;
 
     font-size: 2em;
   }
 
   .feed-header {
-    padding: 25px 40px 25px 15px;
+    padding: 10px 40px 10px 15px;
 
     background: #FFF;
 
@@ -238,9 +238,11 @@ $feedItemHeight: 100px;
   }
 }
 
-$descriptionMaxHeight: 400px;
+$descriptionMaxHeight: 600px;
+$descriptionImageMaxHeight: 300px;
 
 .feed-details-modal {
+  padding-top: 130px !important;
   padding-bottom: 0 !important;
 
   .details-control-btn {
@@ -270,7 +272,8 @@ $descriptionMaxHeight: 400px;
 
     .feed-details-content {
       .feed-image {
-        max-height: $descriptionMaxHeight;
+        max-width: 100%;
+        max-height: $descriptionImageMaxHeight;
       }
 
       .feed-description-wrapper {

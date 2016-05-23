@@ -10,7 +10,7 @@ var delay = moment.duration(tickHours, "hours").asMilliseconds();
 
 collector.getProviders = function() {
     return Q.promise(function(res, rej) {
-        db.find("provider", {}, function(err, data) {
+        db.find("provider", {available: true}, function(err, data) {
             if(err) {
                 return rej(err);
             }

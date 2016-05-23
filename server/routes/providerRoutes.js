@@ -18,7 +18,7 @@ module.exports = function(db) {
     };
 
     routes.store = function (req, res) {
-        db.find("provider", {}, function (err, providers) {
+        db.find("provider", {available: true}, function (err, providers) {
             if (err) {
                 res.statusCode = 404;
                 res.statusMessage = 'Not found';
