@@ -24,7 +24,8 @@
                 <small>{{'last_update' | translate : lang}}: </small>
                 <small ng-bind="feeds.lastUpdate.label"></small>
 
-                <small class="text-marked pointer" ng-click="checkUpdates();" ng-bind="'refresh' | translate : lang"></small>
+                <small ng-show="canRefresh" ng-class="{'disabled': feeds.busy}" title="{{'new_data_available' | translate : lang}}" ng-bind="'refresh' | translate : lang"
+                       class="text-marked pointer" ng-click="checkUpdates();"></small>
             </h5>
         </div>
     </div>

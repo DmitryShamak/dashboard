@@ -1,12 +1,20 @@
+var _conf = require("./server/_conf.js");
 var scraper = require("./server/scraper");
 var db = require("./server/db.js");
 var moment = require("moment");
 var _ = require("lodash");
 var Q = require("q");
 
+var socket;
+var WebSocket = require('ws');
+
 var collector = {};
 var tickHours = 3;
 var delay = moment.duration(tickHours, "hours").asMilliseconds();
+
+function initSocket() {
+    socket = new WebSocket('ws://' + _conf.serverHost);
+}
 
 collector.getProviders = function() {
     return Q.promise(function(res, rej) {
@@ -82,6 +90,17 @@ collector.onTick = function() {
                     return console.log("Error, on save update status");
                 }
 
+                if(!socket) {
+                    initSocket();
+                }
+
+                if(socket) {
+                    socket.send(JSON.stringify({
+                        text: 'more new feeds',
+                        flag: "update"
+                    }));
+                }
+
                 console.log("Success, feeds collected! ", moment().local().format("DD/MM/YYYY hh:mm:ss a"));
                 console.log("Next start on ", moment().local().add(tickHours, "hours").format("DD/MM/YYYY hh:mm:ss a"));
             })
@@ -102,4 +121,5 @@ collector.stop = function() {
     collector.interval = null;
 };
 
+initSocket();
 collector.start();

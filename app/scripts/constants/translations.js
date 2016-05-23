@@ -48,6 +48,8 @@ angular.module('app')
             "go_to_profile_page": "go to profile page",
             "there_is_no_providers_connected": "there is no providers connected",
 
+            "new_data_available": "new data available",
+
             "close_tip": "close tip",
             "feeds": "feeds",
             "now_you_can_see_feeds_on_landing_page": "now you can see feeds on landing page",
@@ -123,6 +125,8 @@ angular.module('app')
             "seems_like_you_do_not_have_any_feeds": "нет новостей, проверьте настройки профиля",
             "go_to_profile_page": "перейти к настройкам профиля",
             "there_is_no_providers_connected": "нет подключенных провайдеров",
+
+            "new_data_available": "новые данные доступны",
 
             "close_tip": "закрыть совет",
             "feeds": "новости",

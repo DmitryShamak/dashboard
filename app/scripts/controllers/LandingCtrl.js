@@ -1,5 +1,5 @@
 angular.module("app")
-.controller("LandingCtrl", function($rootScope, $scope, api, dateRanges, feedStatuses, feedDetailsModal, landingContent) {
+.controller("LandingCtrl", function($rootScope, $scope, api, websocket, dateRanges, feedStatuses, feedDetailsModal, landingContent) {
 		$scope.now = $scope.today().format("DD.MM.YYYY");
 		$scope.page = {};
 		$scope.dateRanges = dateRanges;
@@ -34,6 +34,8 @@ angular.module("app")
 				date: moment().toDate(),
 				label: moment().format(format)
 			};
+
+			$scope.canRefresh = false;
 		};
 
 		$scope.checkUpdates = function() {
@@ -161,6 +163,8 @@ angular.module("app")
 					$scope.setFilter(0, "status");
 					$scope.setFilter(0, "range");
 				}
+
+				$scope.socket = websocket.init($scope);
 
 				return $scope.checkUpdates();
 			}

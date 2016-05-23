@@ -36,8 +36,8 @@ app.all('/*', function(req, res) {
     res.sendfile('./index.html');
 });
 
-//todo: add collector actions
-
 var server = app.listen(_conf.port, function() {
 	console.log("Server available on [%s] port", _conf.port);
 });
+
+var wss = require("./server/websocket")(server);
