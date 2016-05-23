@@ -37,6 +37,11 @@ angular.module("app")
 			authProtected: true,
 			hide: !$scope.user
 		};
+		leftLinks.updates = {
+			title: "updates",
+			state: "updates",
+			icon: "fa-info-circle"
+		};
 		$scope.navigation.leftLinks = leftLinks;
 
 		var rightLinks = {};

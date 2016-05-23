@@ -99,6 +99,9 @@ body,
 .text-capitalize {
   text-transform: capitalize;
 }
+.text-uppercase {
+  text-transform: uppercase;
+}
 
 .text-marked {
   color: $activeColor;

@@ -30,6 +30,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             },
             controller: "ConnectAccountCtrl"
         })
+        .state('updates', {
+            url: "/updates",
+            templateUrl: "/views/application_updates.html",
+            data: {
+                pageTitle: 'updates'
+            },
+            controller: "ApplicationUpdatesCtrl"
+        })
         .state('404', {
             url: "/404",
             templateUrl: "/views/404.html",

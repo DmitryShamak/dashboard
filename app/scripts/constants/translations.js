@@ -3,6 +3,8 @@ angular.module('app')
         defaultLanguage: "en",
         en: {
             "in_progress": "in progress",
+            "updates": "updates",
+            "updates_changes": "update changes",
             "landing": "landing",
             "connect_account": "connect account",
             "profile": "profile",
@@ -79,6 +81,8 @@ angular.module('app')
         },
         ru: {
             "in_progress": "в процессе",
+            "updates": "обновления",
+            "updates_changes": "изменения обновления",
             "landing": "главная",
             "connect_account": "подключить аккаунт",
             "profile": "профиль",
