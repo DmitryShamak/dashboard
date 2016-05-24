@@ -1,6 +1,6 @@
 angular.module('app')
     .constant('updatesContent', [{
-        title: "updates_changes",
+        title: "update",
         version: 0.1,
         subtitle: "23.05.2016",
         text: "this_is_the_list_of_last_update_changes",

@@ -4,7 +4,7 @@ angular.module('app')
         en: {
             "in_progress": "in progress",
             "updates": "updates",
-            "updates_changes": "update changes",
+            "update": "update",
             "landing": "landing",
             "connect_account": "connect account",
             "profile": "profile",
@@ -88,7 +88,7 @@ angular.module('app')
         ru: {
             "in_progress": "в процессе",
             "updates": "обновления",
-            "updates_changes": "изменения обновления",
+            "update": "обновление",
             "landing": "главная",
             "connect_account": "подключить аккаунт",
             "profile": "профиль",

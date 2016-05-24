@@ -7,7 +7,7 @@
 			<div class="update-group form-group" ng-repeat="update in updates track by $index">
 				<h5>
 					<span class="text-marked text-uppercase" ng-bind="update.title | translate : lang"></span>
-					<span ng-bind="update.version"></span>
+					<span>v.</span><span ng-bind="update.version"></span>
 				</h5>
 				<p ng-bind="update.text | translate : lang"></p>
 				<ul class="update-list">
