@@ -77,7 +77,13 @@ angular.module('app')
             "opportunity_to_mark_interesting_feeds": "opportunity to mark interesting feeds",
             "add_notes_and_feeds_to_calendar_date": "add notes and feeds to calendar date",
             "feedback": "feedback",
-            "you_can_contact_with_service_to_get_even_more_providers": "you can contact with service to get even more providers"
+            "you_can_contact_with_service_to_get_even_more_providers": "you can contact with service to get even more providers",
+
+            //updates
+            "this_is_the_list_of_last_update_changes": "this is the list of last update changes",
+            "refresh_button_will_be_shown_if_new_available_added_feeds" : "refresh button will be shown if new available added feeds",
+            "add_new_portals" : "add new portals",
+            "show_system_updates" : "show system updates"
         },
         ru: {
             "in_progress": "в процессе",
@@ -155,6 +161,12 @@ angular.module('app')
             "opportunity_to_mark_interesting_feeds": "сохраните лучшие статьи для легкого доступа",
             "add_notes_and_feeds_to_calendar_date": "добавляйте события и заметки в календарь",
             "feedback": "служба поддержки",
-            "you_can_contact_with_service_to_get_even_more_providers": "вы можете связаться с нами для расширения возможностей вашего профиля"
+            "you_can_contact_with_service_to_get_even_more_providers": "вы можете связаться с нами для расширения возможностей вашего профиля",
+
+            //updates
+            "this_is_the_list_of_last_update_changes": "список изменений последнего обновления",
+            "refresh_button_will_be_shown_if_new_available_added_feeds" : "кнопка обновления новостной ленты появляется автоматически при появлении новых данных",
+            "add_new_portals" : "добавлены новые порталы",
+            "show_system_updates" : "страница обновлений сайта"
         }
     });
