@@ -10,11 +10,10 @@ module.exports = function(server) {
     };
 
     wss.on('connection', function connection(ws) {
-        console.info("Websocket Connected");
-
         ws.on('message', function incoming(message) {
             var parse = JSON.parse(message);
             if(parse.flag && parse.flag === "update") {
+                console.info("receive update");
                 wss.broadcast(parse);
             } else {
                 console.log('received: %s', parse.text, parse.flag);
