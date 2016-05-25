@@ -1,0 +1,31 @@
+<div class="page-wrapper voting-page animated fadeIn clearfix">
+	<div class="row" ng-hide="page.busy">
+		<div class="page-group-wrapper text-center col-xs-12">
+			<h3 ng-bind="'updates' | translate : lang"></h3>
+		</div>
+		<div class="col-xs-12" ng-hide="page.offline">
+			<div class="votings">
+				<div class="voting" ng-repeat="voting in votings track by $index">
+					<h5>
+						<span ng-bind="voting.title"></span> <br />
+						<small ng-bind="voting.startDate | date : 'DD.MM.YY'"></small>
+						<small> - </small>
+						<small ng-bind="voting.endDate | date : 'DD.MM.YY'"></small>
+					</h5>
+					<div class="clearfix">
+						<ul class="col-xs-12 col-sm-6 voting-items no-list-style text-right">
+							<li class="vote" ng-repeat="item in voting.items track by $index">
+								<span class="vote-label" ng-bind="item.label"></span>
+								<span class="text-center vote-number" ng-bind="item.votes"></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p class="form-group alert alert-info" ng-hide="!page.busy">
+		<i class="fa fa-refresh fa-pulse"></i>
+		<span ng-bind="'in_progress' | translate : lang"></span>
+	</p>
+</div>

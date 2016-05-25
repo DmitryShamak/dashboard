@@ -10,6 +10,7 @@ var notes = require("./routes/notesRoutes.js")(db);
 var bookmarks = require("./routes/bookmarksRoutes.js")(db);
 var history = require("./routes/historyRoutes.js")(db);
 var notifications = require("./routes/notificationsRoutes.js")(db);
+var voting = require("./routes/votingRoutes.js")(db);
 
 var passport = require("./passport.js");
 
@@ -57,6 +58,12 @@ var router = function(app) {
     app.post('/api/notifications', notifications.save);
     app.delete('/api/notifications', notifications.delete);
     app.put('/api/notifications', notifications.update);
+
+    //voting
+    app.get('/api/voting', voting.get);
+    app.post('/api/voting', voting.save);
+    app.delete('/api/voting', voting.delete);
+    app.put('/api/voting', voting.update);
 
     //Bookmarks
     app.get('/api/bookmarks', bookmarks.get);

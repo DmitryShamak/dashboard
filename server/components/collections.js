@@ -97,5 +97,30 @@ module.exports = function(mongoose) {
     });
     collections.feed = mongoose.model('feeds', collections.FeedSchema);
 
+    collections.VotingSchema = new Schema({
+        title: String,
+        items: Array,
+        confirmed: Array,
+        active: {
+            type: Boolean,
+            default: true
+        },
+        startDate:  {
+            type: Date,
+            default: Date.now
+        },
+        endDate:  {
+            type: Date
+        }
+    });
+    collections.voting = mongoose.model('voting', collections.VotingSchema);
+
+    collections.VoteSchema = new Schema({
+        user: String,
+        voting: String,
+        key: String
+    });
+    collections.vote = mongoose.model('vote', collections.VoteSchema);
+
     return collections;
 };

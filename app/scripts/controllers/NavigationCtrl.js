@@ -37,6 +37,13 @@ angular.module("app")
 			authProtected: true,
 			hide: !$scope.user
 		};
+		leftLinks.voting = {
+			title: "voting",
+			state: "voting",
+			icon: "fa-bar-chart",
+			authProtected: true,
+			hide: !$scope.user
+		};
 		leftLinks.updates = {
 			title: "updates",
 			state: "updates",

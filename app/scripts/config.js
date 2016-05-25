@@ -70,6 +70,14 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             },
             controller: "BookmarksCtrl"
         })
+        .state('voting', {
+            url: "/voting",
+            templateUrl: "/views/voting.html",
+            data: {
+                pageTitle: 'voting'
+            },
+            controller: "VotingCtrl"
+        })
         .state('blank_page', {
             url: "/blank_page",
             templateUrl: "/views/blank_page.html",

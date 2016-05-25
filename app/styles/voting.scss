@@ -1,0 +1,28 @@
+.voting-page {
+
+  .voting-items {
+    .vote {
+      margin: 10px 0;
+
+      .vote-label {
+        display: inline-block;
+        padding: 15px;
+        margin-right: -4px;
+
+        background: #FFF;
+
+        box-shadow: -1px 1px 1px 0 #999;
+        -webkit-box-shadow: -1px 1px 1px 0 #999;
+        -moz-box-shadow: -1px 1px 1px 0 #999;
+      }
+
+      .vote-number {
+        display: inline-block;
+        width: 50px;
+        padding: 15px 0;
+        background: #AAD480;
+        color: #FFF;
+      }
+    }
+  }
+}
