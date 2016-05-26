@@ -90,7 +90,9 @@ angular.module('app')
             //voting
             "which_portal_add_next?": "which portal add next?",
             "offer_new_portal": "offer new portal",
-            "name_or_link" : "name or link"
+            "name_or_link" : "name or link",
+            "thank_you": "thank you",
+            "your_offer_will_be_checked_in_a_short_time": "your offer will be checked in a short time"
         },
         ru: {
             "in_progress": "в процессе",
@@ -181,6 +183,8 @@ angular.module('app')
             //voting
             "which_portal_add_next?": "какой портал добавить следующим?",
             "offer_new_portal": "предложите новый портал",
-            "name_or_link": "название или ссылка"
+            "name_or_link": "название или ссылка",
+            "thank_you": "спасибо",
+            "your_offer_will_be_checked_in_a_short_time": "ваше предложение будет рассмотрено в скором времени"
         }
     });
