@@ -97,11 +97,14 @@ angular.module("app")
 			voting.show = !voting.show;
 
 			if(voting.show) {
-				$scope.openVoting(voting);
+				$scope.getVotingContent(voting);
 			}
 		};
 
-		$scope.openVoting = function(voting) {
+		$scope.getVotingContent = function(voting) {
+			if(voting.pending) {
+				return;
+			}
 			voting.pending = true;
 
 			api.vote.get({

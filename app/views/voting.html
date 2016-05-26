@@ -12,6 +12,9 @@
 						<span class="text-marked" ng-bind="voting.title | translate : lang"></span>
 					</h4>
 					<div class="clearfix voting-content" ng-show="voting.show">
+						<div class="animated fadeIn refresh-content btn" ng-class="{'disabled': voting.pending}" ng-click="getVotingContent(voting);" title="{{'refresh' | translate : lang}}">
+							<i class="fa fa-refresh" ng-class="{'fa-pulse': voting.pending}"></i>
+						</div>
 						<div class="voting-offer" ng-if="voting.offer">
 							<h6>
 								<span ng-bind="voting.offer.title | translate : lang"></span>
@@ -45,7 +48,6 @@
 									<span class="text-center vote-percent" ng-class="{'text-danger': item.pending}" ng-bind="item.value | percent : voting.total : 0"></span>
 								</li>
 							</ul>
-							<div class="alert alert-info" ng-show="voting.pending"><i class="fa fa-refresh fa-pulse"></i></div>
 						</div>
 					</div>
 				</div>

@@ -122,7 +122,10 @@ module.exports = function(mongoose) {
         author: String,
         voting: String,
         label: String,
-        link: String,
+        link: {
+            type: "String",
+            default: ""
+        },
         confirmed: {
           type: Boolean,
           default: false

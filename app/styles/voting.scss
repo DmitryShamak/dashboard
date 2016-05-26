@@ -8,6 +8,23 @@
     -webkit-box-shadow: 0px 1px 1px 0 #999;
     -moz-box-shadow: 0px 1px 1px 0 #999;
 
+    .refresh-content {
+      position: absolute;
+      top: 5px; right: 5px;
+
+      width: 40px;
+      height: 40px;
+
+      padding: 0;
+
+      line-height: 40px;
+      text-align: center;
+      font-size: 1.3em;
+      color: #FFF;
+
+      background-color: $activeColor;
+    }
+
     .voting-header {
       margin: 0;
       padding: 15px 0;
@@ -15,6 +32,8 @@
     }
 
     .voting-content {
+      position: relative;
+
       background-color: rgba(0, 0, 0, 0.05);
     }
 
