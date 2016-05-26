@@ -66,6 +66,9 @@ angular.module("app")
         api.voting = $resource(api.serverUrl + "/api/voting", null, {
             'update': { method:'PUT' }
         });
+        api.vote = $resource(api.serverUrl + "/api/vote", null, {
+            'update': { method:'PUT' }
+        });
 
         return api;
     });

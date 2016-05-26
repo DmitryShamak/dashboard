@@ -1,24 +1,52 @@
 <div class="page-wrapper voting-page animated fadeIn clearfix">
 	<div class="row" ng-hide="page.busy">
-		<div class="page-group-wrapper text-center col-xs-12">
-			<h3 ng-bind="'updates' | translate : lang"></h3>
-		</div>
 		<div class="col-xs-12" ng-hide="page.offline">
 			<div class="votings">
-				<div class="voting" ng-repeat="voting in votings track by $index">
-					<h5>
-						<span ng-bind="voting.title"></span> <br />
-						<small ng-bind="voting.startDate | date : 'DD.MM.YY'"></small>
-						<small> - </small>
-						<small ng-bind="voting.endDate | date : 'DD.MM.YY'"></small>
-					</h5>
-					<div class="clearfix">
-						<ul class="col-xs-12 col-sm-6 voting-items no-list-style text-right">
-							<li class="vote" ng-repeat="item in voting.items track by $index">
-								<span class="vote-label" ng-bind="item.label"></span>
-								<span class="text-center vote-number" ng-bind="item.votes"></span>
-							</li>
-						</ul>
+				<div class="voting text-center" ng-repeat="voting in votings track by $index">
+					<h4 class="voting-header pointer" ng-click="toggleVoting(voting);">
+						<div>
+							<small ng-bind="voting.startDate | date : 'DD.MM.YY'"></small>
+							<small> - </small>
+							<small ng-bind="voting.endDate | date : 'DD.MM.YY'"></small>
+						</div>
+						<span class="text-marked" ng-bind="voting.title | translate : lang"></span>
+					</h4>
+					<div class="clearfix voting-content" ng-show="voting.show">
+						<div class="voting-offer" ng-if="voting.offer">
+							<h6>
+								<span ng-bind="voting.offer.title | translate : lang"></span>
+							</h6>
+							<form class="form-inline" ng-init="voting.offerForm = {};" ng-submit="addVote(voting, {text: voting.offerForm.text});">
+								<div class="input-group">
+									<input type="text" class="form-control" ng-model="voting.offerForm.text" placeholder="{{voting.offer.placeholder | translate : lang}}">
+									<div class="input-group-addon btn" ng-class="{'disabled': !voting.offerForm.text}" ng-click="addVote(voting, {text: voting.offerForm.text});">
+										<span ng-hide="voting.offer.pending" ng-bind="'add' | translate : lang"></span>
+										<i ng-show="voting.offer.pending" class="fa fa-refresh fa-pulse"></i>
+									</div>
+								</div>
+							</form>
+							<p class="animated fadeIn" ng-show="voting.showSubmitMessage">
+								<span ng-bind=" 'thank_you' | translate : lang"></span>.
+								<span ng-bind=" 'your_offer_will_be_checked_in_a_short_time' | translate : lang"></span>
+							</p>
+						</div>
+						<div class="clearfix">
+							<ul ng-hide="voting.pending" class="col-xs-12 col-sm-6 voting-items no-list-style text-right">
+								<li class="vote" ng-repeat="item in voting.items track by $index" ng-if="item.confirmed">
+									<span ng-hide="item.link" class="vote-label" ng-bind="item.label"></span>
+									<a ng-show="item.link" target="_blank" ng-href="{{item.link}}" class="vote-label" ng-bind="item.label"></a>
+
+								<span class="text-center text-bold vote-number btn" ng-click="doVote(voting, item);"
+									  ng-class="{'disabled': item.pending || item.voted, 'voted': item.voted}">
+									<span ng-hide="item.pending" ng-bind="item.value"></span>
+									<i ng-show="item.pending" class="fa fa-refresh fa-pulse"></i>
+								</span>
+
+									<span class="text-center vote-percent" ng-class="{'text-danger': item.pending}" ng-bind="item.value | percent : voting.total : 0"></span>
+								</li>
+							</ul>
+							<div class="alert alert-info" ng-show="voting.pending"><i class="fa fa-refresh fa-pulse"></i></div>
+						</div>
 					</div>
 				</div>
 			</div>

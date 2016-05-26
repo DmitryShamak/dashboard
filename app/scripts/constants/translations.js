@@ -11,6 +11,7 @@ angular.module('app')
             "bookmarks": "bookmarks",
             "calendar": "calendar",
             "voting": "voting",
+            "votings": "votings",
             "sign_out": "sign out",
             "notifications": "notifications",
             "deferred_actions": "deferred actions",
@@ -84,7 +85,12 @@ angular.module('app')
             "this_is_the_list_of_last_update_changes": "this is the list of last update changes",
             "refresh_button_will_be_shown_if_new_available_added_feeds" : "refresh button will be shown if new available added feeds",
             "add_new_portals" : "add new portals",
-            "show_system_updates" : "show system updates"
+            "show_system_updates" : "show system updates",
+
+            //voting
+            "which_portal_add_next?": "which portal add next?",
+            "offer_new_portal": "offer new portal",
+            "name_or_link" : "name or link"
         },
         ru: {
             "in_progress": "в процессе",
@@ -96,6 +102,7 @@ angular.module('app')
             "bookmarks": "закладки",
             "calendar": "календарь",
             "voting": "голосование",
+            "votings": "голосования",
             "sign_out": "выйти",
             "notifications": "уведомления",
             "deferred_actions": "отсроченные действия",
@@ -169,6 +176,11 @@ angular.module('app')
             "this_is_the_list_of_last_update_changes": "список изменений последнего обновления",
             "refresh_button_will_be_shown_if_new_available_added_feeds" : "кнопка обновления новостной ленты появляется автоматически при появлении новых данных",
             "add_new_portals" : "добавлены новые порталы",
-            "show_system_updates" : "страница обновлений сайта"
+            "show_system_updates" : "страница обновлений сайта",
+
+            //voting
+            "which_portal_add_next?": "какой портал добавить следующим?",
+            "offer_new_portal": "предложите новый портал",
+            "name_or_link": "название или ссылка"
         }
     });

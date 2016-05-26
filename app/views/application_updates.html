@@ -1,8 +1,5 @@
 <div class="page-wrapper animated fadeIn clearfix">
 	<div class="row" ng-hide="page.busy">
-		<div class="page-group-wrapper text-center col-xs-12">
-			<h3 ng-bind="'updates' | translate : lang"></h3>
-		</div>
 		<div class="col-xs-12" ng-hide="page.offline">
 			<div class="update-group form-group" ng-repeat="update in updates track by $index">
 				<h5>

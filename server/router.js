@@ -11,6 +11,7 @@ var bookmarks = require("./routes/bookmarksRoutes.js")(db);
 var history = require("./routes/historyRoutes.js")(db);
 var notifications = require("./routes/notificationsRoutes.js")(db);
 var voting = require("./routes/votingRoutes.js")(db);
+var vote = require("./routes/voteRoutes.js")(db);
 
 var passport = require("./passport.js");
 
@@ -64,6 +65,12 @@ var router = function(app) {
     app.post('/api/voting', voting.save);
     app.delete('/api/voting', voting.delete);
     app.put('/api/voting', voting.update);
+
+    //vote
+    app.get('/api/vote', vote.get);
+    app.post('/api/vote', vote.save);
+    app.delete('/api/vote', vote.delete);
+    app.put('/api/vote', vote.update);
 
     //Bookmarks
     app.get('/api/bookmarks', bookmarks.get);

@@ -99,8 +99,11 @@ module.exports = function(mongoose) {
 
     collections.VotingSchema = new Schema({
         title: String,
-        items: Array,
-        confirmed: Array,
+        items: {
+            type: Array,
+            default: []
+        },
+        offer: Object,
         active: {
             type: Boolean,
             default: true
@@ -116,9 +119,18 @@ module.exports = function(mongoose) {
     collections.voting = mongoose.model('voting', collections.VotingSchema);
 
     collections.VoteSchema = new Schema({
-        user: String,
+        author: String,
         voting: String,
-        key: String
+        label: String,
+        link: String,
+        confirmed: {
+          type: Boolean,
+          default: false
+        },
+        votes: {
+            type: Array,
+            default: []
+        }
     });
     collections.vote = mongoose.model('vote', collections.VoteSchema);
 
