@@ -84,7 +84,8 @@ angular.module('app')
             //updates
             "this_is_the_list_of_last_update_changes": "this is the list of last update changes",
             "refresh_button_will_be_shown_if_new_available_added_feeds" : "refresh button will be shown if new available added feeds",
-            "add_new_portals" : "add new portals",
+            "added_new_portals" : "add new portals",
+            "added_voting_page" :"added voting page",
             "show_system_updates" : "show system updates",
 
             //voting
@@ -177,7 +178,8 @@ angular.module('app')
             //updates
             "this_is_the_list_of_last_update_changes": "список изменений последнего обновления",
             "refresh_button_will_be_shown_if_new_available_added_feeds" : "кнопка обновления новостной ленты появляется автоматически при появлении новых данных",
-            "add_new_portals" : "добавлены новые порталы",
+            "added_new_portals" : "добавлены новые порталы",
+            "added_voting_page": "добавлена страница голосований",
             "show_system_updates" : "страница обновлений сайта",
 
             //voting

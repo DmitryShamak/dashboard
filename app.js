@@ -9,9 +9,10 @@ var app = express();
 var _conf = require("./server/_conf.js");
 var rootPath = __dirname;
 
+//Set cache-header-expires to 1 day
+var oneDay = 86400000;
 var staticRoot = path.join(rootPath);
-app.use("/", express.static(staticRoot));
-
+app.use("/", express.static(staticRoot, { maxAge: oneDay }));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -26,6 +27,7 @@ app.use(session({
     resave: true,
     saveUninitialized: false
 }));
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
