@@ -12,7 +12,7 @@ var rootPath = __dirname;
 //Set cache-header-expires to 1 day
 var oneDay = 86400000;
 var staticRoot = path.join(rootPath);
-app.use("/", express.static(staticRoot, { maxAge: oneDay }));
+app.use("/", express.static(staticRoot));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
