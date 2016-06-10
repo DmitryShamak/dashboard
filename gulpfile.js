@@ -158,7 +158,7 @@ gulp.task('move_deploy_files', [], function() {
         .pipe(gulp.dest("./deploy"));
 });
 gulp.task('deploy', ['move_deploy_files'], function() {
-    return gulp.src(['./index.html', 'app.js', 'package.json',])
+    return gulp.src(['./index.html', 'app.js', 'package.json'])
         .pipe(change(function(content, done) {
             var newContent = content.replace(/\/dist/g, "");
             done(null, newContent);

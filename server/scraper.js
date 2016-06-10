@@ -10,7 +10,6 @@ scraper.providers.belaruspartisan = require("./scrappers/belaruspartisan");
 scraper.providers.habrahabr = require("./scrappers/habrahabr");
 ////////scraper.providers["eax.me"] = require("./scrappers/eax.me");
 
-
 scraper.providers.adme = require("./scrappers/adme");
 
 scraper.providers.stopgame = require("./scrappers/stopgame");

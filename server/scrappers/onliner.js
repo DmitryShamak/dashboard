@@ -31,22 +31,30 @@ module.exports.find = function(props, cb) {
 module.exports.feeds = function(provider) {
     var deferred = Q.defer();
 
-    var url = "http://tech.onliner.by/feed";
+    var urls = ["http://tech.onliner.by/feed", "https://auto.onliner.by/feed", "https://realt.onliner.by/feed"];
 
-    var parser = function(query, xml) {
+    var parser = function(query, xmls) {
         var parseString = xml2js.parseString;
         var content = [];
 
-        parseString(xml, function (err, result) {
-            var json = result;
+        if(!_.isArray(xmls)) {
+            xmls = [xmls];
+        }
 
-            content = json.rss.channel[0].item.map(function(item) {
-                return {
-                    label: item.title[0],
-                    image: item['media:thumbnail'][0].$.url,
-                    link: item.link[0].replace(/\/$/, ""),
-                    date: new Date(item.pubDate)
-                };
+        _.forEach(xmls, function(xml) {
+            parseString(xml, function (err, result) {
+                var json = result;
+
+                var list = json.rss.channel[0].item.map(function(item) {
+                    return {
+                        label: item.title[0].replace("&nbsp;", " "),
+                        image: item['media:thumbnail'][0].$.url,
+                        link: item.link[0].replace(/\/$/, ""),
+                        date: new Date(item.pubDate)
+                    };
+                });
+
+                content = content.concat(list);
             });
         });
 
@@ -62,7 +70,7 @@ module.exports.feeds = function(provider) {
         });
     };
 
-    feedMethods.callback(url, parser, deferred);
+    feedMethods.callback(urls, parser, deferred);
 
     return deferred.promise;
 };

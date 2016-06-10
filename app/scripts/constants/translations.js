@@ -35,8 +35,13 @@ angular.module('app')
             "no_notes": "no notes",
             "note": "note",
             "no": "no",
+
             "social": "social",
             "games": "games",
+            "media": "media",
+            "creative": "creative",
+            "economics": "economics",
+
             "owned": "owned",
             "provider": "provider",
             "providers": "providers",
@@ -45,6 +50,8 @@ angular.module('app')
             "delete_bookmark": "delete bookmark",
             "sign_in": "sign in",
             "with": "with",
+
+            "portals_store": "portals store",
 
             "welcome": "welcome",
             "thank_you_for_joining_us": "thank you for joining us",
@@ -129,8 +136,13 @@ angular.module('app')
             "no_notes": "нет записей",
             "note": "запись",
             "no": "нет",
+
             "social": "социальные",
             "games": "игры",
+            "media": "медиа",
+            "creative": "творчество",
+            "economics": "экономика",
+
             "owned": "добавлен",
             "provider": "провайдер",
             "providers": "провайдеров",
@@ -139,6 +151,8 @@ angular.module('app')
             "delete_bookmark": "удалить закладку",
             "sign_in": "войти в систему",
             "with": "используя",
+
+            "portals_store": "хранилище порталов",
 
             "choose_one_of_next_accounts" : "выберите один из следующих профилей",
 

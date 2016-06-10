@@ -1,18 +1,20 @@
 <div class="store-wrapper">
 	<div class="header">
 		<div class="col-xs-12">
-			<h4>{{'find'| translate : lang}} {{'provider'| translate : lang}}</h4>
-			<div class="row">
-				<div class="col-xs-10 col-sm-11">
-					<input type="text" placeholder="{{'search'| translate : lang}}" class="form-control" />
-				</div>
-				<div class="col-xs-2 col-sm-1">
-					<div class="btn btn-primary" ng-bind="'search'| translate : lang"></div>
-				</div>
-			</div>
+			<h4>{{'portals_store'| translate : lang}}</h4>
+			<!--<h4>{{'find'| translate : lang}} {{'provider'| translate : lang}}</h4>-->
+			<!--<div class="row">-->
+				<!--<div class="col-xs-10 col-sm-11">-->
+					<!--<input type="text" placeholder="{{'search'| translate : lang}}" class="form-control" />-->
+				<!--</div>-->
+				<!--<div class="col-xs-2 col-sm-1">-->
+					<!--<div class="btn btn-primary" ng-bind="'search'| translate : lang"></div>-->
+				<!--</div>-->
+			<!--</div>-->
 		</div>
 	</div>
 	<div class="content-wrapper">
+		<div ng-show="store.busy"><i class="fa fa-refresh fa-pulse"></i></div>
 		<div ng-show="store.categories.length">
 			<div class="store-nav">
 				<div class="categories">
@@ -48,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-		<div ng-hide="store.categories.length">
+		<div ng-hide="store.categories.length || store.busy">
 			<h5 class="text-center">The Store is empty, come back later. Please, come back..</h5>
 		</div>
 	</div>
