@@ -42,14 +42,14 @@ module.exports.feeds = function(provider) {
 
         $(container).find(selector).each(function() {
             //$(this).find(element)
-            var title = $(this).find(".GridTile__title")[0].children[0].data;
+            var title = $(this).find(".GridTile__title-text")[0].children[0].data;
             var bg_url = this.attribs['data-cover'];
             var image_url =  bg_url ? (bg_url.replace(/(^url\(['"]?)(.*)(\)$)/, "$2")) : null;
             var image = null;
             if(image_url) {
                 image = domain + image_url;
             }
-            var link = domain + (this.attribs.href.replace(/\/$/, ""));
+            var link = domain + ($(this).find('a.GridTile__link').attr('href').replace(/\/$/, ""));
 
             content.push({
                 label: title,
